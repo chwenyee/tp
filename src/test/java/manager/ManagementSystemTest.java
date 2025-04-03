@@ -302,6 +302,7 @@ class ManagementSystemTest {
         assertEquals("Consultation", appointments.get(2).getDescription());
     }
 
+    //@@author dylancmznus
     @Test
     void markAppointment_validInput_expectAppointmentMarked() throws DuplicatePatientIDException,
             UnloadedStorageException, PatientNotFoundException {
@@ -320,6 +321,7 @@ class ManagementSystemTest {
         assertTrue(manager.getAppointments().get(0).isDone(), "Appointment should be marked");
     }
 
+    //@@author dylancmznus
     @Test
     void unmarkAppointment_validInput_expectAppointmentUnmarked() throws DuplicatePatientIDException,
             UnloadedStorageException, PatientNotFoundException {
@@ -339,6 +341,7 @@ class ManagementSystemTest {
         assertFalse(manager.getAppointments().get(0).isDone(), "Appointment should be unmarked");
     }
 
+    //@@author dylancmznus
     @Test
     void findAppointment_existingAppointment_expectAppointmentFound() throws DuplicatePatientIDException,
             UnloadedStorageException, PatientNotFoundException {
@@ -358,6 +361,7 @@ class ManagementSystemTest {
         assertEquals(appointment.getId(), foundAppointments.get(0).getId(), "Appointment ID should match");
     }
 
+    //@@author dylancmznus
     @Test
     void findAppointment_nonExistentAppointment_expectNullReturned() {
         List<Patient> emptyListPatient = new ArrayList<>();

@@ -36,7 +36,7 @@ class SortAppointmentCommandTest {
     void setUp() throws UnloadedStorageException, DuplicatePatientIDException, PatientNotFoundException {
         storage = new Storage(tempDir.toString());
         ui = new Ui();
-        manager = new ManagementSystem(storage.loadPatients(), storage.loadAppointments());
+        manager = new ManagementSystem(storage.loadPatients(), storage.loadAppointments(manager));
 
         List<Patient> patients = List.of(
                 new Patient("S1234567D", "Billy", "1990-10-01",

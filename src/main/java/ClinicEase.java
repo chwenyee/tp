@@ -28,9 +28,11 @@ public class ClinicEase {
 
         try {
             List<Patient> patients = Storage.loadPatients();
-            List<Appointment> appointments = Storage.loadAppointments();
             List<Prescription> prescriptions = Storage.loadPrescriptions();
-            this.manager = new ManagementSystem(patients, appointments, prescriptions);
+            this.manager = new ManagementSystem(patients, new ArrayList<>(), prescriptions);
+
+            List<Appointment> appointments = Storage.loadAppointments(manager);
+            manager.setAppointments(appointments);
         } catch (UnloadedStorageException e) {
             ui.showError("Could not load data: " + e.getMessage());
             this.manager = new ManagementSystem(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());

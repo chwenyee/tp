@@ -32,7 +32,7 @@ class AddAppointmentCommandTest {
     void setUp() throws UnloadedStorageException {
         storage = new Storage(tempDir.toString());
         ui = new Ui();
-        manager = new ManagementSystem(storage.loadPatients(), storage.loadAppointments());
+        manager = new ManagementSystem(storage.loadPatients(), storage.loadAppointments(manager));
     }
 
     @Test

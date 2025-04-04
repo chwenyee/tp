@@ -5,6 +5,7 @@ import manager.Appointment;
 import manager.Patient;
 import manager.Prescription;
 import miscellaneous.Parser;
+import manager.ManagementSystem;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,6 +21,7 @@ public class Storage {
     private static String appointmentFilePath;
     private static String prescriptionFilePath;
     private static String prescriptionDirPath;
+    private static Patient patients;
 
     public Storage(String directory) {
         directoryPath = directory;
@@ -95,7 +97,7 @@ public class Storage {
     }
 
 
-    public static List<Appointment> loadAppointments() throws UnloadedStorageException {
+    public static List<Appointment> loadAppointments(ManagementSystem system) throws UnloadedStorageException {
         List<Appointment> appointments = new ArrayList<>();
         File file = new File(appointmentFilePath);
 
@@ -122,6 +124,11 @@ public class Storage {
                     Appointment appointment = Parser.parseLoadAppointment(line);
                     if (appointment != null) {
                         appointments.add(appointment);
+
+                        Patient patient = system.findPatientByNric(appointment.getNric());
+                        if (patient != null) {
+                            patient.addAppointment(appointment);
+                        }
                     }
                 }
             }

@@ -173,7 +173,8 @@ public class Patient {
     }
 
     public String toFileFormat() {
+        String history = String.join(", ", this.medicalHistory);
         return this.id + "|" + this.name + "|" + this.dob + "|" + this.gender + "|"
-                + this.address + "|" + this.contactInfo + "|" + this.medicalHistory;
+                + this.address + "|" + this.contactInfo + "|" + history;
     }
 }

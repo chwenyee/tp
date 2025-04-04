@@ -1,0 +1,58 @@
+@startuml
+hide footbox
+
+actor User
+
+participant ":ClinicEase" as ClinicEase
+participant ":Parser" as Parser
+participant ":Appointment" as Appointment
+participant ":DeleteAppointmentCommand" as DeleteAppointmentCommand
+participant ":ManagementSystem" as ManagementSystem
+participant ":Storage" as Storage
+
+User -> ClinicEase : enter input
+activate ClinicEase
+ClinicEase -> Parser : parse(input)
+activate Parser
+
+Parser -> Parser : parseDeleteAppointment(userInput)
+activate Parser
+Parser --> Parser : apptId :String
+deactivate Parser
+
+create DeleteAppointmentCommand
+Parser -> DeleteAppointmentCommand : new DeleteAppointmentCommand(apptId)
+activate DeleteAppointmentCommand
+DeleteAppointmentCommand --> Parser : :DeleteAppointmentCommand
+deactivate DeleteAppointmentCommand
+Parser --> ClinicEase : :DeleteAppointmentCommand
+deactivate Parser
+
+ClinicEase -> DeleteAppointmentCommand : execute()
+activate DeleteAppointmentCommand
+DeleteAppointmentCommand -> ManagementSystem : deleteAppointment(apptId)
+
+activate ManagementSystem
+ManagementSystem -> ManagementSystem : findPatientByNRIC()
+activate ManagementSystem
+ManagementSystem -> Appointment : getNric()
+activate Appointment
+Appointment --> ManagementSystem : nric :String
+deactivate Appointment
+deactivate ManagementSystem
+
+ManagementSystem -> Storage : saveAppointments()
+activate Storage
+Storage --> ManagementSystem :
+deactivate Storage
+ManagementSystem --> DeleteAppointmentCommand :
+deactivate ManagementSystem
+
+deactivate ManagementSystem
+DeleteAppointmentCommand --> ClinicEase :
+deactivate DeleteAppointmentCommand
+ClinicEase --> User : display message
+deactivate ClinicEase
+
+
+@enduml

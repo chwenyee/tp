@@ -56,10 +56,15 @@ parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 
 **Sections:**
 
-- Add appointment feature:
+- **Add and Delete Appointment feature:**
 
-  - Write an explanation of how `add-appointment` work in the system. 
-  - Create a sequence diagram for `add-appointment` feature, visualizing how the command interacts with the `Parser`, `ManagementSystem`, and `Storage` components.
+  - Documented the implementation details of the `add-appointment` and `delete-appointment` features, 
+    including step-by-step usage scenarios to clarify system behavior.
+  - Created a sequence diagram for both `add-appointment` and `delete-appointment` features, 
+    visualizing how the command interacts with the `Parser`, `ManagementSystem`, and `Storage` components.
+  - Explained the reason they are implemented this way
+  - Explained the alternatives considered and justified their rejection
+
 - Non-functional requirements
 - Glossary 
 

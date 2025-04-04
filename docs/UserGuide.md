@@ -40,6 +40,23 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 > - Command words are **case-insensitive**. <br>
     e.g. `liST-paTIEnt` will be interpreted as `list-patient`.
 
+### Adding a new patient : `add-patient`
+Adds a new patient to the system with their credentials.
+
+Format: `add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS h/MEDICAL_HISTORY`
+
+* The `NRIC` must be unique to the existing ones in the system
+
+Example of usage: 
+
+`add-patient n/John Doe ic/S1234567D dob/12-12-1999 g/M p/98765432 a/123 Main Street h/Diabetes, Hypertension`
+
+Expected output:
+
+<pre>---------------------------------------------------------------------------------------------------- 
+Patient added successfully: John Doe 
+---------------------------------------------------------------------------------------------------- </pre>
+
 ### Viewing patient details: `view-patient`
 Displays the details of a specific patient.
 
@@ -51,6 +68,19 @@ Example of usage:
 
 `view-patient S1234567D`
 
+Expected Output:
+
+<pre>------------------------------------------Patient Details------------------------------------------
+Patient NRIC: S1234567D
+Name: John Doe
+Date of Birth: 12-12-1999
+Gender: M
+Address: 123 Main Street
+Contact: 98765432
+Medical History: Diabetes, Hypertension
+Appointments: None
+----------------------------------------------------------------------------------------------------</pre>
+
 ### Listing all patients: `list-patient`
 Displays a list of all registered patients in the system with details provided.
 
@@ -60,17 +90,49 @@ Example of usage:
 
 `list-patient`
 
+Expected Output:
+
+<pre>------------------------------------------Patient Details------------------------------------------
+1. Patient NRIC: S1234567D
+   Name: John Doe
+   Date of Birth: 12-12-1999
+   Gender: M
+   Address: 123 Main Street
+   Contact: 98765432
+   Medical History:
+   - Diabetes
+   - Hypertension
+   Appointments: None
+----------------------------------------------------------------------------------------------------
+2. Patient NRIC: S8765432F
+   Name: Jane Donna
+   Date of Birth: 12-05-2000
+   Gender: F
+   Address: 546 Main Street
+   Contact: 91209310
+   Medical History:
+   - Cough
+   Appointments: None
+----------------------------------------------------------------------------------------------------</pre>
+
 ### Editing a specified patient: `edit-patient`
 Displays a list of all registered patients in the system with details provided.
 
-Format: `edit-patient ic/NRIC [n/NAME] [dob/BIRTHDATE] [g/GENDER] [a/ADDRESS] [p/PHONE]`
+Format: `edit-patient ic/NRIC ATTRIBUTE`
 
 * The `NRIC` must be of a patient existing in the system.
+* The `ATTRIBUTE` can possibly be between `n/NAME`, `dob/BIRTHDATE`, `g/GENDER`, `a/ADDRESS`, or `p/PHONE` 
 
 Example of usage:
 
-`edit-patient ic/S1234567D p/91238989`
+`edit-patient ic/S1234567D p/91238989` or `edit-patient ic/S1234567D dob/17-08-1945`
 
+Expected output:
+
+<pre>Patient with NRIC S1234567D updated successfully. 
+----------------------------------------------------------------------------------------------------.
+Edit-patient command executed.
+---------------------------------------------------------------------------------------------------- </pre>
 
 ### Adding an appointment: `add-appointment`
 Adds a new appointment to the list of appointment.

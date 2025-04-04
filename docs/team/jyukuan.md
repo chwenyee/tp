@@ -35,7 +35,6 @@ I have been primarily involved in designing and implementing the **patient’s h
 3. **Persistence and Data Integrity**
     - Extended the `ManagementSystem` to:
         - Validate whether the patient exists (`findPatientByNric`) before appending new history entries.
-        - Call `Storage.savePatients(...)` after every history edit or addition to keep data consistent.
     - Addressed potential duplication of medical history entries by checking for existing strings before adding them.
 
 4. **Exception Handling**
@@ -51,7 +50,6 @@ I have been primarily involved in designing and implementing the **patient’s h
 6. **Review / Mentoring Contributions**
 
     - Provided code reviews on pull requests that impacted the data structures storing patient details.
-    - Assisted team members in debugging `Storage`-related exceptions by clarifying how the `savePatients` and `loadPatients` methods handle file I/O.
     - Helped maintain consistent Java coding conventions (e.g., method naming, usage of final variables) throughout the codebase.
 
 7. **Contributions Beyond the Project Team**

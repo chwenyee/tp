@@ -34,6 +34,8 @@ with the appointment list in `ManagementSystem`.
 #### Contributions to the UG:
 
 **Sections:** 
+
+- **Table of Content**
 - **Quick Start**
 
 - **Features:**

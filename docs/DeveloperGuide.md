@@ -1,12 +1,15 @@
 # Developer Guide
 
+
+---
+
 ## Acknowledgements
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-## Design & implementation
+---
 
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
+## Design & implementation
 
 ### View patient feature
 
@@ -35,7 +38,7 @@ The sequence diagram below illustrates how the operation for 'view-patient' woul
 
 ![viewPatientSequence.png](diagrams/viewPatientSequence.png)
 
-
+---
 
 ### Add appointment feature
 The `add-appointment` feature allows users to schedule appointments for registered patients. 
@@ -64,6 +67,8 @@ If saving fails, `ClinicEase` catches an `UnloadedStorageException` and informs 
 
 The following sequence diagram shows how an `add-aappointment` operation goes through the system:
 ![add-appointment](./diagrams/addAppointmentSequence.png)
+
+---
 
 ### Add patient feature
 The `add-patient` feature allows users to register new patients by providing their personal information.  
@@ -100,14 +105,14 @@ If saving fails, `ClinicEase` catches an `UnloadedStorageException` and alerts t
 The following sequence diagram shows how an `add-patient` operation flows through the system:
 ![add-patient](./diagrams/addPatientSequence.png)
 
+---
+
 ### Storing Medical History Feature
 
 The `store-history` feature allows users to **add new medical history entries** for a specific patient in the system.  
 The system verifies that the **patient exists** before adding the entries, then the updated data is saved persistently.
 
 Below is a usage scenario illustrating how the `store-history` mechanism behaves step by step.
-
----
 
 **Step 1.** The user executes a command such as:
 
@@ -137,7 +142,7 @@ store-history n/John Doe ic/S1234567A h/Diabetes,High Cholesterol
 Below is a detailed **PlantUML** sequence diagram showing how a `store-history` operation moves through the system and includes the check for a valid patient:
 ![add-appointment](./diagrams/storeMedicalHistorySequence.png)
 
-
+---
 
 ## Product scope
 ### Target user profile
@@ -147,6 +152,8 @@ The target users are clinic staff, such as receptionists, assistants, or solo pr
 ### Value proposition
 
 This CLI-based Clinic Management System offers a simple yet effective solution for managing patient data and appointments without the need for complex software installations or internet access. It helps clinics save time, stay organized, and reduce manual errors by streamlining common administrative tasks like adding patients, scheduling appointments, and retrieving records, all from the command line.
+
+---
 
 ## User Stories
 
@@ -165,6 +172,8 @@ This CLI-based Clinic Management System offers a simple yet effective solution f
 | v2.0    | doctor   | add symptoms to a prescription | document the patient's condition |
 | v2.0    | doctor   | add special notes to prescriptions | provide additional instructions to patients |
 | v2.0    | doctor   | generate a printable prescription | provide a professional document to the patient |
+
+---
 
 ## Use Cases
 
@@ -363,6 +372,8 @@ Use case resumes at step 1.
     * 5a1. System shows error message
     * 5a2. Use case ends
 
+---
+
 ## Non-Functional Requirements
 1. Should work on any mainstream OS as long as it has Java `17` or above installed.
 2. The system should efficiently manage up to 1000 patients or appointments without any noticeable performance lag during typical usage.
@@ -377,6 +388,7 @@ Use case resumes at step 1.
 * *Error Messages* – System-generated messages that inform users of incorrect input and provide guidance on how to fix it.
 * *OS Platform Compatibility* – The ability for data files and system functionality to work consistently across different operating systems.
 
+---
 
 ## Instructions for Manual Testing
 

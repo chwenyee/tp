@@ -37,6 +37,11 @@ public class ManagementSystem {
         return patients;
     }
 
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments.clear();
+        this.appointments.addAll(appointments);
+    }
+
     public List<Appointment> getAppointments() {
         return appointments;
     }
@@ -192,7 +197,7 @@ public class ManagementSystem {
         }
     }
 
-    private Patient findPatientByNric(String nric) {
+    public Patient findPatientByNric(String nric) {
         String object = nric.trim().toUpperCase();
         for (Patient p : patients) {
             String patientId = p.getId().trim().toUpperCase();

@@ -32,6 +32,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static manager.Appointment.INPUT_FORMAT;
 
@@ -361,7 +362,9 @@ public class Parser {
         String gender = tokens[3];
         String address = tokens[4];
         String contact = tokens[5];
-        List<String> medHistory = Arrays.asList(tokens[6].split(","));
+        List<String> medHistory = Arrays.stream(tokens[6].split(","))
+                                        .map(String::trim)
+                                        .collect(Collectors.toList());
 
         return new Patient(id, name, dob, gender, address, contact, medHistory);
     }

@@ -1,6 +1,8 @@
 @startuml
 hide footbox
 
+actor User
+
 participant ":ClinicEase" as ClinicEase
 participant ":Parser" as Parser
 participant ":Appointment" as Appointment
@@ -8,6 +10,8 @@ participant ":AddAppointmentCommand" as AddAppointmentCommand
 participant ":ManagementSystem" as ManagementSystem
 participant ":Storage" as Storage
 
+User -> ClinicEase : enter input
+activate ClinicEase
 ClinicEase -> Parser : parse(input)
 activate Parser
 
@@ -22,12 +26,12 @@ deactivate Parser
 create Appointment
 Parser -> Appointment : new Appointment()
 activate Appointment
-Appointment --> Parser : :Appointment
+Appointment --> Parser : appt : Appointment
 deactivate Appointment
 deactivate Parser
 
 create AddAppointmentCommand
-Parser -> AddAppointmentCommand : new AddAppointmentCommand(Appointment)
+Parser -> AddAppointmentCommand : new AddAppointmentCommand(appt)
 activate AddAppointmentCommand
 AddAppointmentCommand --> Parser : :AddAppointmentCommand
 deactivate AddAppointmentCommand
@@ -52,7 +56,9 @@ Storage --> ManagementSystem :
 deactivate Storage
 ManagementSystem --> AddAppointmentCommand :
 deactivate ManagementSystem
-AddAppointmentCommand -> ClinicEase :
+AddAppointmentCommand --> ClinicEase :
 deactivate AddAppointmentCommand
+ClinicEase --> User : display message
+deactivate ClinicEase
 
 @enduml

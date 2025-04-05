@@ -1,4 +1,5 @@
 import command.Command;
+import exception.AppointmentClashException;
 import exception.DuplicatePatientIDException;
 import exception.InvalidInputFormatException;
 import exception.PatientNotFoundException;
@@ -53,7 +54,7 @@ public class ClinicEase {
                 command.execute(manager, ui);
                 running = !command.isExit();
             } catch (InvalidInputFormatException | UnknownCommandException | DuplicatePatientIDException |
-                     UnloadedStorageException | PatientNotFoundException e) {
+                     UnloadedStorageException | PatientNotFoundException | AppointmentClashException e) {
                 ui.showError(e.getMessage());
             }
         }

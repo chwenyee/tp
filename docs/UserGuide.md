@@ -4,12 +4,38 @@
 
 ClinicEase is an application designed to assist doctors in managing patient records and appointments efficiently. It allows the user to add, edit, view, and delete patient information and medical history, as well as schedule and track appointments with ease. With its intuitive command-based interface, ClinicEase ensures smooth and reliable clinic operations.
 
+---
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Features](#features)
+    - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
+    - [Listing all patients: `list-patient`](#listing-all-patients-list-patient)
+    - [Editing a specified patient: `edit-patient`](#editing-a-specified-patient-edit-patient)
+    - [Adding an appointment: `add-appointment`](#adding-an-appointment-add-appointment)
+    - [Deleting an appointment: `delete-appointment`](#deleting-an-appointment-delete-appointment)
+    - [Sorting appointments: `sort-appointment`](#sorting-appointments-sort-appointment)
+    - [Marking an appointment as done: `mark-appointment`](#marking-an-appointment-as-done-mark-appointment)
+    - [Unmarking a completed appointment: `unmark-appointment`](#unmarking-a-completed-appointment-unmark-appointment)
+    - [Finding a patient's appointments: `find-appointment`](#finding-a-patients-appointments-find-appointment)
+    - [Managing Prescriptions](#managing-prescriptions)
+        - [Adding a prescription: `add-prescription`](#adding-a-prescription-add-prescription)
+        - [Viewing all prescriptions: `view-all-prescriptions`](#viewing-all-prescriptions-view-all-prescriptions)
+        - [Viewing specific prescription: `view-prescription`](#viewing-specific-prescription-view-prescription)
+    - [Adding medical history: `store-history`](#adding-medical-history-store-history)
+    - [Viewing medical history: `view-history`](#viewing-medical-history-view-history)
+    - [Editing medical history: `edit-history`](#editing-medical-history-edit-history)
+    - [Exiting the program: `bye`](#exiting-the-program-bye)
+- [FAQ](#faq)
+- [Known Issues](#known-issues)
+- [Command Summary](#command-summary)
+
+---
 ## Quick Start
 
 1. Ensure that you have Java 17 or above installed. <br> 
    **Mac users:** Ensure you have the precise JDK version prescribed 
    [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
-2. Download the latest version of `ClinicEase` from [here](https://github.com/AY2425S2-CS2113-T11b-4/tp/releases).   
+2. Download the latest version of `ClinicEase` [here](https://github.com/AY2425S2-CS2113-T11b-4/tp/releases).   
 3. Copy the file to the folder you want to use as the home folder for ClinicEase.
 4. Open a command terminal, `cd` into the folder you put the jar file in, and use the 
    `java -jar ClinicEase.jar` command to run the application.
@@ -21,7 +47,7 @@ ClinicEase is an application designed to assist doctors in managing patient reco
    - `bye`: Exits the app.
 6. Refer to the Features below for details of each command.
 
-
+---
 ## Features 
 Here are some feature that the product provides:
 
@@ -160,6 +186,8 @@ Expected output:
 Edit-patient command executed.
 ---------------------------------------------------------------------------------------------------- </pre>
 <br>
+
+---
 
 ### Adding an appointment: `add-appointment`
 Adds a new appointment to the list of appointment.
@@ -451,12 +479,21 @@ Replaced old history "Diabetes" with "Type 2 Diabetes".
 ----------------------------------------------------------------------------------------------------
 Edit-history command executed.
 ----------------------------------------------------------------------------------------------------</pre>
+<br>
+
+### Exiting the program: `bye`
+Exits the program.
+
+Format: `bye`
+<br>
 
 ## FAQ
 
 **Q**: How do I transfer my data to another computer? 
 
 **A**: You can copy the 'data' folder and paste it in the directory that you save your jar file in another computer. 
+
+--- 
 
 ## Known Issues
 1. The parameter `NRIC` can take in any String format.
@@ -485,6 +522,4 @@ Edit-history command executed.
 | Add prescription           | `add-prescription ic/PATIENT_ID s/SYMPTOMS m/MEDICINES [nt/NOTES]`                                                                                                                             |
 | View all prescriptions     | `view-all-prescriptions PATIENT_ID`                                                                                                                                                            |
 | View specific prescription | `view-prescription PRESCRIPTION_ID`                                                                                                                                                            |
-
-
 

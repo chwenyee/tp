@@ -1,12 +1,15 @@
 # Developer Guide
 
+
+---
+
 ## Acknowledgements
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-## Design & implementation
+---
 
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
+## Design & implementation
 
 ### View patient feature
 
@@ -35,20 +38,32 @@ The sequence diagram below illustrates how the operation for 'view-patient' woul
 
 ![viewPatientSequence.png](diagrams/viewPatientSequence.png)
 
+---
 
+### Add and Delete Appointment feature
+The `add-appointment` and `delete-appointment` features allow users to manage appointments for registered patients. 
+The system ensures that the **patient exists** before adding the appointment and that the **appointment exists** before deleting it. 
+All changes are stored persistently.
 
-### Add appointment feature
-The `add-appointment` feature allows users to schedule appointments for registered patients. 
-The system ensures that the **patient exists** before adding the appointment. The appointment is then stored persistently.
+#### Add Appointment
+The add-appointment feature lets users schedule appointments for patients who are already registered in the system.
 
-Given below is an example usage scenario and how the `add appointment` mechanism behaves at each step.
+**Example usage scenario** and how the `add appointment` mechanism behaves at each step:
 
-Step 1. The user launches the application for the first time. The `ClinicEase` will be initialized with the....
-The system loads the stored list of patients and appointments. The user is now ready to add a new appointment.
+Step 1. The user launches the application for the first time. The `ClinicEase` is initialized with the stored list of 
+patients and appointments. The user is now ready to add a new appointment.
 
-Step 2. The user executes `add-appointment ic/S1234567D ...` command to add the appointment to the appointment list. 
+Step 2. The user executes the command: `add-appointment ic/S1234567D ...` to add the appointment to the appointment list. 
 This command let `ClinicEase` class reads the user input and passes it to the `Parser`. 
 The `Parser` class determines that the command is `add-appointment` and creates an `AddAppointmentCommand` object.
+
+````
+public static Command parse(String userInput) throws InvalidInputFormatException, UnknownCommandException {
+    //...
+    case "add-appointment":
+        return new AddAppointmentCommand(parseAddAppointment(userInput));
+    //...
+````
 
 > [!NOTE]:
 > If the input does not match the expected format, an InvalidInputFormatException is thrown. Hence, the appointment will
@@ -56,14 +71,84 @@ The `Parser` class determines that the command is `add-appointment` and creates 
 
 Step 3. The system calls `execute()` method in `AddAppointmentCommand`. Then, this class calls `ManagementSystem.addAppointment()` 
 to add the appointment to the system. `ManagementSystem` checks if the patient exists using `findPatientByNRIC()`. 
-If the patient is found, the system creates an `Appointment` object and adds it to the appointment list.
-If the patient’s NRIC does not exist, a PatientNotFoundException is thrown. Thus, the appointment will not be successfully added and stored.
+- If the patient is found, the system creates an `Appointment` object and adds it to the appointment list.
+- Conditions the appointment fail to be added and stored:
+  - If the patient’s NRIC does not exist (a `PatientNotFoundException` is thrown).
+  - If the appointment clashes with another scheduled within 1 hour (an `AppointmentClashException` is thrown).
 
-Step 4. After the appointment is successfully added, `Storage.saveAppointments()` is called to update the saved appointment list.
+Step 4. After the appointment is successfully added, `Storage.saveAppointments()` is called to update the stored appointment list.
 If saving fails, `ClinicEase` catches an `UnloadedStorageException` and informs the user.
 
-The following sequence diagram shows how an `add-aappointment` operation goes through the system:
+The following sequence diagram shows how an `add-appointment` operation goes through the system:
 ![add-appointment](./diagrams/addAppointmentSequence.png)
+
+#### Delete Appointment
+The `delete-appointment` feature allows users to remove an appointment that is no longer required.
+
+**Example usage scenario** and how the `delete appointment` mechanism behaves at each step:
+Step 1. Suppose the user has already added one or more appointments and wishes to delete one. The appointment must 
+exist in the current appointment list. 
+
+Step 2. The user needs to know the appointment ID of the appointment to be deleted. If unsure, he/she may execute the 
+`list-appointment` command to view all existing appointments.
+
+Step 3. The user executes the command `delete-appointment A100`. Similar to `add appointment`, The `ClinicEase` class 
+reads the user input and passes it to the `Parser`, which creates a `DeleteAppointmentCommand` object using the provided 
+`APPOINTMENT_ID`.
+
+````
+public static Command parse(String userInput) throws InvalidInputFormatException, UnknownCommandException {
+    //...
+    case "delete-appointment":
+            return new DeleteAppointmentCommand(parseDeleteAppointment(userInput));
+    //...
+````
+
+Step 4. The system calls `execute()` method in `DeleteAppointmentCommand`. Then, it calls `ManagementSystem.deleteAppointment()`
+which removes the corresponding `Appointment` object from the list.  
+
+- The system searches for the appointment with the specified `APPOINTMENT_ID`.
+- If found, it removes the appointment from the list.
+- It also retrieves the corresponding patient using findPatientByNric() and updates the patient's internal appointment list.
+
+>[!NOTE]:
+> If the `APPOINTMENT_ID` is invalid, an error message will be displayed and the deletion will not proceed.
+
+Step 5. After successful deletion, the system updates the stored list using `Storage.saveAppointments()`.
+
+The following sequence diagram shows how an `delete-appointment` operation goes through the system **(positive case, 
+where the appointment exists and is successfully deleted):** 
+![delete-appointment](./diagrams/deleteAppointmentSequence.png)
+
+### Why they are implemented this way
+The current design separates command parsing (`Parser`), command execution (`Command` subclasses), and core logic (`ManagementSystem`).
+This structure helps improve modularity, testability, and clarity in our codebase.
+
+- By using distinct `Command` classes (`AddAppointmentCommand`, `DeleteAppointmentCommand)`, each operation is encapsulated with its own logic, making it easier to maintain and extend.
+
+- Centralizing the data logic in ManagementSystem so that it is easier to maintain and test appointment-related operations. 
+
+- Validating `NRIC` and `APPOINTMENT_ID` before performing operations could prevent invalid data from entering the system and improves user experience by providing clear error feedback.
+
+This design also aligns with the **Separation of Concerns** principle, allowing changes in one component (e.g., how appointments are stored) 
+without affecting others (e.g., how commands are parsed or executed).
+
+### Alternatives considered
+1. **Allowing appointment creation without verifying patient existence** <br>
+    - **Description:** This could simplify the logic slightly.
+    
+    - **Reason for rejection:** It compromises data integrity, as appointments could become orphaned (unlinked to valid patients).
+
+
+2. **Store appointments exclusively in `Patient` objects** <br>
+    - **Description:** Remove the separate appointments list in `ManagementSystem` and rely only on per-patient storage.
+    
+    - **Reason for rejection:** 
+      - **Performance impact:** Aggregating all appointments (e.g., for a doctor’s view) would require
+         iterating through every patient, which is inefficient.
+      - Features like finding appointments across patients become harder to implement cleanly.
+
+---
 
 ### Add patient feature
 The `add-patient` feature allows users to register new patients by providing their personal information.  
@@ -100,14 +185,14 @@ If saving fails, `ClinicEase` catches an `UnloadedStorageException` and alerts t
 The following sequence diagram shows how an `add-patient` operation flows through the system:
 ![add-patient](./diagrams/addPatientSequence.png)
 
+---
+
 ### Storing Medical History Feature
 
 The `store-history` feature allows users to **add new medical history entries** for a specific patient in the system.  
 The system verifies that the **patient exists** before adding the entries, then the updated data is saved persistently.
 
 Below is a usage scenario illustrating how the `store-history` mechanism behaves step by step.
-
----
 
 **Step 1.** The user executes a command such as:
 
@@ -137,7 +222,7 @@ store-history n/John Doe ic/S1234567A h/Diabetes,High Cholesterol
 Below is a detailed **PlantUML** sequence diagram showing how a `store-history` operation moves through the system and includes the check for a valid patient:
 ![add-appointment](./diagrams/storeMedicalHistorySequence.png)
 
-
+---
 
 ## Product scope
 ### Target user profile
@@ -147,6 +232,8 @@ The target users are clinic staff, such as receptionists, assistants, or solo pr
 ### Value proposition
 
 This CLI-based Clinic Management System offers a simple yet effective solution for managing patient data and appointments without the need for complex software installations or internet access. It helps clinics save time, stay organized, and reduce manual errors by streamlining common administrative tasks like adding patients, scheduling appointments, and retrieving records, all from the command line.
+
+---
 
 ## User Stories
 
@@ -165,6 +252,10 @@ This CLI-based Clinic Management System offers a simple yet effective solution f
 | v2.0    | doctor   | add symptoms to a prescription | document the patient's condition |
 | v2.0    | doctor   | add special notes to prescriptions | provide additional instructions to patients |
 | v2.0    | doctor   | generate a printable prescription | provide a professional document to the patient |
+| v2.0    | doctor   | edit my patients' personal details                 | update them if there is any updates |
+| v2.0    | doctor   | sort appointments by date                          | check which appointements are coming first |
+| v2.0    | doctor   | mark/unmark appointments                   | track my appointments more easily |
+---
 
 ## Use Cases
 
@@ -363,6 +454,8 @@ Use case resumes at step 1.
     * 5a1. System shows error message
     * 5a2. Use case ends
 
+---
+
 ## Non-Functional Requirements
 1. Should work on any mainstream OS as long as it has Java `17` or above installed.
 2. The system should efficiently manage up to 1000 patients or appointments without any noticeable performance lag during typical usage.
@@ -377,6 +470,7 @@ Use case resumes at step 1.
 * *Error Messages* – System-generated messages that inform users of incorrect input and provide guidance on how to fix it.
 * *OS Platform Compatibility* – The ability for data files and system functionality to work consistently across different operating systems.
 
+---
 
 ## Instructions for Manual Testing
 

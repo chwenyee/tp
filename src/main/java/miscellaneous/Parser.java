@@ -8,6 +8,7 @@ import command.ExitCommand;
 import command.AddAppointmentCommand;
 import command.DeleteAppointmentCommand;
 import command.EditPatientCommand;
+import command.HelpCommand;
 import command.ListAppointmentCommand;
 import command.EditPatientHistoryCommand;
 import command.ListPatientCommand;
@@ -50,6 +51,8 @@ public class Parser {
         switch (commandWord) {
         case "bye":
             return new ExitCommand();
+        case "help":
+            return new HelpCommand();
         case "add-patient":
             return new AddPatientCommand(parseAddPatient(userInput));
         case "delete-patient":

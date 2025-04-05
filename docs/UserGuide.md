@@ -8,6 +8,7 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 ## Table of Contents
 - [Quick Start](#quick-start)
 - [Features](#features-)
+    - [Viewing help: `help`](#viewing-help-help)
     - [Adding a new patient: `add-patient`](#adding-a-new-patient--add-patient)
     - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
     - [Listing all patients: `list-patient`](#listing-all-patients-list-patient)
@@ -67,6 +68,12 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 > - Command words are **case-insensitive**. <br>
     e.g. `liST-paTIEnt` will be interpreted as `list-patient`.
 
+### Viewing help: `help`
+Shows all available commands of the application.
+
+Format: `help`
+
+---
 ### Adding a new patient : `add-patient`
 Adds a new patient to the system with their credentials.
 

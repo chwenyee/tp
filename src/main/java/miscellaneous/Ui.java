@@ -28,7 +28,7 @@ public class Ui {
         showLine();
     }
 
-    public static void showBye() {
+    public void showBye() {
         showLine();
         System.out.println("Goodbye!");
         showLine();
@@ -42,6 +42,33 @@ public class Ui {
     public void showError(String message) {
         showLine();
         System.out.println(message);
+        showLine();
+    }
+
+    public void showHelp() {
+        showLine();
+        System.out.println("These are the available commands:");
+        System.out.println("Patient: ");
+        System.out.println("- add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS");
+        System.out.println("- delete-patient NRIC");
+        System.out.println("- edit-patient ic/NRIC [n/NAME] [dob/BIRTHDATE] [g/GENDER] [a/ADDRESS] [p/PHONE]");
+        System.out.println("- list-patient");
+        System.out.println("- view-patient NRIC");
+        System.out.println("- store-history n/NAME ic/NRIC h/MEDICAL_HISTORY");
+        System.out.println("- view-history NRIC or view-history NAME");
+        System.out.println("- edit-history ic/NRIC old/OLD_TEXT new/NEW_TEXT");
+        System.out.println("Appointment: ");
+        System.out.println("- add-appointment ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION");
+        System.out.println("- delete-appointment APPOINTMENT_ID");
+        System.out.println("- list-appointment");
+        System.out.println("- mark-appointment APPOINTMENT_ID");
+        System.out.println("- unmark-appointment APPOINTMENT_ID");
+        System.out.println("- sort-appointment byDate or sort-appointment byId");
+        System.out.println("- find-appointment PATIENT_NRIC");
+        System.out.println("Prescription: ");
+        System.out.println("- add-prescription ic/PATIENT_ID s/SYMPTOMS m/MEDICINES [nt/NOTES]");
+        System.out.println("- view-all-prescriptions PATIENT_ID");
+        System.out.println("- view-prescription PRESCRIPTION_ID");
         showLine();
     }
 

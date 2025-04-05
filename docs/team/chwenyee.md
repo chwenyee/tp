@@ -41,12 +41,16 @@ with the appointment list in `ManagementSystem`.
 - **Features:**
 
    - NOTE: Explains how to interpret command syntax, parameters, optional fields, input order, and case sensitivity.
+   - `help`
    - `add-appointments`
    - `delete-appointments`
    - `sort-appointments`
+   - `bye`
    
    I wrote the description, command input formats, and examples of usage for these features, providing the important things to note for 
 parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
+
+- **FAQ**
 
 - **Known Issues**
 
@@ -70,7 +74,7 @@ parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 
 #### Contributions to team-based tasks:
 
-- Setting up the Github team org/repo
+- Setting up the Github team repo
 - Maintaining the issue tracker e.g. issue and milestones
 - Release management e.g. wrapping up milestones, saving DG and UG as PDFs
 

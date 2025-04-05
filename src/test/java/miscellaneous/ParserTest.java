@@ -24,13 +24,13 @@ class ParserTest {
 
     @Test
     void parseAddAppointment_validInput_returnsAppointment() throws Exception {
-        String input = "add-appointment ic/S1234567D dt/2025-03-20 t/1430 dsc/Checkup";
+        String input = "add-appointment ic/S1234567D dt/2025-09-20 t/1430 dsc/Checkup";
 
         Appointment appointment = Parser.parseAddAppointment(input);
 
         assertNotNull(appointment);
         assertEquals("S1234567D", appointment.getNric());
-        assertEquals(LocalDateTime.parse("2025-03-20 1430", INPUT_FORMAT), appointment.getDateTime());
+        assertEquals(LocalDateTime.parse("2025-09-20 1430", INPUT_FORMAT), appointment.getDateTime());
         assertEquals("Checkup", appointment.getDescription());
     }
 
@@ -49,7 +49,13 @@ class ParserTest {
     }
 
     @Test
-    void parseAddAppointment_invalidDateTimeFormat_throwsException() {
+    void parseAddAppointment_dateTimeInThePast_expectException() {
+        String input2 = "add-appointment ic/S1234567D dt/2025-03-20 t/1300 dsc/Checkup";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input2));
+    }
+
+    @Test
+    void parseAddAppointment_invalidDateTimeFormat_expectException() {
         String input1 = "add-appointment ic/S1234567D dt/03-19 t/1900 dsc/Checkup";
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input1));
 
@@ -147,7 +153,7 @@ class ParserTest {
     @Test
     void parse_addAppointmentCommand_expectAddAppointmentCommand() throws InvalidInputFormatException,
             UnknownCommandException {
-        Command command = Parser.parse("add-appointment ic/S1234567D dt/2025-03-27 t/1900 dsc/Checkup");
+        Command command = Parser.parse("add-appointment ic/S1234567D dt/2025-09-20 t/1900 dsc/Checkup");
         assertInstanceOf(AddAppointmentCommand.class, command);
     }
 

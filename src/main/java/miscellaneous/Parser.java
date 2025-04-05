@@ -205,6 +205,13 @@ public class Parser {
         try {
             String combined = date.trim() + " " + time.trim();
             LocalDateTime dateTime = LocalDateTime.parse(combined, INPUT_FORMAT);
+
+            LocalDateTime now = LocalDateTime.now();
+            if (dateTime.isBefore(now)) {
+                throw new InvalidInputFormatException
+                ("The appointment date/time cannot be before the current date/time");
+            }
+
             return new Appointment(nric.trim(), dateTime, desc.trim());
         } catch (DateTimeParseException e) {
             throw new InvalidInputFormatException("Invalid date/time format. Please use: dt/yyyy-MM-dd and t/HHmm");

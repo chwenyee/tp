@@ -1,0 +1,86 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+class Prescription {
+  - patientId: String
+  - prescriptionId: String
+  - timestamp: LocalDateTime
+  - symptoms: List<String>
+  - medicines: List<String>
+  - notes: String
+  + Prescription(patientId: String, symptoms: List<String>, medicines: List<String>, notes: String)
+  + Prescription(patientId: String, prescriptionId: String, timestamp: LocalDateTime, symptoms: List<String>, medicines: List<String>, notes: String)
+  + getPatientId(): String
+  + getPrescriptionId(): String
+  + getTimestamp(): LocalDateTime
+  + getSymptoms(): List<String>
+  + getMedicines(): List<String>
+  + getNotes(): String
+  + toString(): String
+  + toFileFormat(): String
+  + {static} fromFileFormat(fileEntry: String): Prescription
+  + generateHtml(patient: Patient): String
+}
+
+class AddPrescriptionCommand extends Command {
+  - prescription: Prescription
+  + AddPrescriptionCommand(prescription: Prescription)
+  + execute(manager: ManagementSystem, ui: Ui): void
+  + isExit(): boolean
+}
+
+class ViewPrescriptionCommand extends Command {
+  - prescriptionId: String
+  + ViewPrescriptionCommand(prescriptionId: String)
+  + execute(manager: ManagementSystem, ui: Ui): void
+  + isExit(): boolean
+}
+
+class ViewAllPrescriptionsCommand extends Command {
+  - patientId: String
+  + ViewAllPrescriptionsCommand(patientId: String)
+  + execute(manager: ManagementSystem, ui: Ui): void
+  + isExit(): boolean
+}
+
+class ManagementSystem {
+  - prescriptions: List<Prescription>
+  + getPrescriptions(): List<Prescription>
+  + addPrescription(prescription: Prescription): Prescription
+  + getPrescriptionsForPatient(patientId: String): List<Prescription>
+  + getPrescriptionById(prescriptionId: String): Prescription
+}
+
+class Parser {
+  + {static} parseAddPrescription(input: String): Prescription
+  + {static} parseViewAllPrescriptions(input: String): String
+  + {static} parseViewPrescription(input: String): String
+}
+
+class Storage {
+  + {static} savePrescriptions(prescriptions: List<Prescription>): void
+  + {static} loadPrescriptions(): List<Prescription>
+  + {static} savePrescriptionHtml(prescription: Prescription, patient: Patient): void
+}
+
+abstract class Command {
+  + {abstract} execute(manager: ManagementSystem, ui: Ui): void
+  + {abstract} isExit(): boolean
+}
+
+Patient "1" -- "0..*" Prescription: has >
+
+ManagementSystem "1" --o "0..*" Prescription: manages >
+
+AddPrescriptionCommand "1" --o "1" Prescription: creates >
+ViewPrescriptionCommand .. ManagementSystem: retrieves prescription from >
+ViewAllPrescriptionsCommand .. ManagementSystem: retrieves prescriptions from >
+
+Parser ..> AddPrescriptionCommand: creates >
+Parser ..> ViewPrescriptionCommand: creates >
+Parser ..> ViewAllPrescriptionsCommand: creates >
+
+Storage ..> Prescription: saves/loads >
+
+@enduml 

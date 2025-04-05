@@ -7,7 +7,8 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 ---
 ## Table of Contents
 - [Quick Start](#quick-start)
-- [Features](#features)
+- [Features](#features-)
+    - [Adding a new patient: `add-patient`](#adding-a-new-patient--add-patient)
     - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
     - [Listing all patients: `list-patient`](#listing-all-patients-list-patient)
     - [Editing a specified patient: `edit-patient`](#editing-a-specified-patient-edit-patient)
@@ -58,9 +59,9 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 > - Every parameter must be supplied by the user. <br>
     e.g. if the command specifies `add-appointment ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION`, the user
     must fill in all parameters for the input to be valid.
-> - Parameters must be entered in the **specified order**. <br>
-    e.g. if the command specifies `ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION`, the user
-    must follow this exact sequence for the input to be valid.
+> - Parameters could be entered in any order. <br>
+    e.g. if the command recommends `ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION`, the user
+    can also not follow this exact sequence for the input to be valid.
 > - Extraneous parameters for commands that do not take in parameters (such as `list` and `bye`) will be ignored. <br>
     e.g. if the command specifies `list-patient 12345`, it will be interpreted as `list-patient`.
 > - Command words are **case-insensitive**. <br>
@@ -171,6 +172,7 @@ Format: `add-appointment ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION`
 * `DATE` format: `yyyy-MM-dd`, where `yyyy` is year, `MM` is month,
   `dd` is day (e.g., `2025-03-31`).  
 * `TIME` format: `HHmm` in 24-hour format (e.g., `1430` for 2:30 PM).
+* `DATE` and `TIME` **must not** be **before current date/time**.
 
 Example of usage: 
 

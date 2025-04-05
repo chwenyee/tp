@@ -69,7 +69,10 @@ public class ManagementSystem {
         for (Patient patient : patients) {
             if (patient.getId().equals(nric)) {
                 patients.remove(patient);
+                // delete all appointments associated with a patient to be deleted
+                appointments.removeIf(appointment -> appointment.getNric().equals(nric));
                 Storage.savePatients(patients);
+                Storage.saveAppointments(appointments);
                 return patient;
             }
         }

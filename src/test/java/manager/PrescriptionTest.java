@@ -45,7 +45,8 @@ public class PrescriptionTest {
     @Test
     public void fromFileFormat_validInput_success() {
         // Create a properly formatted file entry
-        String fileEntry = "S1234567A-1|S1234567A|2023-04-01 14:30|Fever,Cough|Paracetamol,Cough syrup|Take after meals";
+        String fileEntry = "S1234567A-1|S1234567A|2023-04-01 14:30|"
+                + "Fever,Cough|Paracetamol,Cough syrup|Take after meals";
         
         // Parse from file format
         Prescription prescription = Prescription.fromFileFormat(fileEntry);
@@ -135,4 +136,6 @@ public class PrescriptionTest {
         Assertions.assertTrue(html.contains("Take after meals")); // Should contain notes
     }
 } 
+
+
 

@@ -952,40 +952,81 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 
 ---
 
-### Managing Prescriptions
+## 7. Testing Prescription Management Features
 
-1. Adding a new prescription
+### 7.1 Adding a New Prescription
 
-   Prerequisites: Patient with ID "S9876543B" exists in the system.
+**Command Format**: `add-prescription ic/PATIENT_ID s/SYMPTOMS m/MEDICINES [nt/NOTES]`
 
-   Test case: `add-prescription ic/S9876543B s/Fever, Cough m/Paracetamol, Cough syrup nt/Take after meals`
-   * Expected: Prescription is added. Details of the new prescription shown.
+- `[nt/NOTES]` is optional and can include special instructions.
+- Multiple symptoms and medicines can be separated by commas.
 
-   Test case: `add-prescription ic/S9876543B s/Fever m/`
-   * Expected: Error shown. Missing medicines field.
+**Steps to Test**
+1. Prerequisites: Patient with ID "S9876543B" exists in the system.
 
-   Test case: `add-prescription ic/X1234567Y s/Fever m/Paracetamol`
-   * Expected: Error shown. Patient ID does not exist.
+2. Input:
+   ```
+   add-prescription ic/S9876543B s/Fever, Cough m/Paracetamol, Cough syrup nt/Take after meals
+   ```
+   * Expected output: Prescription is added. Details of the new prescription shown.
 
-2. Viewing prescriptions
+**Additional Test Cases**
+- **Missing medicines field**:
+  ```
+  add-prescription ic/S9876543B s/Fever m/
+  ```
+  * Expected output: Error shown. Missing medicines field.
 
-   Prerequisites: At least one prescription exists for patient "S9876543B".
+- **Non-existent patient**:
+  ```
+  add-prescription ic/X1234567Y s/Fever m/Paracetamol
+  ```
+  * Expected output: Error shown. Patient ID does not exist.
 
-   Test case: `view-all-prescriptions S9876543B`
-   * Expected: List of all prescriptions for the patient shown.
+---
 
-   Test case: `view-prescription S9876543B-1`
-   * Expected: Details of the specific prescription shown. HTML file generated.
+### 7.2 Viewing Prescriptions
 
-   Test case: `view-prescription INVALID-ID`
-   * Expected: Error shown. Invalid prescription ID.
+**Command Format**: 
+1. View all for a patient: `view-all-prescriptions PATIENT_ID`
+2. View specific prescription: `view-prescription PRESCRIPTION_ID` 
 
-3. Generating HTML prescriptions
+**Steps to Test**
+1. Prerequisites: At least one prescription exists for patient "S9876543B".
 
-   Prerequisites: Valid prescription exists with ID "S9876543B-1".
+2. Input:
+   ```
+   view-all-prescriptions S9876543B
+   ```
+   * Expected output: List of all prescriptions for the patient shown.
 
-   Test case: `view-prescription S9876543B-1`
-   * Expected: HTML file generated in data/prescriptions folder.
-   * Verify: Open the generated HTML file in a browser. Check that all prescription details are correctly displayed.
+3. Input:
+   ```
+   view-prescription S9876543B-1
+   ```
+   * Expected output: Details of the specific prescription shown. HTML file generated.
+
+**Additional Test Cases**
+- **Invalid prescription ID**:
+  ```
+  view-prescription INVALID-ID
+  ```
+  * Expected output: Error shown. Invalid prescription ID.
+
+---
+
+### 7.3 Generating HTML Prescriptions
+
+**Command Format**: `view-prescription PRESCRIPTION_ID`
+
+**Steps to Test**
+1. Prerequisites: Valid prescription exists with ID "S9876543B-1".
+
+2. Input:
+   ```
+   view-prescription S9876543B-1
+   ```
+   * Expected output: HTML file generated in data/prescriptions folder.
+   * Verification: Open the generated HTML file in a browser. Check that all prescription details are correctly displayed.
 
 ---

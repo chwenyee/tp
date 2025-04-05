@@ -928,33 +928,9 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 
 ---
 
-## 5. Error Handling Scenarios
+## 5. Testing Prescription Management Features
 
-- **Unknown Commands**
-- If you type something invalid like `randomCommand`, the system should respond:
- ```
- Unknown command. Please try again.
- ```
-- **Missing or Invalid Parameters**
-- For instance, `add-appointment` missing the `dt/DATE` should trigger an error message (`InvalidInputFormatException`).
-- **Storage Failures**
-- If there's an I/O error with reading or writing to `patient_data.txt`, you might see `UnloadedStorageException`.
-
----
-
-## 6. Comprehensive Test Workflow
-
-1. **Add multiple patients** and confirm they appear correctly with `list-patient`.
-2. **Add detailed medical histories** with `store-history`; verify them using `view-history`.
-3. **Add appointments** to different patients and use `list-appointment`, `sort-appointment`, `mark-appointment`, etc. to test appointment functionality.
-4. **Delete a patient** and confirm the removal.
-5. **Exit** the program with `bye`.
-
----
-
-## 7. Testing Prescription Management Features
-
-### 7.1 Adding a New Prescription
+### 5.1 Adding a New Prescription
 
 **Command Format**: `add-prescription ic/PATIENT_ID s/SYMPTOMS m/MEDICINES [nt/NOTES]`
 
@@ -985,7 +961,7 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 
 ---
 
-### 7.2 Viewing Prescriptions
+### 5.2 Viewing Prescriptions
 
 **Command Format**: 
 1. View all for a patient: `view-all-prescriptions PATIENT_ID`
@@ -1015,7 +991,7 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 
 ---
 
-### 7.3 Generating HTML Prescriptions
+### 5.3 Generating HTML Prescriptions
 
 **Command Format**: `view-prescription PRESCRIPTION_ID`
 
@@ -1028,5 +1004,30 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
    ```
    * Expected output: HTML file generated in data/prescriptions folder.
    * Verification: Open the generated HTML file in a browser. Check that all prescription details are correctly displayed.
+
+---
+
+## 6. Error Handling Scenarios
+
+- **Unknown Commands**
+- If you type something invalid like `randomCommand`, the system should respond:
+ ```
+ Unknown command. Please try again.
+ ```
+- **Missing or Invalid Parameters**
+- For instance, `add-appointment` missing the `dt/DATE` should trigger an error message (`InvalidInputFormatException`).
+- **Storage Failures**
+- If there's an I/O error with reading or writing to `patient_data.txt`, you might see `UnloadedStorageException`.
+
+---
+
+## 7. Comprehensive Test Workflow
+
+1. **Add multiple patients** and confirm they appear correctly with `list-patient`.
+2. **Add detailed medical histories** with `store-history`; verify them using `view-history`.
+3. **Add appointments** to different patients and use `list-appointment`, `sort-appointment`, `mark-appointment`, etc. to test appointment functionality.
+4. **Add prescriptions** to patients and test the prescription view and HTML generation features.
+5. **Delete a patient** and confirm the removal.
+6. **Exit** the program with `bye`.
 
 ---

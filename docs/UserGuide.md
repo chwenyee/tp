@@ -294,11 +294,11 @@ Adds one or more entries to a patient's medical history.
 Displays medical history of a patient by NRIC or name.
 
 **Format:**
-`view-history ic/NRIC` or
+`view-history NRIC` or
 `view-history NAME`
 
 **Examples:**
-- `view-history ic/S1234567A`
+- `view-history S1234567A`
 - `view-history Alex Tan`
 
 

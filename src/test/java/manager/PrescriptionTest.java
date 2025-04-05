@@ -1,12 +1,12 @@
 package manager;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@@author Basudeb2005
 public class PrescriptionTest {
@@ -30,13 +30,16 @@ public class PrescriptionTest {
         String fileFormat = prescription.toFileFormat();
         
         // Verify all required components are in the file format
-        assertTrue(fileFormat.contains(prescriptionId));
-        assertTrue(fileFormat.contains(patientId));
-        assertTrue(fileFormat.contains(timestamp.format(
-            java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
-        assertTrue(fileFormat.contains("Fever,Cough"));
-        assertTrue(fileFormat.contains("Paracetamol,Cough syrup"));
-        assertTrue(fileFormat.contains(notes));
+        Assertions.assertTrue(fileFormat.contains(prescriptionId));
+        Assertions.assertTrue(fileFormat.contains(patientId));
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedTimestamp = timestamp.format(formatter);
+        Assertions.assertTrue(fileFormat.contains(formattedTimestamp));
+        
+        Assertions.assertTrue(fileFormat.contains("Fever,Cough"));
+        Assertions.assertTrue(fileFormat.contains("Paracetamol,Cough syrup"));
+        Assertions.assertTrue(fileFormat.contains(notes));
     }
     
     @Test
@@ -48,15 +51,15 @@ public class PrescriptionTest {
         Prescription prescription = Prescription.fromFileFormat(fileEntry);
         
         // Verify all fields are correctly parsed
-        assertEquals("S1234567A-1", prescription.getPrescriptionId());
-        assertEquals("S1234567A", prescription.getPatientId());
-        assertEquals(2, prescription.getSymptoms().size());
-        assertTrue(prescription.getSymptoms().contains("Fever"));
-        assertTrue(prescription.getSymptoms().contains("Cough"));
-        assertEquals(2, prescription.getMedicines().size());
-        assertTrue(prescription.getMedicines().contains("Paracetamol"));
-        assertTrue(prescription.getMedicines().contains("Cough syrup"));
-        assertEquals("Take after meals", prescription.getNotes());
+        Assertions.assertEquals("S1234567A-1", prescription.getPrescriptionId());
+        Assertions.assertEquals("S1234567A", prescription.getPatientId());
+        Assertions.assertEquals(2, prescription.getSymptoms().size());
+        Assertions.assertTrue(prescription.getSymptoms().contains("Fever"));
+        Assertions.assertTrue(prescription.getSymptoms().contains("Cough"));
+        Assertions.assertEquals(2, prescription.getMedicines().size());
+        Assertions.assertTrue(prescription.getMedicines().contains("Paracetamol"));
+        Assertions.assertTrue(prescription.getMedicines().contains("Cough syrup"));
+        Assertions.assertEquals("Take after meals", prescription.getNotes());
     }
     
     @Test
@@ -65,7 +68,7 @@ public class PrescriptionTest {
         String invalidFileEntry = "S1234567A-1|S1234567A";
         
         // This should throw an array index out of bounds exception
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             Prescription.fromFileFormat(invalidFileEntry);
         });
     }
@@ -95,13 +98,13 @@ public class PrescriptionTest {
         String html = prescription.generateHtml(patient);
         
         // Verify HTML contains both prescription and patient information
-        assertTrue(html.contains("<!DOCTYPE html>"));
-        assertTrue(html.contains("<title>Prescription " + prescriptionId + "</title>"));
-        assertTrue(html.contains("John Doe"));  // Patient name
-        assertTrue(html.contains("Male"));     // Patient gender
-        assertTrue(html.contains("Fever"));     // Symptom
-        assertTrue(html.contains("Paracetamol")); // Medicine
-        assertTrue(html.contains("Take after meals")); // Notes
+        Assertions.assertTrue(html.contains("<!DOCTYPE html>"));
+        Assertions.assertTrue(html.contains("<title>Prescription " + prescriptionId + "</title>"));
+        Assertions.assertTrue(html.contains("John Doe"));  // Patient name
+        Assertions.assertTrue(html.contains("Male"));     // Patient gender
+        Assertions.assertTrue(html.contains("Fever"));     // Symptom
+        Assertions.assertTrue(html.contains("Paracetamol")); // Medicine
+        Assertions.assertTrue(html.contains("Take after meals")); // Notes
     }
     
     @Test
@@ -123,12 +126,13 @@ public class PrescriptionTest {
         String html = prescription.generateHtml(null);
         
         // Verify HTML contains prescription info but limited patient info
-        assertTrue(html.contains("<!DOCTYPE html>"));
-        assertTrue(html.contains("<title>Prescription " + prescriptionId + "</title>"));
-        assertFalse(html.contains("John Doe")); // Should not contain patient name
-        assertTrue(html.contains(patientId));   // Should contain patient ID
-        assertTrue(html.contains("Fever"));     // Should contain symptom
-        assertTrue(html.contains("Paracetamol")); // Should contain medicine
-        assertTrue(html.contains("Take after meals")); // Should contain notes
+        Assertions.assertTrue(html.contains("<!DOCTYPE html>"));
+        Assertions.assertTrue(html.contains("<title>Prescription " + prescriptionId + "</title>"));
+        Assertions.assertFalse(html.contains("John Doe")); // Should not contain patient name
+        Assertions.assertTrue(html.contains(patientId));   // Should contain patient ID
+        Assertions.assertTrue(html.contains("Fever"));     // Should contain symptom
+        Assertions.assertTrue(html.contains("Paracetamol")); // Should contain medicine
+        Assertions.assertTrue(html.contains("Take after meals")); // Should contain notes
     }
 } 
+

@@ -7,6 +7,7 @@ import manager.Prescription;
 import miscellaneous.Ui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import storage.Storage;
 
 import java.io.ByteArrayOutputStream;
@@ -15,8 +16,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@@author Basudeb2005
 public class ViewPrescriptionCommandTest {
@@ -57,7 +56,7 @@ public class ViewPrescriptionCommandTest {
             Prescription prescription = new Prescription("S1234567A", symptoms, medicines, "Take after meals");
             testPrescription = system.addPrescription(prescription);
         } catch (Exception e) {
-            fail("Failed to set up test: " + e.getMessage());
+            Assertions.fail("Failed to set up test: " + e.getMessage());
         }
     }
     
@@ -72,14 +71,14 @@ public class ViewPrescriptionCommandTest {
             
             // Verify command output
             String output = outputStream.toString();
-            assertTrue(output.contains("Prescription details"));
-            assertTrue(output.contains(testPrescription.getPrescriptionId()));
-            assertTrue(output.contains("Fever"));
-            assertTrue(output.contains("Paracetamol"));
-            assertTrue(output.contains("Take after meals"));
-            assertTrue(output.contains("Prescription HTML file generated"));
+            Assertions.assertTrue(output.contains("Prescription details"));
+            Assertions.assertTrue(output.contains(testPrescription.getPrescriptionId()));
+            Assertions.assertTrue(output.contains("Fever"));
+            Assertions.assertTrue(output.contains("Paracetamol"));
+            Assertions.assertTrue(output.contains("Take after meals"));
+            Assertions.assertTrue(output.contains("Prescription HTML file generated"));
         } catch (UnloadedStorageException e) {
-            fail("Should not throw exception for an existing prescription: " + e.getMessage());
+            Assertions.fail("Should not throw exception for an existing prescription: " + e.getMessage());
         }
     }
     
@@ -94,9 +93,9 @@ public class ViewPrescriptionCommandTest {
             
             // Verify command output indicates error
             String output = outputStream.toString();
-            assertTrue(output.contains("Prescription with ID NONEXISTENT-ID not found"));
+            Assertions.assertTrue(output.contains("Prescription with ID NONEXISTENT-ID not found"));
         } catch (UnloadedStorageException e) {
-            fail("Should handle prescription not found gracefully: " + e.getMessage());
+            Assertions.fail("Should handle prescription not found gracefully: " + e.getMessage());
         }
     }
     
@@ -106,6 +105,7 @@ public class ViewPrescriptionCommandTest {
         ViewPrescriptionCommand command = new ViewPrescriptionCommand("S1234567A-1");
         
         // Verify isExit returns false
-        assertFalse(command.isExit());
+        Assertions.assertFalse(command.isExit());
     }
 } 
+

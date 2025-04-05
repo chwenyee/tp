@@ -3,10 +3,9 @@ package miscellaneous;
 import exception.InvalidInputFormatException;
 import manager.Prescription;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@@author Basudeb2005
 public class ParserPrescriptionTest {
@@ -19,18 +18,18 @@ public class ParserPrescriptionTest {
         Prescription prescription = Parser.parseAddPrescription(input);
         
         // Verify all fields are correctly parsed
-        assertEquals("S1234567A", prescription.getPatientId());
+        Assertions.assertEquals("S1234567A", prescription.getPatientId());
         List<String> symptoms = prescription.getSymptoms();
-        assertEquals(2, symptoms.size());
-        assertTrue(symptoms.contains("Fever"));
-        assertTrue(symptoms.contains("Cough"));
+        Assertions.assertEquals(2, symptoms.size());
+        Assertions.assertTrue(symptoms.contains("Fever"));
+        Assertions.assertTrue(symptoms.contains("Cough"));
         
         List<String> medicines = prescription.getMedicines();
-        assertEquals(2, medicines.size());
-        assertTrue(medicines.contains("Paracetamol"));
-        assertTrue(medicines.contains("Cough syrup"));
+        Assertions.assertEquals(2, medicines.size());
+        Assertions.assertTrue(medicines.contains("Paracetamol"));
+        Assertions.assertTrue(medicines.contains("Cough syrup"));
         
-        assertEquals("Take after meals", prescription.getNotes());
+        Assertions.assertEquals("Take after meals", prescription.getNotes());
     }
     
     @Test
@@ -38,7 +37,7 @@ public class ParserPrescriptionTest {
         // Missing the required ic/ parameter
         String input = "add-prescription s/Fever m/Paracetamol nt/Take after meals";
         
-        assertThrows(InvalidInputFormatException.class, () -> {
+        Assertions.assertThrows(InvalidInputFormatException.class, () -> {
             Parser.parseAddPrescription(input);
         });
     }
@@ -48,7 +47,7 @@ public class ParserPrescriptionTest {
         // Missing the required s/ parameter
         String input = "add-prescription ic/S1234567A m/Paracetamol nt/Take after meals";
         
-        assertThrows(InvalidInputFormatException.class, () -> {
+        Assertions.assertThrows(InvalidInputFormatException.class, () -> {
             Parser.parseAddPrescription(input);
         });
     }
@@ -58,7 +57,7 @@ public class ParserPrescriptionTest {
         // Missing the required m/ parameter
         String input = "add-prescription ic/S1234567A s/Fever nt/Take after meals";
         
-        assertThrows(InvalidInputFormatException.class, () -> {
+        Assertions.assertThrows(InvalidInputFormatException.class, () -> {
             Parser.parseAddPrescription(input);
         });
     }
@@ -71,10 +70,10 @@ public class ParserPrescriptionTest {
         Prescription prescription = Parser.parseAddPrescription(input);
         
         // Verify required fields are parsed and optional field is empty
-        assertEquals("S1234567A", prescription.getPatientId());
-        assertEquals(1, prescription.getSymptoms().size());
-        assertEquals(1, prescription.getMedicines().size());
-        assertEquals("", prescription.getNotes());
+        Assertions.assertEquals("S1234567A", prescription.getPatientId());
+        Assertions.assertEquals(1, prescription.getSymptoms().size());
+        Assertions.assertEquals(1, prescription.getMedicines().size());
+        Assertions.assertEquals("", prescription.getNotes());
     }
     
     @Test
@@ -84,7 +83,7 @@ public class ParserPrescriptionTest {
         
         String patientId = Parser.parseViewAllPrescriptions(input);
         
-        assertEquals("S1234567A", patientId);
+        Assertions.assertEquals("S1234567A", patientId);
     }
     
     @Test
@@ -92,7 +91,7 @@ public class ParserPrescriptionTest {
         // Command without patient ID - needs to be shorter than 22 characters
         String input = "view-all-prescriptions";
         
-        assertThrows(InvalidInputFormatException.class, () -> {
+        Assertions.assertThrows(InvalidInputFormatException.class, () -> {
             Parser.parseViewAllPrescriptions(input);
         });
     }
@@ -104,7 +103,7 @@ public class ParserPrescriptionTest {
         
         String prescriptionId = Parser.parseViewPrescription(input);
         
-        assertEquals("S1234567A-1", prescriptionId);
+        Assertions.assertEquals("S1234567A-1", prescriptionId);
     }
     
     @Test
@@ -112,8 +111,9 @@ public class ParserPrescriptionTest {
         // Command without prescription ID - needs to be shorter than 17 characters
         String input = "view-prescription";
         
-        assertThrows(InvalidInputFormatException.class, () -> {
+        Assertions.assertThrows(InvalidInputFormatException.class, () -> {
             Parser.parseViewPrescription(input);
         });
     }
 } 
+

@@ -7,6 +7,7 @@ import manager.Prescription;
 import miscellaneous.Ui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import storage.Storage;
 
 import java.io.ByteArrayOutputStream;
@@ -15,8 +16,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@@author Basudeb2005
 public class AddPrescriptionCommandTest {
@@ -50,7 +49,7 @@ public class AddPrescriptionCommandTest {
             );
             system.addPatient(patient);
         } catch (Exception e) {
-            fail("Failed to set up test: " + e.getMessage());
+            Assertions.fail("Failed to set up test: " + e.getMessage());
         }
     }
     
@@ -68,17 +67,17 @@ public class AddPrescriptionCommandTest {
             
             // Verify command output indicates success
             String output = outputStream.toString();
-            assertTrue(output.contains("Successfully added prescription"));
-            assertTrue(output.contains("S1234567A-1")); // Prescription ID
-            assertTrue(output.contains("Fever"));
-            assertTrue(output.contains("Paracetamol"));
-            assertTrue(output.contains("Take after meals"));
+            Assertions.assertTrue(output.contains("Successfully added prescription"));
+            Assertions.assertTrue(output.contains("S1234567A-1")); // Prescription ID
+            Assertions.assertTrue(output.contains("Fever"));
+            Assertions.assertTrue(output.contains("Paracetamol"));
+            Assertions.assertTrue(output.contains("Take after meals"));
             
             // Verify prescription was added to the system
-            assertEquals(1, system.getPrescriptions().size());
-            assertNotNull(system.getPrescriptionById("S1234567A-1"));
+            Assertions.assertEquals(1, system.getPrescriptions().size());
+            Assertions.assertNotNull(system.getPrescriptionById("S1234567A-1"));
         } catch (UnloadedStorageException e) {
-            fail("Should not throw exception for a valid prescription: " + e.getMessage());
+            Assertions.fail("Should not throw exception for a valid prescription: " + e.getMessage());
         }
     }
     
@@ -96,13 +95,13 @@ public class AddPrescriptionCommandTest {
             
             // Verify command output indicates error
             String output = outputStream.toString();
-            assertTrue(output.contains("Failed to add prescription"));
-            assertTrue(output.contains("Patient with NRIC: NONEXISTENT not found"));
+            Assertions.assertTrue(output.contains("Failed to add prescription"));
+            Assertions.assertTrue(output.contains("Patient with NRIC: NONEXISTENT not found"));
             
             // Verify no prescription was added to the system
-            assertEquals(0, system.getPrescriptions().size());
+            Assertions.assertEquals(0, system.getPrescriptions().size());
         } catch (UnloadedStorageException e) {
-            fail("Should handle patient not found gracefully: " + e.getMessage());
+            Assertions.fail("Should handle patient not found gracefully: " + e.getMessage());
         }
     }
     
@@ -115,6 +114,7 @@ public class AddPrescriptionCommandTest {
         AddPrescriptionCommand command = new AddPrescriptionCommand(prescription);
         
         // Verify isExit returns false
-        assertFalse(command.isExit());
+        Assertions.assertFalse(command.isExit());
     }
 } 
+

@@ -1,18 +1,14 @@
 package manager;
 
-import exception.UnloadedStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.Assertions;
 import storage.Storage;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@@author Basudeb2005
 public class ManagementSystemPrescriptionTest {
@@ -38,7 +34,7 @@ public class ManagementSystemPrescriptionTest {
             
             system.addPatient(testPatient);
         } catch (Exception e) {
-            fail("Failed to set up test: " + e.getMessage());
+            Assertions.fail("Failed to set up test: " + e.getMessage());
         }
     }
     
@@ -54,17 +50,17 @@ public class ManagementSystemPrescriptionTest {
             Prescription addedPrescription = system.addPrescription(prescription);
             
             // Verify prescription was added with correct attributes
-            assertNotNull(addedPrescription);
-            assertEquals(testPatient.getId() + "-1", addedPrescription.getPrescriptionId());
-            assertEquals(testPatient.getId(), addedPrescription.getPatientId());
-            assertEquals(symptoms, addedPrescription.getSymptoms());
-            assertEquals(medicines, addedPrescription.getMedicines());
-            assertEquals("Take after meals", addedPrescription.getNotes());
+            Assertions.assertNotNull(addedPrescription);
+            Assertions.assertEquals(testPatient.getId() + "-1", addedPrescription.getPrescriptionId());
+            Assertions.assertEquals(testPatient.getId(), addedPrescription.getPatientId());
+            Assertions.assertEquals(symptoms, addedPrescription.getSymptoms());
+            Assertions.assertEquals(medicines, addedPrescription.getMedicines());
+            Assertions.assertEquals("Take after meals", addedPrescription.getNotes());
             
             // Verify it was added to the system's list
-            assertEquals(1, system.getPrescriptions().size());
+            Assertions.assertEquals(1, system.getPrescriptions().size());
         } catch (Exception e) {
-            fail("Should not throw exception for a valid prescription: " + e.getMessage());
+            Assertions.fail("Should not throw exception for a valid prescription: " + e.getMessage());
         }
     }
     
@@ -76,11 +72,11 @@ public class ManagementSystemPrescriptionTest {
         Prescription prescription = new Prescription("NONEXISTENT", symptoms, medicines, "");
         
         // Try to add prescription - should throw IllegalArgumentException
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             system.addPrescription(prescription);
         });
         
-        assertTrue(exception.getMessage().contains("Patient with NRIC: NONEXISTENT not found"));
+        Assertions.assertTrue(exception.getMessage().contains("Patient with NRIC: NONEXISTENT not found"));
     }
     
     @Test
@@ -102,11 +98,11 @@ public class ManagementSystemPrescriptionTest {
             List<Prescription> results = system.getPrescriptionsForPatient(testPatient.getId());
             
             // Verify both prescriptions are returned
-            assertEquals(2, results.size());
-            assertTrue(results.get(0).getSymptoms().contains("Fever"));
-            assertTrue(results.get(1).getSymptoms().contains("Headache"));
+            Assertions.assertEquals(2, results.size());
+            Assertions.assertTrue(results.get(0).getSymptoms().contains("Fever"));
+            Assertions.assertTrue(results.get(1).getSymptoms().contains("Headache"));
         } catch (Exception e) {
-            fail("Should not throw exception: " + e.getMessage());
+            Assertions.fail("Should not throw exception: " + e.getMessage());
         }
     }
     
@@ -116,7 +112,7 @@ public class ManagementSystemPrescriptionTest {
         List<Prescription> results = system.getPrescriptionsForPatient(testPatient.getId());
         
         // Verify empty list is returned
-        assertTrue(results.isEmpty());
+        Assertions.assertTrue(results.isEmpty());
     }
     
     @Test
@@ -125,7 +121,7 @@ public class ManagementSystemPrescriptionTest {
         List<Prescription> results = system.getPrescriptionsForPatient("NONEXISTENT");
         
         // Verify empty list is returned
-        assertTrue(results.isEmpty());
+        Assertions.assertTrue(results.isEmpty());
     }
     
     @Test
@@ -142,13 +138,13 @@ public class ManagementSystemPrescriptionTest {
             Prescription result = system.getPrescriptionById(added.getPrescriptionId());
             
             // Verify prescription is returned
-            assertNotNull(result);
-            assertEquals(added.getPrescriptionId(), result.getPrescriptionId());
-            assertEquals(testPatient.getId(), result.getPatientId());
-            assertTrue(result.getSymptoms().contains("Fever"));
-            assertTrue(result.getMedicines().contains("Paracetamol"));
+            Assertions.assertNotNull(result);
+            Assertions.assertEquals(added.getPrescriptionId(), result.getPrescriptionId());
+            Assertions.assertEquals(testPatient.getId(), result.getPatientId());
+            Assertions.assertTrue(result.getSymptoms().contains("Fever"));
+            Assertions.assertTrue(result.getMedicines().contains("Paracetamol"));
         } catch (Exception e) {
-            fail("Should not throw exception: " + e.getMessage());
+            Assertions.fail("Should not throw exception: " + e.getMessage());
         }
     }
     
@@ -158,6 +154,7 @@ public class ManagementSystemPrescriptionTest {
         Prescription result = system.getPrescriptionById("NON-EXISTENT-ID");
         
         // Verify null is returned
-        assertNull(result);
+        Assertions.assertNull(result);
     }
 } 
+

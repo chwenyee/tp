@@ -7,6 +7,7 @@ import manager.Prescription;
 import miscellaneous.Ui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import storage.Storage;
 
 import java.io.ByteArrayOutputStream;
@@ -15,8 +16,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@@author Basudeb2005
 public class ViewAllPrescriptionsCommandTest {
@@ -51,7 +50,7 @@ public class ViewAllPrescriptionsCommandTest {
             );
             system.addPatient(testPatient);
         } catch (Exception e) {
-            fail("Failed to set up test: " + e.getMessage());
+            Assertions.fail("Failed to set up test: " + e.getMessage());
         }
     }
     
@@ -75,17 +74,17 @@ public class ViewAllPrescriptionsCommandTest {
             
             // Verify command output
             String output = outputStream.toString();
-            assertTrue(output.contains("Prescriptions for patient John Doe"));
-            assertTrue(output.contains("Fever"));
-            assertTrue(output.contains("Cough"));
-            assertTrue(output.contains("Headache"));
-            assertTrue(output.contains("Paracetamol"));
-            assertTrue(output.contains("Ibuprofen"));
-            assertTrue(output.contains("Take after meals"));
-            assertTrue(output.contains("Take with water"));
-            assertTrue(output.contains("Total prescriptions: 2"));
+            Assertions.assertTrue(output.contains("Prescriptions for patient John Doe"));
+            Assertions.assertTrue(output.contains("Fever"));
+            Assertions.assertTrue(output.contains("Cough"));
+            Assertions.assertTrue(output.contains("Headache"));
+            Assertions.assertTrue(output.contains("Paracetamol"));
+            Assertions.assertTrue(output.contains("Ibuprofen"));
+            Assertions.assertTrue(output.contains("Take after meals"));
+            Assertions.assertTrue(output.contains("Take with water"));
+            Assertions.assertTrue(output.contains("Total prescriptions: 2"));
         } catch (UnloadedStorageException e) {
-            fail("Should not throw exception: " + e.getMessage());
+            Assertions.fail("Should not throw exception: " + e.getMessage());
         }
     }
     
@@ -100,9 +99,9 @@ public class ViewAllPrescriptionsCommandTest {
             
             // Verify command output
             String output = outputStream.toString();
-            assertTrue(output.contains("No prescriptions found for patient John Doe"));
+            Assertions.assertTrue(output.contains("No prescriptions found for patient John Doe"));
         } catch (UnloadedStorageException e) {
-            fail("Should not throw exception for patient with no prescriptions: " + e.getMessage());
+            Assertions.fail("Should not throw exception for patient with no prescriptions: " + e.getMessage());
         }
     }
     
@@ -117,9 +116,9 @@ public class ViewAllPrescriptionsCommandTest {
             
             // Verify command output indicates error
             String output = outputStream.toString();
-            assertTrue(output.contains("Patient with ID NONEXISTENT not found"));
+            Assertions.assertTrue(output.contains("Patient with ID NONEXISTENT not found"));
         } catch (UnloadedStorageException e) {
-            fail("Should handle patient not found gracefully: " + e.getMessage());
+            Assertions.fail("Should handle patient not found gracefully: " + e.getMessage());
         }
     }
     
@@ -129,6 +128,7 @@ public class ViewAllPrescriptionsCommandTest {
         ViewAllPrescriptionsCommand command = new ViewAllPrescriptionsCommand("S1234567A");
         
         // Verify isExit returns false
-        assertFalse(command.isExit());
+        Assertions.assertFalse(command.isExit());
     }
 } 
+

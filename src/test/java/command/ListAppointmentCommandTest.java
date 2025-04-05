@@ -1,5 +1,6 @@
 package command;
 
+import exception.AppointmentClashException;
 import exception.DuplicatePatientIDException;
 import exception.PatientNotFoundException;
 import exception.UnloadedStorageException;
@@ -40,7 +41,7 @@ class ListAppointmentCommandTest {
 
     @Test
     void execute_always_requestsAppointmentsFromManager() throws DuplicatePatientIDException, UnloadedStorageException,
-            PatientNotFoundException {
+            PatientNotFoundException, AppointmentClashException {
         LocalDateTime dateTime1 = LocalDateTime.parse("2025-03-25 1900", DATE_TIME_FORMAT);
         LocalDateTime dateTime2 = LocalDateTime.parse("2025-03-28 2000", DATE_TIME_FORMAT);
         LocalDateTime dateTime3 = LocalDateTime.parse("2025-03-23 1200", DATE_TIME_FORMAT);

@@ -1,5 +1,6 @@
 package manager;
 
+import exception.AppointmentClashException;
 import exception.DuplicatePatientIDException;
 import exception.PatientNotFoundException;
 import exception.UnloadedStorageException;
@@ -167,7 +168,8 @@ class ManagementSystemTest {
     }
 
     @Test
-    void addAppointment_validInput_expectAppointmentAdded() throws UnloadedStorageException, PatientNotFoundException {
+    void addAppointment_validInput_expectAppointmentAdded() throws UnloadedStorageException, PatientNotFoundException,
+            AppointmentClashException {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
@@ -188,8 +190,27 @@ class ManagementSystemTest {
     }
 
     @Test
+    void addAppointment_clashedAppointments_expectException() throws UnloadedStorageException, PatientNotFoundException,
+            AppointmentClashException {
+        List<Patient> patients = new ArrayList<>();
+        ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
+
+        LocalDateTime appointmentTime1 = LocalDateTime.parse("2025-03-20 1900", DATE_TIME_FORMAT);
+        LocalDateTime appointmentTime2 = LocalDateTime.parse("2025-03-20 1950", DATE_TIME_FORMAT);
+
+        Patient patient = new Patient("S1234567D", "Billy", "1990-10-01",
+                "M", "124 High St", "81234567", new ArrayList<>());
+        patients.add(patient);
+        Appointment appointment1 = new Appointment("S1234567D", appointmentTime1, "Medical Checkup");
+        Appointment appointment2 = new Appointment("S1234567D", appointmentTime2, "X-ray");
+
+        manager.addAppointment(appointment1);
+        assertThrows(AppointmentClashException.class, () -> manager.addAppointment(appointment2));
+    }
+
+    @Test
     void deleteAppointment_validInput_expectAppointmentDeleted() throws UnloadedStorageException,
-            PatientNotFoundException {
+            PatientNotFoundException, AppointmentClashException {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
@@ -211,7 +232,7 @@ class ManagementSystemTest {
 
     @Test
     void deleteAppointment_lowerCaseInput_expectAppointmentDeleted() throws UnloadedStorageException,
-            PatientNotFoundException {
+            PatientNotFoundException, AppointmentClashException {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
@@ -233,7 +254,7 @@ class ManagementSystemTest {
 
     @Test
     void deleteAppointment_nonExistentId_expectNullReturned() throws UnloadedStorageException,
-            PatientNotFoundException {
+            PatientNotFoundException, AppointmentClashException {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
@@ -305,7 +326,7 @@ class ManagementSystemTest {
     //@@author dylancmznus
     @Test
     void markAppointment_validInput_expectAppointmentMarked() throws DuplicatePatientIDException,
-            UnloadedStorageException, PatientNotFoundException {
+            UnloadedStorageException, PatientNotFoundException, AppointmentClashException {
         ManagementSystem manager = new ManagementSystem(new ArrayList<>(), new ArrayList<>());
 
         Patient patient = new Patient("S9876543Z", "John Doe", "1990-01-01",
@@ -324,7 +345,7 @@ class ManagementSystemTest {
     //@@author dylancmznus
     @Test
     void unmarkAppointment_validInput_expectAppointmentUnmarked() throws DuplicatePatientIDException,
-            UnloadedStorageException, PatientNotFoundException {
+            UnloadedStorageException, PatientNotFoundException, AppointmentClashException {
         ManagementSystem manager = new ManagementSystem(new ArrayList<>(), new ArrayList<>());
 
         Patient patient = new Patient("S8765432Y", "John Doe", "1990-01-01",
@@ -344,7 +365,7 @@ class ManagementSystemTest {
     //@@author dylancmznus
     @Test
     void findAppointment_existingAppointment_expectAppointmentFound() throws DuplicatePatientIDException,
-            UnloadedStorageException, PatientNotFoundException {
+            UnloadedStorageException, PatientNotFoundException, AppointmentClashException {
         ManagementSystem manager = new ManagementSystem(new ArrayList<>(), new ArrayList<>());
 
         Patient patient = new Patient("S7654321X", "John Doe", "1990-01-01",

@@ -1,11 +1,13 @@
 package manager;
 
+import exception.AppointmentClashException;
 import exception.DuplicatePatientIDException;
 import exception.PatientNotFoundException;
 import exception.UnloadedStorageException;
 import miscellaneous.Ui;
 import storage.Storage;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -219,9 +221,19 @@ public class ManagementSystem {
     }
 
     //@@author chwenyee
-    public void addAppointment(Appointment appointment) throws UnloadedStorageException, PatientNotFoundException {
+    public void addAppointment(Appointment appointment) throws UnloadedStorageException, PatientNotFoundException,
+            AppointmentClashException {
         assert appointment != null : "Appointment cannot be null";
         assert patients != null : "Patient list cannot be null";
+
+        // Check if there is any scheduled appointment in the list clashing with this newly-added one
+        for (Appointment appointmentInList : appointments)  {
+            long timeDiff = Math.abs(Duration.between(appointmentInList.getDateTime(),
+                    appointment.getDateTime()).toMinutes());
+            if (timeDiff < 60) {
+                throw new AppointmentClashException("This appointment clashes with another scheduled within 1 hour.");
+            }
+        }
 
         Patient patient = findPatientByNric(appointment.getNric());
         if (patient == null) {

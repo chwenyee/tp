@@ -72,7 +72,9 @@ public static Command parse(String userInput) throws InvalidInputFormatException
 Step 3. The system calls `execute()` method in `AddAppointmentCommand`. Then, this class calls `ManagementSystem.addAppointment()` 
 to add the appointment to the system. `ManagementSystem` checks if the patient exists using `findPatientByNRIC()`. 
 - If the patient is found, the system creates an `Appointment` object and adds it to the appointment list.
-- If the patient’s NRIC does not exist, a PatientNotFoundException is thrown. Thus, the appointment will not be successfully added and stored.
+- Conditions the appointment fail to be added and stored:
+  - If the patient’s NRIC does not exist (a `PatientNotFoundException` is thrown).
+  - If the appointment clashes with another scheduled within 1 hour (an `AppointmentClashException` is thrown).
 
 Step 4. After the appointment is successfully added, `Storage.saveAppointments()` is called to update the stored appointment list.
 If saving fails, `ClinicEase` catches an `UnloadedStorageException` and informs the user.
@@ -250,7 +252,9 @@ This CLI-based Clinic Management System offers a simple yet effective solution f
 | v2.0    | doctor   | add symptoms to a prescription | document the patient's condition |
 | v2.0    | doctor   | add special notes to prescriptions | provide additional instructions to patients |
 | v2.0    | doctor   | generate a printable prescription | provide a professional document to the patient |
-
+| v2.0    | doctor   | edit my patients' personal details                 | update them if there is any updates |
+| v2.0    | doctor   | sort appointments by date                          | check which appointements are coming first |
+| v2.0    | doctor   | mark/unmark appointments                   | track my appointments more easily |
 ---
 
 ## Use Cases

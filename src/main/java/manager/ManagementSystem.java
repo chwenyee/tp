@@ -119,7 +119,8 @@ public class ManagementSystem {
         System.out.println("Patient with NRIC " + nric + " updated successfully.");
     }
 
-    public void storeMedicalHistory(String nric, String medHistory) throws PatientNotFoundException, UnloadedStorageException {
+    public void storeMedicalHistory(String nric, String medHistory) throws PatientNotFoundException,
+            UnloadedStorageException {
         Patient existingPatient = findPatientByNric(nric);
 
         if (existingPatient == null) {

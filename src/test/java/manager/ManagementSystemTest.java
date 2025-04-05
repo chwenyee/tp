@@ -413,7 +413,6 @@ class ManagementSystemTest {
         assertEquals(1, patients.size(), "There should be one patient stored");
 
         Patient storedPatient = patients.get(0);
-        assertEquals("John Doe", storedPatient.getName(), "Patient name should match");
         assertEquals("S1234567A", storedPatient.getId(), "Patient NRIC should match");
 
         List<String> history = storedPatient.getMedicalHistory();

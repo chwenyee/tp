@@ -41,7 +41,8 @@ class ManagementSystemTest {
     }
 
     @Test
-    void addPatient_validInput_expectPatientAdded() throws DuplicatePatientIDException, UnloadedStorageException, InvalidInputFormatException {
+    void addPatient_validInput_expectPatientAdded() throws DuplicatePatientIDException,
+            UnloadedStorageException, InvalidInputFormatException {
         List<Patient> emptyListPatient = new ArrayList<>();
         List<Appointment> emptyListAppoint = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(emptyListPatient, emptyListAppoint);
@@ -56,7 +57,7 @@ class ManagementSystemTest {
     }
 
     @Test
-    void addPatient_duplicateId_expectExceptionThrown() throws DuplicatePatientIDException, UnloadedStorageException, InvalidInputFormatException {
+    void addPatient_duplicateId_expectExceptionThrown() throws InvalidInputFormatException {
         List<Patient> existing = new ArrayList<>();
         Patient patient = new Patient("S1234567A", "John Doe", "01-01-1990",
                 "M", "123 Main St", "81234567", new ArrayList<>());
@@ -108,7 +109,8 @@ class ManagementSystemTest {
     }
 
     @Test
-    void deletePatient_nonExistentPatient_patientNotFound() throws UnloadedStorageException, InvalidInputFormatException {
+    void deletePatient_nonExistentPatient_patientNotFound() throws
+            UnloadedStorageException, InvalidInputFormatException {
         List<Patient> patients = new ArrayList<>();
         Patient patient = new Patient("S1234567A", "John Doe", "01-01-1990",
                 "M", "123 Main St", "81234567", new ArrayList<>());
@@ -424,7 +426,8 @@ class ManagementSystemTest {
     }
 
     @Test
-    void editPatientHistory_oldEntryNotFound_expectNoChange() throws UnloadedStorageException, InvalidInputFormatException {
+    void editPatientHistory_oldEntryNotFound_expectNoChange() throws
+            UnloadedStorageException, InvalidInputFormatException {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 

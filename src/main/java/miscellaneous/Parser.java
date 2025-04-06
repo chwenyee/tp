@@ -136,6 +136,11 @@ public class Parser {
         }
 
         String nric = input.substring(13).trim(); // Extract and trim NRIC
+
+        if (nric.isEmpty() || !nric.matches("(?i)[A-Z]\\d{7}[A-Z]")) {
+            throw new InvalidInputFormatException("Invalid IC format. Please use a valid IC e.g. S1234567D");
+        }
+
         return nric;
     }
 
@@ -184,7 +189,7 @@ public class Parser {
         // If any part is missing, return null to indicate a parse failure
         if (nric == null || medHistory == null) {
             throw new InvalidInputFormatException("Invalid format. " +
-                    "Please use: store-history n/NAME ic/NRIC h/MEDICAL_HISTORY");
+                    "Please use: store-history ic/NRIC h/MEDICAL_HISTORY");
         }
 
         // Return the trimmed values as an array

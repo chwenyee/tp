@@ -176,20 +176,26 @@ class ManagementSystemTest {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
-        LocalDateTime appointmentTime = LocalDateTime.parse("2025-03-20 1900", DATE_TIME_FORMAT);
+        LocalDateTime appointmentTime1 = LocalDateTime.parse("2025-03-20 1900", DATE_TIME_FORMAT);
+        LocalDateTime appointmentTime2 = LocalDateTime.parse("2025-03-22 1200", DATE_TIME_FORMAT);
 
         Patient patient = new Patient("S1234567D", "Billy", "01-10-1990",
                 "M", "124 High St", "81234567", new ArrayList<>());
         patients.add(patient);
-        Appointment appointment = new Appointment("S1234567D", appointmentTime, "Medical Checkup");
+        Appointment appointment1 = new Appointment("S1234567D", appointmentTime1, "Medical Checkup");
+        Appointment appointment2 = new Appointment("S1234567D", appointmentTime2, "Consultation");
 
-        String expectedNric = appointment.getNric();
-        manager.addAppointment(appointment);
+        String expectedNric = appointment1.getNric();
+        manager.addAppointment(appointment1);
+        manager.addAppointment(appointment2);
 
-        assertEquals(1, manager.getAppointments().size(), "Size does not match");
+        assertEquals(2, manager.getAppointments().size(), "Size does not match");
         assertEquals(expectedNric, manager.getAppointments().get(0).getNric(), "NRIC does not match");
+        assertEquals(expectedNric, manager.getAppointments().get(1).getNric(), "NRIC does not match");
         assertEquals(LocalDate.of(2025, 3, 20), manager.getAppointments().get(0).getDate());
         assertEquals(LocalTime.of(19, 0), manager.getAppointments().get(0).getTime());
+        assertEquals(LocalDate.of(2025, 3, 22), manager.getAppointments().get(1).getDate());
+        assertEquals(LocalTime.of(12, 0), manager.getAppointments().get(1).getTime());
     }
 
     @Test
@@ -212,34 +218,24 @@ class ManagementSystemTest {
     }
 
     @Test
+    void addAppointment_nonExistingPatient_expectException() {
+        List<Patient> patients = new ArrayList<>();
+        ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
+
+        LocalDateTime appointmentTime = LocalDateTime.parse("2025-03-20 1900", DATE_TIME_FORMAT);
+
+        Appointment appointment = new Appointment("S1234567D", appointmentTime, "Medical Checkup");
+
+        assertThrows(PatientNotFoundException.class, () -> manager.addAppointment(appointment));
+    }
+
+    @Test
     void deleteAppointment_validInput_expectAppointmentDeleted() throws UnloadedStorageException,
             PatientNotFoundException, AppointmentClashException, InvalidInputFormatException {
         List<Patient> patients = new ArrayList<>();
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
         LocalDateTime appointmentTime = LocalDateTime.parse("2025-03-20 1900", DATE_TIME_FORMAT);
-
-        Patient patient = new Patient("S1234567D", "Billy", "10-01-1990",
-                "M", "124 High St", "81234567", new ArrayList<>());
-        patients.add(patient);
-        Appointment appointment = new Appointment("S1234567D", appointmentTime, "Medical Checkup");
-
-        String expectedId = appointment.getId();
-        manager.addAppointment(appointment);
-        Appointment removedAppointment = manager.deleteAppointment(expectedId);
-
-        assertNotNull(removedAppointment, "Deleted appointment should be returned");
-        assertEquals(expectedId, appointment.getId(), "Appointment ID does not match");
-        assertEquals(0, manager.getAppointments().size(), "Size does not match");
-    }
-
-    @Test
-    void deleteAppointment_lowerCaseInput_expectAppointmentDeleted() throws UnloadedStorageException,
-            PatientNotFoundException, AppointmentClashException, InvalidInputFormatException {
-        List<Patient> patients = new ArrayList<>();
-        ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
-
-        LocalDateTime appointmentTime = LocalDateTime.parse("2025-03-30 2200", DATE_TIME_FORMAT);
 
         Patient patient = new Patient("S1234567D", "Billy", "10-01-1990",
                 "M", "124 High St", "81234567", new ArrayList<>());

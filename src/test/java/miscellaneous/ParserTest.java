@@ -3,7 +3,10 @@ package miscellaneous;
 import command.AddAppointmentCommand;
 import command.Command;
 import command.DeleteAppointmentCommand;
+import command.ExitCommand;
+import command.HelpCommand;
 import command.ListAppointmentCommand;
+import command.SortAppointmentCommand;
 import exception.InvalidInputFormatException;
 import exception.UnknownCommandException;
 import manager.Appointment;
@@ -13,7 +16,6 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
 import static manager.Appointment.INPUT_FORMAT;
-import static miscellaneous.Parser.parse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,14 +43,38 @@ class ParserTest {
 
     @Test
     void parseAddAppointment_missingDetail_expectException() {
-        String input = "add-appointment ic/ dt/2025-03-19 t/1200 dsc/medical check-up";
-        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input));
+        String missingIc = "add-appointment ic/ dt/2025-03-19 t/1200 dsc/medical check-up";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(missingIc));
+
+        String missingDate = "add-appointment ic/S1234567D dt/ t/1200 dsc/medical check-up";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(missingDate));
+
+        String missingTime = "add-appointment ic/S1234567D dt/2025-03-19 t/ dsc/medical check-up";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(missingTime));
+
+        String missingDescription = "add-appointment ic/S1234567D dt/2025-03-19 t/1200 dsc/";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(missingDescription));
     }
 
     @Test
     void parseAddAppointment_dateTimeInThePast_expectException() {
         String input = "add-appointment ic/S1234567D dt/2025-03-20 t/1300 dsc/Checkup";
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input));
+    }
+
+    @Test
+    void parseAddAppointment_invalidIcFormat_expectException() {
+        String input1 = "add-appointment ic/S1234567 dt/2025-03-20 t/1300 dsc/Checkup";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input1));
+
+        String input2 = "add-appointment ic/S123467D dt/2025-03-20 t/1300 dsc/Checkup";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input2));
+
+        String input3 = "add-appointment ic/123467D dt/2025-03-20 t/1300 dsc/Checkup";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input3));
+
+        String input4 = "add-appointment ic/123467 dt/2025-03-20 t/1300 dsc/Checkup";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input4));
     }
 
     @Test
@@ -162,7 +188,7 @@ class ParserTest {
     }
 
     @Test
-    void parse_listAppointmentCommand_expectListAppointmentCommandCommand() throws Exception {
+    void parse_listAppointmentCommand_expectListAppointmentCommand() throws Exception {
         Command command = Parser.parse("list-appointment");
         assertInstanceOf(ListAppointmentCommand.class, command);
     }
@@ -170,6 +196,47 @@ class ParserTest {
     @Test
     void parse_unknownCommand_expectUnknownCommandException() {
         String userInput = "bee-boo";
-        assertThrows(UnknownCommandException.class, () -> parse(userInput));
+        assertThrows(UnknownCommandException.class, () -> Parser.parse(userInput));
     }
+
+    @Test
+    void parse_sortAppointmentCommand_expectSortAppointmentCommand() throws InvalidInputFormatException,
+            UnknownCommandException {
+        Command byDate = Parser.parse("sort-appointment byDate");
+        assertInstanceOf(SortAppointmentCommand.class, byDate);
+
+        Command byId = Parser.parse("sort-appointment byId");
+        assertInstanceOf(SortAppointmentCommand.class, byId);
+    }
+
+    @Test
+    void parse_invalidSortAppointmentCommand_expectException() {
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parse("sort-appointment"));
+    }
+
+    @Test
+    void parse_byeCommand_expectByeCommand() throws InvalidInputFormatException,
+            UnknownCommandException {
+        Command command = Parser.parse("bye");
+        assertInstanceOf(ExitCommand.class, command);
+
+    }
+
+    @Test
+    void parse_helpCommand_expectHelpCommand() throws InvalidInputFormatException,
+            UnknownCommandException {
+        Command command = Parser.parse("help");
+        assertInstanceOf(HelpCommand.class, command);
+    }
+
+    @Test
+    void parse_nullInput_expectException() {
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parse(null));
+    }
+
+    @Test
+    void parse_emptyInput_expectException() {
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parse(""));
+    }
+
 }

@@ -8,6 +8,7 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 ## Table of Contents
 - [Quick Start](#quick-start)
 - [Features](#features-)
+    - [Viewing help: `help`](#viewing-help-help)
     - Managing Patients
         - [Adding a new patient: `add-patient`](#adding-a-new-patient--add-patient)
         - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
@@ -55,8 +56,6 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 ## Features 
 Here are some feature that the product provides:
 
-* `add-patient`: adds a patient to the system
-* ``
 > [!NOTE]
 > - Words in `UPPER_CASE` represent parameters that must be provided by the user. <br>
     e.g. in `view-patient NRIC`, `NRIC` is a parameter which can be used as `view-patient S1234567D`.
@@ -73,7 +72,13 @@ Here are some feature that the product provides:
 > - Command words are **case-insensitive**. <br>
     e.g. `liST-paTIEnt` will be interpreted as `list-patient`.
 
-<br>
+### Viewing help: `help`
+Shows all available commands of the application.
+
+Format: `help`
+
+---
+
 
 ### Adding a new patient : `add-patient`
 Adds a new patient to the system with their credentials.
@@ -250,7 +255,7 @@ Example of usage:
 * `sort-appointment byDate`
 * `sort-appointment byId`
 
-Expected output: 
+Expected output of `sort-appointment byDate`: 
 
 <pre>-------------------------------------------Appointments---------------------------------------------
 1. [A101][ ] - S1234567D - 2025-03-31 12:00 PM - Annual checkup

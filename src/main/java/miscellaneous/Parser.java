@@ -8,6 +8,7 @@ import command.ExitCommand;
 import command.AddAppointmentCommand;
 import command.DeleteAppointmentCommand;
 import command.EditPatientCommand;
+import command.HelpCommand;
 import command.ListAppointmentCommand;
 import command.EditPatientHistoryCommand;
 import command.ListPatientCommand;
@@ -50,6 +51,8 @@ public class Parser {
         switch (commandWord) {
         case "bye":
             return new ExitCommand();
+        case "help":
+            return new HelpCommand();
         case "add-patient":
             return new AddPatientCommand(parseAddPatient(userInput));
         case "delete-patient":
@@ -199,6 +202,10 @@ public class Parser {
             String msg = "Missing details or wrong format for add-appointment!" + System.lineSeparator()
                     + "Please use: add-appointment ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION";
             throw new InvalidInputFormatException(msg);
+        }
+
+        if (!nric.trim().matches("(?i)[A-Z]\\d{7}[A-Z]")) {
+            throw new InvalidInputFormatException("Invalid IC format. Please use a valid IC e.g. S1234567D");
         }
 
         try {

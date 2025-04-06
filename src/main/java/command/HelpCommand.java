@@ -3,15 +3,9 @@ package command;
 import manager.ManagementSystem;
 import miscellaneous.Ui;
 
-public class ExitCommand extends Command {
-
+public class HelpCommand extends Command {
     @Override
     public void execute(ManagementSystem manager, Ui ui) {
-        ui.showBye();
-    }
-
-    @Override
-    public boolean isExit() {
-        return true;
+        ui.showHelp();
     }
 }

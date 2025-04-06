@@ -1,0 +1,76 @@
+@startuml
+hide footbox
+
+actor User
+
+participant ":ClinicEase" as ClinicEase
+participant ":Parser" as Parser
+participant ":AddPrescriptionCommand" as AddPrescriptionCommand
+participant ":ManagementSystem" as ManagementSystem
+participant ":Prescription" as Prescription
+participant ":Storage" as Storage
+
+User -> ClinicEase : enter input
+activate ClinicEase
+ClinicEase -> Parser : parse(input)
+activate Parser
+
+Parser -> Parser : parseAddPrescription(userInput)
+activate Parser
+Parser -> Parser : extractValue(userInput)
+activate Parser
+note right of Parser: extractValue is called multiple times\n to parse patient ID, symptoms, medicines, and notes
+Parser --> Parser : :String
+deactivate Parser
+
+create Prescription
+Parser -> Prescription : new Prescription(patientId, symptomsList, medicinesList, notes)
+activate Prescription
+Prescription --> Parser : prescription : Prescription
+deactivate Prescription
+deactivate Parser
+
+create AddPrescriptionCommand
+Parser -> AddPrescriptionCommand : new AddPrescriptionCommand(prescription)
+activate AddPrescriptionCommand
+AddPrescriptionCommand --> Parser : :AddPrescriptionCommand
+deactivate AddPrescriptionCommand
+Parser --> ClinicEase : :AddPrescriptionCommand
+deactivate Parser
+
+ClinicEase -> AddPrescriptionCommand : execute()
+activate AddPrescriptionCommand
+AddPrescriptionCommand -> ManagementSystem : addPrescription(prescription)
+activate ManagementSystem
+ManagementSystem -> ManagementSystem : findPatientByNric()
+activate ManagementSystem
+ManagementSystem --> ManagementSystem : patient : Patient
+deactivate ManagementSystem
+
+alt Patient not found
+    ManagementSystem --> AddPrescriptionCommand : throw IllegalArgumentException
+else Patient found
+    ManagementSystem -> ManagementSystem : Generate prescription ID
+    
+    create Prescription
+    ManagementSystem -> Prescription : new Prescription(patientId, prescriptionId, timestamp, symptoms, medicines, notes)
+    activate Prescription
+    Prescription --> ManagementSystem : newPrescription : Prescription
+    deactivate Prescription
+    
+    ManagementSystem -> Storage : savePrescriptions(prescriptions)
+    activate Storage
+    Storage --> ManagementSystem
+    deactivate Storage
+    
+    ManagementSystem --> AddPrescriptionCommand : newPrescription : Prescription
+end
+deactivate ManagementSystem
+
+AddPrescriptionCommand -> AddPrescriptionCommand : Display prescription details
+AddPrescriptionCommand --> ClinicEase
+deactivate AddPrescriptionCommand
+ClinicEase --> User : display message
+deactivate ClinicEase
+
+@enduml 

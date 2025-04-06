@@ -103,7 +103,7 @@ public class Parser {
 
         if (name == null || nric == null || birthdate == null || gender == null || phone == null || address == null) {
             throw new InvalidInputFormatException("Patient details are incomplete!" + System.lineSeparator()
-                    + "Also, please use: add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS");
+                    + "Please use: add-patient n/NAME ic/NRIC dob/BIRTHDATE(dd-MM-yyyy) g/GENDER p/PHONE a/ADDRESS");
         }
 
         List<String> medHistory = new ArrayList<>();
@@ -356,7 +356,7 @@ public class Parser {
         return new String[]{nric, oldHistory, newHistory};
     }
 
-    public static Patient parseLoadPatient(String line) {
+    public static Patient parseLoadPatient(String line) throws InvalidInputFormatException {
         String[] tokens = line.split("\\|");
         if (tokens.length < 7) {
             return null;
@@ -364,7 +364,7 @@ public class Parser {
 
         String id = tokens[0];
         String name = tokens[1];
-        String dob = tokens[2];
+        String dobStr = tokens[2];
         String gender = tokens[3];
         String address = tokens[4];
         String contact = tokens[5];
@@ -372,7 +372,7 @@ public class Parser {
                                         .map(String::trim)
                                         .collect(Collectors.toList());
 
-        return new Patient(id, name, dob, gender, address, contact, medHistory);
+        return new Patient(id, name, dobStr, gender, address, contact, medHistory);
     }
 
     public static Appointment parseLoadAppointment(String line) {
@@ -441,20 +441,28 @@ public class Parser {
     }
 
     public static String parseViewAllPrescriptions(String input) throws InvalidInputFormatException {
-        if (input.length() < 22) {
+        String trimmedInput = input.trim();
+        if (trimmedInput.equals("view-all-prescriptions") || trimmedInput.length() <= 22) {
             throw new InvalidInputFormatException("Invalid command format. Use: view-all-prescriptions PATIENT_ID");
         }
 
-        String patientId = input.substring(22).trim();
+        String patientId = trimmedInput.substring(22).trim();
+        if (patientId.isEmpty()) {
+            throw new InvalidInputFormatException("Invalid command format. Use: view-all-prescriptions PATIENT_ID");
+        }
         return patientId;
     }
 
     public static String parseViewPrescription(String input) throws InvalidInputFormatException {
-        if (input.length() < 17) {
+        String trimmedInput = input.trim();
+        if (trimmedInput.equals("view-prescription") || trimmedInput.length() <= 17) {
             throw new InvalidInputFormatException("Invalid command format. Use: view-prescription PRESCRIPTION_ID");
         }
 
-        String prescriptionId = input.substring(17).trim();
+        String prescriptionId = trimmedInput.substring(17).trim();
+        if (prescriptionId.isEmpty()) {
+            throw new InvalidInputFormatException("Invalid command format. Use: view-prescription PRESCRIPTION_ID");
+        }
         return prescriptionId;
     }
 

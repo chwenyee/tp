@@ -1,55 +1,28 @@
 @startuml
 actor User
 
-package "miscellaneous" {
-  [UI]
-  [Parser]
-}
+component UI
+component Parser
+component Command
+component Manager
+component Model
+component Storage
+database FileSystem
 
-package "command" {
-  [AddPatientCommand]
-  [DeletePatientCommand]
-  [ViewPatientCommand]
-  [AddAppointmentCommand]
-  [AddPrescriptionCommand]
-  [Command]
-  [Command] <|-- [AddPatientCommand]
-  [Command] <|-- [DeletePatientCommand]
-  [Command] <|-- [ViewPatientCommand]
-  [Command] <|-- [AddAppointmentCommand]
-  [Command] <|-- [AddPrescriptionCommand]
-}
+' Model contains patient, prescription, and appointment
+note right of Model
+  Patient
+  Prescription
+  Appointment
+end note
 
-package "manager" {
-  [Patient]
-  [Appointment]
-  [Prescription]
-  [ManagementSystem]
-  
-  [ManagementSystem] o--> [Patient]
-  [ManagementSystem] o--> [Appointment]
-  [ManagementSystem] o--> [Prescription]
-}
-
-package "storage" {
-  [Storage]
-}
-
-package "exception" {
-  [PatientNotFoundException]
-  [InvalidInputFormatException]
-  [DuplicatePatientIDException]
-  [UnloadedStorageException]
-}
-
-database "File System" as filesystem
-
-User --> [UI]
-[UI] --> [Parser]
-[Parser] ..> [Command]
-[Command] --> [ManagementSystem]
-
-[ManagementSystem] ..> [Storage]
-[Storage] --> filesystem
+User --> UI
+UI ..> Parser
+Parser ..> Command
+Command --> Manager
+Manager --> Model
+Manager --> Storage
+UI --> Command
+Storage --> FileSystem
 
 @enduml 

@@ -93,7 +93,7 @@ public class PrescriptionTest {
 
         // Create a sample patient
         Patient patient = new Patient(
-                patientId, "John Doe", "01-01-1990", "Male",
+                patientId, "John Doe", "01-01-1990", "M",
                 "123 Main St", "98765432", new ArrayList<>()
         );
 
@@ -104,7 +104,7 @@ public class PrescriptionTest {
         Assertions.assertTrue(html.contains("<!DOCTYPE html>"));
         Assertions.assertTrue(html.contains("<title>Prescription " + prescriptionId + "</title>"));
         Assertions.assertTrue(html.contains("John Doe"));  // Patient name
-        Assertions.assertTrue(html.contains("Male"));     // Patient gender
+        Assertions.assertTrue(html.contains("M"));     // Patient gender
         Assertions.assertTrue(html.contains("Fever"));     // Symptom
         Assertions.assertTrue(html.contains("Paracetamol")); // Medicine
         Assertions.assertTrue(html.contains("Take after meals")); // Notes

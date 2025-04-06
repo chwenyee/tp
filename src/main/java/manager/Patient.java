@@ -29,10 +29,10 @@ public class Patient {
         assert contactInfo != null : "Contact info cannot be null";
         assert medicalHistory != null : "Medical history list cannot be null";
         
-        this.id = id;
+        this.id = parseValidIC(id);
         this.name = name;
         this.dob = parseAndValidateDob(dobStr);
-        this.gender = gender;
+        this.gender = checkGender(gender);
         this.address = address;
         this.contactInfo = parseContactInfo(contactInfo);
         this.medicalHistory = new ArrayList<>(medicalHistory);
@@ -95,6 +95,39 @@ public class Patient {
         assert appointment != null : "Appointment cannot be null";
         assert appointment.getNric().equals(this.id) : "Appointment NRIC must match patient ID";
         appointments.add(appointment);
+    }
+
+    private String parseValidIC(String ic) throws InvalidInputFormatException {
+        if (ic == null || ic.length() != 9) {
+            throw new InvalidInputFormatException("IC must be exactly 9 characters long.");
+        }
+
+        String prefix = ic.substring(0, 1).toUpperCase();
+        String numberPart = ic.substring(1, 8);
+        String suffix = ic.substring(8).toUpperCase();
+
+        if (!prefix.matches("[STFGM]")) {
+            throw new InvalidInputFormatException("IC must start with S, T, F, G, or M.");
+        }
+
+        if (!numberPart.matches("\\d{7}")) {
+            throw new InvalidInputFormatException("IC must contain 7 digits after the prefix.");
+        }
+
+        if (!suffix.matches("[A-Z]")) {
+            throw new InvalidInputFormatException("IC must end with an uppercase letter.");
+        }
+
+        return ic;
+    }
+
+    private String checkGender(String gender) throws InvalidInputFormatException {
+        if(gender.equals("M") || gender.equals("F")) {
+            return gender;
+        }
+        else{
+            throw new InvalidInputFormatException("The gender must to be either M (male) or F (female)");
+        }
     }
 
     private LocalDate parseAndValidateDob(String dobStr) throws InvalidInputFormatException {

@@ -16,7 +16,8 @@ public class EditPatientCommand extends Command {
     }
 
     @Override
-    public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException, PatientNotFoundException, InvalidInputFormatException {
+    public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException,
+            PatientNotFoundException, InvalidInputFormatException {
         String nric   = details[0];
         String name   = details[1];
         String dob    = details[2];

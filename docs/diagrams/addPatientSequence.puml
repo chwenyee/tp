@@ -26,6 +26,8 @@ deactivate Parser
 create AddPatientCommand
 Parser -> AddPatientCommand : new AddPatientCommand(String[])
 activate AddPatientCommand
+AddPatientCommand --> Parser
+deactivate Parser
 Parser --> ClinicEase : :AddPatientCommand
 deactivate Parser
 
@@ -36,7 +38,7 @@ activate ManagementSystem
 ManagementSystem -> ManagementSystem : check if NRIC exists
 alt NRIC already exists
     ManagementSystem --> AddPatientCommand : Error message
-else
+else Else
     create Patient
     ManagementSystem -> Patient : new Patient(...)
     activate Patient
@@ -50,9 +52,9 @@ else
     deactivate Storage
 
     ManagementSystem --> AddPatientCommand :
+    deactivate AddPatientCommand
+    deactivate ManagementSystem
 end
-deactivate ManagementSystem
-AddPatientCommand -> ClinicEase :
+AddPatientCommand --> ClinicEase :
 deactivate AddPatientCommand
-
 @enduml

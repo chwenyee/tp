@@ -19,21 +19,19 @@ Parser -> Parser : parseViewPatient(userInput)
 activate Parser
 Parser -> Parser : extractValue(userInput)
 activate Parser
+deactivate Parser
 Parser --> Parser : nric :String
 deactivate Parser
 
-Parser -> ViewPatientCommand : ViewPatientCommand(nric)
-activate ViewPatientCommand
 Parser --> ClinicEase : ViewPatientCommand
-deactivate Parser
 
 deactivate Parser
 
 ClinicEase -> ViewPatientCommand : execute()
 activate ViewPatientCommand
 
-activate ManagementSystem
 ViewPatientCommand -> ManagementSystem : viewPatient(nric)
+activate ManagementSystem
 
 ManagementSystem -> Patient : getPatient(nric)
 activate Patient
@@ -45,10 +43,10 @@ ManagementSystem --> ViewPatientCommand
 deactivate ManagementSystem
 
 ViewPatientCommand --> UI : showPatientViewed(matchedPatient)
+deactivate ViewPatientCommand
 activate UI
 
 UI --> ClinicEase : Patient details
 deactivate UI
-deactivate ViewPatientCommand
 
 @enduml

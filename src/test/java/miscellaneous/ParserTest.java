@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
 import static manager.Appointment.INPUT_FORMAT;
-import static miscellaneous.Parser.parse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

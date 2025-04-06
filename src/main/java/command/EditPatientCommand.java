@@ -22,12 +22,12 @@ public class EditPatientCommand extends Command {
     @Override
     public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException,
             PatientNotFoundException, InvalidInputFormatException {
-        String nric   = details[0];
-        String name   = details[1];
-        String dob    = details[2];
+        String nric = details[0];
+        String name = details[1];
+        String dob = details[2];
         String gender = details[3];
-        String addr   = details[4];
-        String phone  = details[5];
+        String addr = details[4];
+        String phone = details[5];
 
         if (dob != null && !dob.isBlank()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

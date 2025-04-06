@@ -37,7 +37,6 @@ public class PrescriptionTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String formattedTimestamp = timestamp.format(formatter);
         Assertions.assertTrue(fileFormat.contains(formattedTimestamp));
-
         Assertions.assertTrue(fileFormat.contains("Fever,Cough"));
         Assertions.assertTrue(fileFormat.contains("Paracetamol,Cough syrup"));
         Assertions.assertTrue(fileFormat.contains(notes));
@@ -76,7 +75,9 @@ public class PrescriptionTest {
     }
 
     @Test
-    public void generateHtml_withPatient_containsPatientInfo() throws InvalidInputFormatException {
+    public void generateHtml_withPatient_containsPatientInfo()
+            throws InvalidInputFormatException {
+
         // Create a sample prescription
         String patientId = "S1234567A";
         List<String> symptoms = Arrays.asList("Fever", "Cough");
@@ -137,3 +138,8 @@ public class PrescriptionTest {
         Assertions.assertTrue(html.contains("Take after meals")); // Should contain notes
     }
 }
+
+
+
+
+

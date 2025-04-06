@@ -9,6 +9,108 @@
 
 ---
 
+## Architecture
+
+![Architecture Diagram](diagrams/ArchitectureDiagram.png)
+
+The **Architecture Diagram** above illustrates the high-level design of the ClinicEase application. The diagram shows how the different components interact with each other and with the user.
+
+Given below is a quick overview of the main components and how they interact with each other:
+
+### Main components of the architecture
+
+**ClinicEase** (consisting of the `ClinicEase.java` class) is in charge of the application launch and shutdown.
+
+* At application launch, it initializes the other components in the correct sequence, and connects them with each other.
+* At shutdown, it ensures proper cleanup of resources.
+
+The application's functionality is implemented through the following five components:
+
+* **UI**: The user interface of the application.
+* **Parser**: Processes and interprets user inputs.
+* **Command**: Executes user commands.
+* **Model**: Holds the data of the application in memory.
+* **Storage**: Reads data from, and writes data to, the hard disk.
+
+**Commons** represents a collection of classes used by multiple other components.
+
+### How the architecture components interact with each other
+
+The **Sequence Diagram** below shows how the components interact for the scenario where the user executes a `add-patient` command:
+
+![Sequence Diagram for add-patient](diagrams/ArchitectureSequenceDiagram.png)
+
+The following sections explain the various components in more detail.
+
+### UI component
+
+The UI component:
+
+* Receives user commands via the console
+* Displays results to the user
+
+The UI is implemented in the `miscellaneous.Ui` class, which contains methods to display different types of information to the user, such as welcome messages, error messages, and command results.
+
+### Parser component
+
+The Parser component:
+
+* Parses user input into commands
+* Creates the appropriate Command objects based on the parsed input
+* Validates input format and throws exceptions for invalid inputs
+
+The Parser is implemented in the `miscellaneous.Parser` class and is responsible for interpreting user commands and converting them into executable Command objects.
+
+### Command component
+
+The Command component:
+
+* Represents executable user commands
+* Implements the Command pattern
+* Contains multiple subclasses for different command types
+
+All commands extend the abstract `command.Command` class, which defines the `execute()` method. Each specific command (e.g., `AddPatientCommand`, `DeletePatientCommand`) implements this method with its own functionality.
+
+### Model component
+
+The Model component:
+
+* Holds the application data in memory
+* Manages patients, appointments, and prescriptions
+* Contains business logic for operations like adding and removing entities
+
+The main model class is `manager.ManagementSystem`, which acts as a facade for the model layer. It contains lists of:
+* `Patient` objects
+* `Appointment` objects
+* `Prescription` objects
+
+These entity classes (`Patient`, `Appointment`, `Prescription`) encapsulate the data and behavior of their respective domain objects.
+
+### Storage component
+
+The Storage component:
+
+* Saves data to text files when instructed to
+* Loads data from text files when the application starts
+* Ensures data persistence across application launches
+
+The Storage is implemented in the `storage.Storage` class and is responsible for reading/writing patient, appointment, and prescription data to/from files.
+
+### How the components interact
+
+* **User** enters commands through the **UI**
+* **UI** passes the command string to the **Parser**
+* **Parser** creates the appropriate **Command** object based on the input
+* **Command** executes operations using the **Model** (e.g., adding a patient)
+* **Model** updates its internal state and may request the **Storage** to save changes
+* **Command** may use the **UI** to display results to the user
+
+This architecture follows several design principles:
+
+1. **Single Responsibility Principle**: Each component has a specific responsibility
+2. **Separation of Concerns**: UI logic is separated from business logic which is separated from data persistence logic
+3. **Command Pattern**: Commands encapsulate actions and provide a uniform interface for execution
+
 ## Design & implementation
 
 ### View patient feature

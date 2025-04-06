@@ -1,0 +1,44 @@
+@startuml
+actor User as user
+participant ":UI" as ui
+participant ":Parser" as parser
+participant ":AddPatientCommand" as command
+participant ":ManagementSystem" as model
+participant ":Storage" as storage
+
+user -> ui : "add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St"
+activate ui
+
+ui -> parser : parse(userInput)
+activate parser
+parser -> parser : parseAddPatient(userInput)
+parser --> ui : AddPatientCommand
+deactivate parser
+
+ui -> command : execute(model, ui)
+activate command
+
+command -> model : addPatient(patient)
+activate model
+
+model -> model : validate patient
+model -> storage : savePatients(patients)
+activate storage
+storage --> model
+deactivate storage
+
+model --> command
+deactivate model
+
+command -> ui : showPatientAdded(patients)
+activate ui
+ui --> command
+deactivate ui
+
+command --> ui
+deactivate command
+
+ui --> user
+deactivate ui
+
+@enduml 

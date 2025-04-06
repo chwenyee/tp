@@ -1,0 +1,44 @@
+@startuml
+package "Main" {
+  [Main] as main
+}
+
+package "UI" {
+  [UI] as ui
+}
+
+package "Logic" {
+  [Command] as command
+  [Parser] as parser
+}
+
+package "Model" {
+  [ManagementSystem] as model
+}
+
+package "Storage" {
+  [Storage] as storage
+}
+
+package "Commons" {
+  [Exceptions] as exceptions
+}
+
+[Main] --> [UI]
+[Main] --> [Logic]
+[Main] --> [Model]
+[Main] --> [Storage]
+
+[UI] --> [Logic]
+[UI] <-- [Command]
+
+[Logic] --> [Model]
+[Logic] --> [Storage]
+
+[Model] <-- [Command]
+[Model] --> [Storage]
+
+User --> [UI]
+Storage --> [File System] #00FF00
+
+@enduml 

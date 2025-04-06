@@ -94,7 +94,8 @@ public class ManagementSystem {
 
     //@@author jyukuan
     public void editPatient(String nric, String newName, String newDob, String newGender, String newAddress,
-                            String newPhone) throws UnloadedStorageException, PatientNotFoundException, InvalidInputFormatException {
+                            String newPhone) throws UnloadedStorageException, PatientNotFoundException,
+                            InvalidInputFormatException {
 
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
         assert patients != null : "Patient list cannot be null";

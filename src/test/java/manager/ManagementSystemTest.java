@@ -1,6 +1,10 @@
 package manager;
 
-import exception.*;
+import exception.PatientNotFoundException;
+import exception.AppointmentClashException;
+import exception.DuplicatePatientIDException;
+import exception.InvalidInputFormatException;
+import exception.UnloadedStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import storage.Storage;

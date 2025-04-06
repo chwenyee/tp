@@ -1,6 +1,10 @@
 package command;
 
-import exception.*;
+import exception.PatientNotFoundException;
+import exception.AppointmentClashException;
+import exception.DuplicatePatientIDException;
+import exception.InvalidInputFormatException;
+import exception.UnloadedStorageException;
 import manager.ManagementSystem;
 import miscellaneous.Ui;
 

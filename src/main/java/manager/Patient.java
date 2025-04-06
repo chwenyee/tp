@@ -138,7 +138,8 @@ public class Patient {
                         + "Address: %s\n"
                         + "Contact: %s\n"
                         + "Medical History: %s",
-                id, name, dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), gender, address, contactInfo, formattedMedicalHistory);
+                id, name, dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                gender, address, contactInfo, formattedMedicalHistory);
 
         if (appointments.isEmpty()) {
             result += "\nAppointments: None";
@@ -193,7 +194,7 @@ public class Patient {
 
     public String toFileFormat() {
         String history = String.join(", ", this.medicalHistory);
-        return this.id + "|" + this.name + "|" + dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "|" + this.gender + "|"
-                + this.address + "|" + this.contactInfo + "|" + history;
+        return this.id + "|" + this.name + "|" + dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                + "|" + this.gender + "|" + this.address + "|" + this.contactInfo + "|" + history;
     }
 }

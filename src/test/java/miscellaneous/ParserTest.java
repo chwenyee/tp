@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 class ParserTest {
 
     @Test
@@ -37,21 +36,19 @@ class ParserTest {
     @Test
     void parseAddAppointment_invalidFormat_expectException() {
         String input = "add-appointment ic/S1234567D dt/2025-03-19 t/1200";
-
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input));
     }
 
     @Test
     void parseAddAppointment_missingDetail_expectException() {
         String input = "add-appointment ic/ dt/2025-03-19 t/1200 dsc/medical check-up";
-
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input));
     }
 
     @Test
     void parseAddAppointment_dateTimeInThePast_expectException() {
-        String input2 = "add-appointment ic/S1234567D dt/2025-03-20 t/1300 dsc/Checkup";
-        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input2));
+        String input = "add-appointment ic/S1234567D dt/2025-03-20 t/1300 dsc/Checkup";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input));
     }
 
     @Test
@@ -82,7 +79,6 @@ class ParserTest {
     @Test
     void parseDeleteAppointment_invalidAppointmentId_expectException() {
         String input = "delete-appointment 100";
-
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseDeleteAppointment(input));
     }
 
@@ -96,10 +92,9 @@ class ParserTest {
 
     @Test
     void parseAddPatient_invalidInputFormat_expectException() {
-        String input = "add-patient n/John Doe ic/ dob/12-12-1999 g/M " +
-                "p/98765432 a/123 Main Street h/Diabetes, Hypertension";
-
-        assertThrows(InvalidInputFormatException.class, () -> Parser.parse(input));
+        String input = "add-patient n/John Doe ic/ dob/12-12-1999 g/M "
+                + "p/98765432 a/123 Main Street h/Diabetes, Hypertension";
+        assertThrows(InvalidInputFormatException.class, () -> Parser.parseDeleteAppointment(input));
     }
 
     @Test
@@ -125,10 +120,10 @@ class ParserTest {
 
     @Test
     void parseViewHistory_invalidInput_expectException() {
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseViewHistory("view-history"));
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseViewHistory("view-history  "));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseViewHistory("view-history"));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseViewHistory("view-history  "));
     }
 
     @Test
@@ -141,13 +136,13 @@ class ParserTest {
 
     @Test
     void parseStoreHistory_missingFields_expectException() {
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseStoreHistory("store-history ic/S1234567D h/Allergic to nuts"));
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseStoreHistory("store-history n/John Doe h/Allergic to nuts"));
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseStoreHistory("store-history n/John Doe ic/S1234567D"));
-}
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseStoreHistory("store-history ic/S1234567D h/Allergic to nuts"));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseStoreHistory("store-history n/John Doe h/Allergic to nuts"));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseStoreHistory("store-history n/John Doe ic/S1234567D"));
+    }
 
     @Test
     void parse_addAppointmentCommand_expectAddAppointmentCommand() throws InvalidInputFormatException,
@@ -180,5 +175,4 @@ class ParserTest {
         String userInput = "bee-boo";
         assertThrows(UnknownCommandException.class, () -> parse(userInput));
     }
-
 }

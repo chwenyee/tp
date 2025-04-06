@@ -1,0 +1,53 @@
+@startuml
+hide footbox
+
+participant ":ClinicEase" as ClinicEase
+participant ":Parser" as Parser
+participant ":DeletePatientCommand" as DeletePatientCommand
+participant ":ManagementSystem" as ManagementSystem
+participant ":Storage" as Storage
+
+ClinicEase -> Parser : parse(input)
+activate Parser
+
+Parser -> Parser : parseDeletePatient(userInput)
+activate Parser
+Parser --> Parser : :String (nric)
+deactivate Parser
+
+create DeletePatientCommand
+Parser -> DeletePatientCommand : new DeletePatientCommand(String)
+activate DeletePatientCommand
+DeletePatientCommand --> Parser
+Parser --> ClinicEase : :DeletePatientCommand
+deactivate Parser
+
+ClinicEase -> DeletePatientCommand : execute()
+activate DeletePatientCommand
+DeletePatientCommand -> ManagementSystem : deletePatient(nric)
+activate ManagementSystem
+ManagementSystem -> ManagementSystem : find matching NRIC in list
+
+alt Patient found
+    ManagementSystem -> ManagementSystem : remove patient from list
+    ManagementSystem -> ManagementSystem : remove patient’s appointments
+    ManagementSystem -> Storage : savePatients(patients)
+    activate Storage
+    Storage --> ManagementSystem
+    deactivate Storage
+
+    ManagementSystem -> Storage : saveAppointments(appointments)
+    activate Storage
+    Storage --> ManagementSystem
+    deactivate Storage
+
+    ManagementSystem --> DeletePatientCommand : deleted Patient
+else Patient not found
+    ManagementSystem --> DeletePatientCommand : null
+    deactivate ManagementSystem
+     deactivate DeletePatientCommand
+end
+
+DeletePatientCommand --> ClinicEase : Result (success/failure message)
+deactivate DeletePatientCommand
+@enduml

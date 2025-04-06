@@ -161,7 +161,7 @@ The system loads the stored list of patients and appointments. The user is now r
 **Step 2.**
 The user executes the following command to add a new patient:
 
-add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension
+`add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension`
 
 This command is read by the `ClinicEase` class and passed to the `Parser`.  
 The `Parser` class identifies the command as `add-patient` and parses the fields. A `Patient` object is then constructed from the parsed data.
@@ -184,6 +184,46 @@ If saving fails, `ClinicEase` catches an `UnloadedStorageException` and alerts t
 
 The following sequence diagram shows how an `add-patient` operation flows through the system:
 ![add-patient](./diagrams/addPatientSequence.png)
+
+---
+
+### Delete patient feature
+The `delete-patient` feature allows users to **remove a patient** from the system using their **NRIC**.  
+When a patient is deleted, all their associated **appointments** are also removed to maintain data consistency.
+
+### Step 1.
+The user launches the application. `ClinicEase` loads any saved data, including the patient list and appointments.  
+The user is now ready to delete a patient from the system.
+
+### Step 2.
+The user executes the following command:
+
+`delete-patient S1234567A`
+
+This command is passed to the `Parser` class.  
+The `Parser` identifies the command as `delete-patient`, extracts the NRIC `S1234567A`, and passes it to a new `DeletePatientCommand`.
+
+> **Note**  
+> If the input format is incorrect (e.g., `delete-patient` with no NRIC), the parser throws an `InvalidInputFormatException` and displays an error message to the user.
+
+### Step 3.
+The `DeletePatientCommand.execute()` method calls `ManagementSystem.deletePatient(nric)`.
+
+The method first **searches for the patient** with the provided NRIC in the patient list.  
+If found:
+- The patient is removed from the list.
+- All of the patient’s appointments are also removed.
+- Both `patients` and `appointments` are saved using `Storage.savePatients()` and `Storage.saveAppointments()`.
+
+> **Note**  
+> If the NRIC is not found, the method returns `null` and an appropriate message is displayed.
+
+### Step 4.
+Once the patient is successfully deleted, a confirmation message is shown to the user.  
+If saving to disk fails, an `UnloadedStorageException` is thrown and handled by the system to alert the user.
+
+The following sequence diagram shows how a `delete-patient` operation flows through the system:
+![delete-patient](./diagrams/deletePatientSequence.png)
 
 ---
 

@@ -128,20 +128,17 @@ class ParserTest {
 
     @Test
     void parseStoreHistory_validInput_expectSuccess() throws InvalidInputFormatException {
-        String[] result = Parser.parseStoreHistory("store-history n/John Doe ic/S1234567D h/Allergic to nuts");
-        assertEquals("John Doe", result[0]);
-        assertEquals("S1234567D", result[1]);
-        assertEquals("Allergic to nuts", result[2]);
+        String[] result = Parser.parseStoreHistory("store-history ic/S1234567D h/Allergic to nuts");
+        assertEquals("S1234567D", result[0]);
+        assertEquals("Allergic to nuts", result[1]);
     }
 
     @Test
     void parseStoreHistory_missingFields_expectException() {
         assertThrows(InvalidInputFormatException.class,
-                () -> Parser.parseStoreHistory("store-history ic/S1234567D h/Allergic to nuts"));
+                () -> Parser.parseStoreHistory("store-history ic/S1234567D"));
         assertThrows(InvalidInputFormatException.class,
-                () -> Parser.parseStoreHistory("store-history n/John Doe h/Allergic to nuts"));
-        assertThrows(InvalidInputFormatException.class,
-                () -> Parser.parseStoreHistory("store-history n/John Doe ic/S1234567D"));
+                () -> Parser.parseStoreHistory("store-history h/Allergic to nuts"));
     }
 
     @Test

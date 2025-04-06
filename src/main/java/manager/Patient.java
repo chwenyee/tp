@@ -32,7 +32,7 @@ public class Patient {
         this.id = id;
         this.name = name;
         this.dob = parseAndValidateDob(dobStr);
-        this.gender = gender;
+        this.gender = checkGender(gender);
         this.address = address;
         this.contactInfo = parseContactInfo(contactInfo);
         this.medicalHistory = new ArrayList<>(medicalHistory);
@@ -95,6 +95,15 @@ public class Patient {
         assert appointment != null : "Appointment cannot be null";
         assert appointment.getNric().equals(this.id) : "Appointment NRIC must match patient ID";
         appointments.add(appointment);
+    }
+
+    private String checkGender(String gender) throws InvalidInputFormatException {
+        if(gender.equals("M") || gender.equals("F")) {
+            return gender;
+        }
+        else{
+            throw new InvalidInputFormatException("The gender must to be either M (male) or F (female)");
+        }
     }
 
     private LocalDate parseAndValidateDob(String dobStr) throws InvalidInputFormatException {

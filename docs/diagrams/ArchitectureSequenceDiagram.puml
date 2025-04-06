@@ -3,31 +3,37 @@
 actor User
 participant ":UI" as UI
 participant ":Parser" as Parser
-participant ":DeleteCommand" as Command
-participant ":Model" as Model
+participant ":DeletePatientCommand" as Command
+participant ":ManagementSystem" as Management
 participant ":Storage" as Storage
 
-User -> UI : "delete 1"
+User -> UI : "delete-patient S1234567A"
 activate UI
 
-UI -> Parser : parse("delete 1")
+UI -> Parser : parse("delete-patient S1234567A")
 activate Parser
-Parser --> UI : new DeleteCommand(1)
+Parser -> Parser : parseDeletePatient(userInput)
+Parser --> UI : new DeletePatientCommand("S1234567A")
 deactivate Parser
 
-UI -> Command : execute()
+UI -> Command : execute(manager, ui)
 activate Command
 
-Command -> Model : deletePerson(1)
-activate Model
+Command -> Management : deletePatient("S1234567A")
+activate Management
 
-Model -> Storage : saveAddressBook()
+Management -> Storage : savePatients(patients)
 activate Storage
-Storage --> Model
+Storage --> Management
 deactivate Storage
 
-Model --> Command : result
-deactivate Model
+Management --> Command : removedPatient
+deactivate Management
+
+Command -> UI : showPatientDeleted(removedPatient, "S1234567A")
+activate UI
+UI --> Command
+deactivate UI
 
 Command --> UI
 deactivate Command

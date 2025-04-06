@@ -17,7 +17,7 @@ The 'view-patient' feature allows the user to retrieve and view the personal det
 
 **Step 1.** The user launches the application for the first time.
 - The `ClinicEase` will be initialized and load stored patient data.
-- The patient’s details are now ready to view.
+- The patient's details are now ready to view.
 
 **Step 2.** The user executes `view-patient ic/S1234567D` command to view the patient's details.
 - This command lets `ClinicEase` read the user input through the `UI` and pass it to `Parser`.
@@ -29,7 +29,7 @@ The 'view-patient' feature allows the user to retrieve and view the personal det
 **Step 3.** The system calls `execute()` method in `ViewPatientCommand`.
 - This class calls for the patient list in `ManagementSystem`.
 - The system checks if the patient exists in the list:
-    - If the NRIC exists, the system retrieves the patient’s details.
+    - If the NRIC exists, the system retrieves the patient's details.
 
 **Step 4.** If the patient is found, the system calls `showPatientViewed()` from `UI`.
 - The patient's details are displayed to the user.
@@ -73,7 +73,7 @@ Step 3. The system calls `execute()` method in `AddAppointmentCommand`. Then, th
 to add the appointment to the system. `ManagementSystem` checks if the patient exists using `findPatientByNRIC()`. 
 - If the patient is found, the system creates an `Appointment` object and adds it to the appointment list.
 - Conditions the appointment fail to be added and stored:
-  - If the patient’s NRIC does not exist (a `PatientNotFoundException` is thrown).
+  - If the patient's NRIC does not exist (a `PatientNotFoundException` is thrown).
   - If the appointment clashes with another scheduled within 1 hour (an `AppointmentClashException` is thrown).
 
 Step 4. After the appointment is successfully added, `Storage.saveAppointments()` is called to update the stored appointment list.
@@ -144,7 +144,7 @@ without affecting others (e.g., how commands are parsed or executed).
     - **Description:** Remove the separate appointments list in `ManagementSystem` and rely only on per-patient storage.
     
     - **Reason for rejection:** 
-      - **Performance impact:** Aggregating all appointments (e.g., for a doctor’s view) would require
+      - **Performance impact:** Aggregating all appointments (e.g., for a doctor's view) would require
          iterating through every patient, which is inefficient.
       - Features like finding appointments across patients become harder to implement cleanly.
 
@@ -161,7 +161,7 @@ The system loads the stored list of patients and appointments. The user is now r
 **Step 2.**
 The user executes the following command to add a new patient:
 
-add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St
+add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension
 
 This command is read by the `ClinicEase` class and passed to the `Parser`.  
 The `Parser` class identifies the command as `add-patient` and parses the fields. A `Patient` object is then constructed from the parsed data.
@@ -213,7 +213,7 @@ store-history n/John Doe ic/S1234567A h/Diabetes,High Cholesterol
     - If **found**, it splits `"Diabetes,High Cholesterol"` into an array of entries:
         - `"Diabetes"`
         - `"High Cholesterol"`
-    - Then, it appends these entries to the patient’s existing `medicalHistory` list (skipping duplicates).
+    - Then, it appends these entries to the patient's existing `medicalHistory` list (skipping duplicates).
 
 **Step 4.** `ManagementSystem` calls `Storage.savePatients(...)` to persist any changes to the patient data on disk:
 
@@ -221,6 +221,177 @@ store-history n/John Doe ic/S1234567A h/Diabetes,High Cholesterol
 
 Below is a detailed **PlantUML** sequence diagram showing how a `store-history` operation moves through the system and includes the check for a valid patient:
 ![add-appointment](./diagrams/storeMedicalHistorySequence.png)
+
+---
+
+### Prescription Management Feature
+
+The `add-prescription`, `view-prescription`, and `view-all-prescriptions` features allow doctors and medical staff to create and track medication prescriptions for patients within the clinic system. The system ensures that the **patient exists** before adding a prescription and handles the generation of unique prescription IDs and HTML documents for printing.
+
+#### Adding a Prescription
+
+The add-prescription feature allows users to create detailed prescriptions with symptoms, medicines, and optional notes for registered patients.
+
+**Example usage scenario** and how the `add-prescription` mechanism behaves at each step:
+
+Step 1. The user launches the application. The `ClinicEase` is initialized with stored patient, appointment, and prescription data. The user is now ready to add a new prescription.
+
+Step 2. The user executes the command: 
+```
+add-prescription ic/S1234567A s/Fever,Cough m/Paracetamol,Cough syrup nt/Take after meals
+```
+
+This command lets `ClinicEase` read the user input and pass it to the `Parser`. The `Parser` determines that the command is `add-prescription` and creates an `AddPrescriptionCommand` object with a new `Prescription` object.
+
+```java
+public static Command parse(String userInput) throws InvalidInputFormatException, UnknownCommandException {
+    //...
+    case "add-prescription":
+        return new AddPrescriptionCommand(parseAddPrescription(userInput));
+    //...
+}
+```
+
+> [!NOTE]:
+> If the input does not match the expected format, an `InvalidInputFormatException` is thrown. Hence, the prescription will not be successfully added and stored.
+
+Step 3. The system calls `execute()` method in `AddPrescriptionCommand`. This class calls `ManagementSystem.addPrescription(prescription)` to add the prescription to the system. 
+
+The `ManagementSystem` verifies the patient exists using `findPatientByNric()`:
+- If the patient is found, the system generates a proper prescription ID and creates a new `Prescription` object.
+- If the patient's NRIC does not exist, an `IllegalArgumentException` is thrown.
+
+Step 4. After the prescription is successfully added, `Storage.savePrescriptions()` is called to update the stored prescriptions list. If saving fails, an `UnloadedStorageException` is thrown and ClinicEase informs the user.
+
+The following sequence diagram shows how an `add-prescription` operation flows through the system:
+![add-prescription](./diagrams/prescriptionManagementSequence.png)
+
+#### Viewing Prescriptions
+
+The system provides two commands for viewing prescriptions:
+
+1. **`view-all-prescriptions PATIENT_ID`** - Shows all prescriptions for a specific patient.
+2. **`view-prescription PRESCRIPTION_ID`** - Shows details of a specific prescription and generates an HTML version.
+
+**Example usage scenario** for `view-prescription`:
+
+Step 1. The user needs to view a specific prescription and generate its printable HTML version. If the user knows the prescription ID, they can directly proceed to step 2. Otherwise, they may need to first use `view-all-prescriptions` to find the required ID.
+
+Step 2. The user executes the command `view-prescription S1234567A-1`. The `Parser` extracts the prescription ID and creates a `ViewPrescriptionCommand` object.
+
+Step 3. The system calls `execute()` in `ViewPrescriptionCommand`. The system fetches:
+   - The prescription using `ManagementSystem.getPrescriptionById()`
+   - The patient information using `ManagementSystem.viewPatient()`
+
+Step 4. If the prescription is found, the system:
+   - Displays the prescription details to the user
+   - Generates an HTML file with `Storage.savePrescriptionHtml()`
+   - Shows the file location to the user
+
+> [!NOTE]:
+> If the prescription ID is invalid, an error message will be displayed and no HTML will be generated.
+
+#### HTML Prescription Generation
+
+An important feature of the prescription management system is the generation of printable HTML documents. This functionality is embedded within the `Prescription` class:
+
+```java
+public String generateHtml(Patient patient) {
+    StringBuilder html = new StringBuilder();
+    // Generate structured HTML with prescription details
+    // Include patient information when available
+    // Add print button and styling
+    return html.toString();
+}
+```
+
+The generated HTML provides:
+- A professional format for printing
+- All prescription details (ID, timestamp, symptoms, medicines)
+- Patient information when available
+- A print button for easy printing from any browser
+
+#### Why It's Implemented This Way
+
+The current design separates command parsing (`Parser`), command execution (command classes like `AddPrescriptionCommand`), and core logic (`ManagementSystem` and `Prescription`). This structure allows:
+
+- Better modularity by separating different aspects of functionality
+- Improved testability with clear interfaces between components
+- Consistent approach with other features in the system
+- Easy extension for future prescription-related features
+
+The HTML generation approach was chosen as it provides a printable output without requiring additional libraries, while maintaining visual quality needed for medical documentation.
+
+#### Class Structure
+
+The implementation follows these key classes:
+
+1. **Prescription** - Core class representing a prescription with all its attributes and conversion methods.
+2. **Command Classes:**
+   - **AddPrescriptionCommand** - Creates new prescriptions
+   - **ViewPrescriptionCommand** - Displays a prescription and generates HTML
+   - **ViewAllPrescriptionsCommand** - Lists all prescriptions for a patient
+3. **ManagementSystem** - Maintains the list of prescriptions and provides methods to add and retrieve them
+4. **Storage** - Handles saving and loading prescriptions from disk
+
+The class diagram below shows the relationships between these classes:
+![prescription-classes](./diagrams/prescriptionClassDiagram.png)
+
+#### Design Considerations
+
+##### Aspect: Prescription Identification
+
+* **Alternative 1 (current choice):** Patient ID plus sequence number (e.g., "S1234567A-1").
+  * Pros: 
+    * Clear association between patients and their prescriptions
+    * Easy for staff to understand and reference verbally
+    * Intuitive sequential numbering for prescriptions
+  * Cons: 
+    * Requires tracking the last used number for each patient
+
+* **Alternative 2:** Generate UUIDs for prescriptions.
+  * Pros: 
+    * Guaranteed global uniqueness
+    * No need for sequence management
+  * Cons: 
+    * Not human-friendly for verbal reference
+    * No visual connection to the patient ID
+
+##### Aspect: Prescription Output Format
+
+* **Alternative 1 (current choice):** HTML documents for prescriptions.
+  * Pros:
+    * Universal browser support for viewing and printing
+    * No external dependencies required
+    * Responsive design across devices
+  * Cons:
+    * Not a standardized medical document format
+
+* **Alternative 2:** PDF documents.
+  * Pros:
+    * Industry standard format for medical documents
+    * Better control over print layouts
+  * Cons:
+    * Requires external PDF library dependencies
+    * Increases complexity and dependencies
+
+##### Aspect: Storage Format
+
+* **Alternative 1 (current choice):** Simple pipe-delimited text storage.
+  * Pros:
+    * Consistency with other system data formats
+    * Easy to parse and maintain
+    * Human-readable in storage
+  * Cons:
+    * Limited handling of special characters
+
+* **Alternative 2:** JSON format.
+  * Pros:
+    * Better handling of complex data structures
+    * Standard data interchange format
+  * Cons:
+    * Requires additional parsing libraries
+    * Inconsistent with the system's other storage formats
 
 ---
 
@@ -757,7 +928,86 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 
 ---
 
-## 5. Error Handling Scenarios
+## 5. Testing Prescription Management Features
+
+### 5.1 Adding a New Prescription
+
+**Command Format**: `add-prescription ic/PATIENT_ID s/SYMPTOMS m/MEDICINES [nt/NOTES]`
+
+- `[nt/NOTES]` is optional and can include special instructions.
+- Multiple symptoms and medicines can be separated by commas.
+
+**Steps to Test**
+1. Prerequisites: Patient with ID "S9876543B" exists in the system.
+
+2. Input:
+   ```
+   add-prescription ic/S9876543B s/Fever, Cough m/Paracetamol, Cough syrup nt/Take after meals
+   ```
+   * Expected output: Prescription is added. Details of the new prescription shown.
+
+**Additional Test Cases**
+- **Missing medicines field**:
+  ```
+  add-prescription ic/S9876543B s/Fever m/
+  ```
+  * Expected output: Error shown. Missing medicines field.
+
+- **Non-existent patient**:
+  ```
+  add-prescription ic/X1234567Y s/Fever m/Paracetamol
+  ```
+  * Expected output: Error shown. Patient ID does not exist.
+
+---
+
+### 5.2 Viewing Prescriptions
+
+**Command Format**: 
+1. View all for a patient: `view-all-prescriptions PATIENT_ID`
+2. View specific prescription: `view-prescription PRESCRIPTION_ID` 
+
+**Steps to Test**
+1. Prerequisites: At least one prescription exists for patient "S9876543B".
+
+2. Input:
+   ```
+   view-all-prescriptions S9876543B
+   ```
+   * Expected output: List of all prescriptions for the patient shown.
+
+3. Input:
+   ```
+   view-prescription S9876543B-1
+   ```
+   * Expected output: Details of the specific prescription shown. HTML file generated.
+
+**Additional Test Cases**
+- **Invalid prescription ID**:
+  ```
+  view-prescription INVALID-ID
+  ```
+  * Expected output: Error shown. Invalid prescription ID.
+
+---
+
+### 5.3 Generating HTML Prescriptions
+
+**Command Format**: `view-prescription PRESCRIPTION_ID`
+
+**Steps to Test**
+1. Prerequisites: Valid prescription exists with ID "S9876543B-1".
+
+2. Input:
+   ```
+   view-prescription S9876543B-1
+   ```
+   * Expected output: HTML file generated in data/prescriptions folder.
+   * Verification: Open the generated HTML file in a browser. Check that all prescription details are correctly displayed.
+
+---
+
+## 6. Error Handling Scenarios
 
 - **Unknown Commands**
 - If you type something invalid like `randomCommand`, the system should respond:
@@ -771,50 +1021,13 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 
 ---
 
-## 6. Comprehensive Test Workflow
+## 7. Comprehensive Test Workflow
 
 1. **Add multiple patients** and confirm they appear correctly with `list-patient`.
 2. **Add detailed medical histories** with `store-history`; verify them using `view-history`.
 3. **Add appointments** to different patients and use `list-appointment`, `sort-appointment`, `mark-appointment`, etc. to test appointment functionality.
-4. **Delete a patient** and confirm the removal.
-5. **Exit** the program with `bye`.
-
----
-
-### Managing Prescriptions
-
-1. Adding a new prescription
-
-   Prerequisites: Patient with ID "S9876543B" exists in the system.
-
-   Test case: `add-prescription ic/S9876543B s/Fever, Cough m/Paracetamol, Cough syrup nt/Take after meals`
-   * Expected: Prescription is added. Details of the new prescription shown.
-
-   Test case: `add-prescription ic/S9876543B s/Fever m/`
-   * Expected: Error shown. Missing medicines field.
-
-   Test case: `add-prescription ic/X1234567Y s/Fever m/Paracetamol`
-   * Expected: Error shown. Patient ID does not exist.
-
-2. Viewing prescriptions
-
-   Prerequisites: At least one prescription exists for patient "S9876543B".
-
-   Test case: `view-all-prescriptions S9876543B`
-   * Expected: List of all prescriptions for the patient shown.
-
-   Test case: `view-prescription S9876543B-1`
-   * Expected: Details of the specific prescription shown. HTML file generated.
-
-   Test case: `view-prescription INVALID-ID`
-   * Expected: Error shown. Invalid prescription ID.
-
-3. Generating HTML prescriptions
-
-   Prerequisites: Valid prescription exists with ID "S9876543B-1".
-
-   Test case: `view-prescription S9876543B-1`
-   * Expected: HTML file generated in data/prescriptions folder.
-   * Verify: Open the generated HTML file in a browser. Check that all prescription details are correctly displayed.
+4. **Add prescriptions** to patients and test the prescription view and HTML generation features.
+5. **Delete a patient** and confirm the removal.
+6. **Exit** the program with `bye`.
 
 ---

@@ -1,13 +1,17 @@
 package manager;
 
+import exception.PatientNotFoundException;
 import exception.AppointmentClashException;
 import exception.DuplicatePatientIDException;
-import exception.PatientNotFoundException;
+import exception.InvalidInputFormatException;
 import exception.UnloadedStorageException;
 import miscellaneous.Ui;
 import storage.Storage;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,8 +29,8 @@ public class ManagementSystem {
         prescriptions = new ArrayList<>();
     }
 
-    public ManagementSystem(List<Patient> loadedPatients, List<Appointment> loadedAppointments, 
-                           List<Prescription> loadedPrescriptions) {
+    public ManagementSystem(List<Patient> loadedPatients, List<Appointment> loadedAppointments,
+                            List<Prescription> loadedPrescriptions) {
         assert loadedPatients != null : "Patient list cannot be null";
         assert loadedAppointments != null : "Appointment list cannot be null";
         assert loadedPrescriptions != null : "Prescription list cannot be null";
@@ -65,7 +69,7 @@ public class ManagementSystem {
     public Patient deletePatient(String nric) throws UnloadedStorageException {
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
         assert patients != null : "Patient list cannot be null";
-        
+
         for (Patient patient : patients) {
             if (patient.getId().equals(nric)) {
                 patients.remove(patient);
@@ -94,7 +98,8 @@ public class ManagementSystem {
 
     //@@author jyukuan
     public void editPatient(String nric, String newName, String newDob, String newGender, String newAddress,
-                            String newPhone) throws UnloadedStorageException, PatientNotFoundException {
+                            String newPhone) throws UnloadedStorageException, PatientNotFoundException,
+            InvalidInputFormatException {
 
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
         assert patients != null : "Patient list cannot be null";
@@ -107,8 +112,18 @@ public class ManagementSystem {
             patient.setName(newName);
         }
         if (newDob != null && !newDob.isBlank()) {
-            patient.setDob(newDob);
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate parsedDob = LocalDate.parse(newDob, formatter);
+                if (parsedDob.isAfter(LocalDate.now())) {
+                    throw new InvalidInputFormatException("Date of birth must be before today.");
+                }
+                patient.setDob(parsedDob);
+            } catch (DateTimeParseException e) {
+                throw new InvalidInputFormatException("Invalid date format. Use dd-MM-yyyy.");
+            }
         }
+
         if (newGender != null && !newGender.isBlank()) {
             patient.setGender(newGender);
         }
@@ -122,19 +137,12 @@ public class ManagementSystem {
         System.out.println("Patient with NRIC " + nric + " updated successfully.");
     }
 
-    public void storeMedicalHistory(String name, String nric, String medHistory) throws PatientNotFoundException,
+    public void storeMedicalHistory(String nric, String medHistory) throws PatientNotFoundException,
             UnloadedStorageException {
         Patient existingPatient = findPatientByNric(nric);
 
-        assert name != null && !name.isBlank() : "Name must not be null or blank";
-        assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
-        assert medHistory != null && !medHistory.isBlank() : "Medical history must not be null or blank";
-
-
         if (existingPatient == null) {
-            throw new PatientNotFoundException("Patient with NRIC not found. Patient's history can not be added");
-        } else {
-            Ui.showLine();
+            throw new PatientNotFoundException("Patient with NRIC " + nric + " not found. Cannot add history.");
         }
 
         String[] historyEntries = medHistory.split(",\\s*");
@@ -143,10 +151,13 @@ public class ManagementSystem {
                 existingPatient.getMedicalHistory().add(entry.trim());
             }
         }
+
         Storage.savePatients(patients);
-        System.out.println("Medical history added for " + name + " (NRIC: " + nric + ").");
+        Ui.showLine();
+        System.out.println("Medical history added for " + existingPatient.getName() + " (NRIC: " + nric + ").");
         Ui.showLine();
     }
+
 
     public void viewMedicalHistoryByNric(String nric) throws PatientNotFoundException {
         Patient foundPatients = findPatientByNric(nric.trim());
@@ -230,7 +241,7 @@ public class ManagementSystem {
         assert patients != null : "Patient list cannot be null";
 
         // Check if there is any scheduled appointment in the list clashing with this newly-added one
-        for (Appointment appointmentInList : appointments)  {
+        for (Appointment appointmentInList : appointments) {
             long timeDiff = Math.abs(Duration.between(appointmentInList.getDateTime(),
                     appointment.getDateTime()).toMinutes());
             if (timeDiff < 60) {
@@ -251,7 +262,7 @@ public class ManagementSystem {
     public Appointment deleteAppointment(String apptId) throws UnloadedStorageException {
         assert apptId != null && !apptId.isBlank() : "Appointment ID cannot be null or blank";
         assert appointments != null : "Appointment list cannot be null";
-        
+
         for (Appointment appointment : appointments) {
             if (appointment.getId().equalsIgnoreCase(apptId)) {
                 appointments.remove(appointment);
@@ -313,13 +324,13 @@ public class ManagementSystem {
     public List<Prescription> getPrescriptions() {
         return prescriptions;
     }
-    
+
     //@@author Basudeb2005
-    public Prescription addPrescription(Prescription prescription) 
+    public Prescription addPrescription(Prescription prescription)
             throws IllegalArgumentException, UnloadedStorageException {
         assert prescription != null : "Prescription cannot be null";
         assert patients != null : "Patient list cannot be null";
-        
+
         Patient patient = findPatientByNric(prescription.getPatientId());
         if (patient == null) {
             throw new IllegalArgumentException("Patient with NRIC: " + prescription.getPatientId() + " not found");
@@ -332,25 +343,25 @@ public class ManagementSystem {
                 prescriptionCount++;
             }
         }
-        
+
         String prescriptionId = prescription.getPatientId() + "-" + prescriptionCount;
-        
+
         // Create a new prescription with updated ID
         Prescription newPrescription = new Prescription(
-            prescription.getPatientId(),
-            prescriptionId,
-            prescription.getTimestamp(),
-            prescription.getSymptoms(),
-            prescription.getMedicines(),
-            prescription.getNotes()
+                prescription.getPatientId(),
+                prescriptionId,
+                prescription.getTimestamp(),
+                prescription.getSymptoms(),
+                prescription.getMedicines(),
+                prescription.getNotes()
         );
-        
+
         prescriptions.add(newPrescription);
         Storage.savePrescriptions(prescriptions);
-        
+
         return newPrescription;
     }
-    
+
     //@@author Basudeb2005
     public List<Prescription> getPrescriptionsForPatient(String patientId) {
         List<Prescription> patientPrescriptions = new ArrayList<>();
@@ -361,7 +372,7 @@ public class ManagementSystem {
         }
         return patientPrescriptions;
     }
-    
+
     //@@author Basudeb2005
     public Prescription getPrescriptionById(String prescriptionId) {
         for (Prescription prescription : prescriptions) {

@@ -1,5 +1,10 @@
 package manager;
 
+import exception.InvalidInputFormatException;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,29 +12,29 @@ public class Patient {
 
     private String id;
     private String name;
-    private String dob;
+    private LocalDate dob;
     private String contactInfo;
     private String gender;
     private String address;
     private final List<String> medicalHistory;
     private final List<Appointment> appointments;
 
-    public Patient(String id, String name, String dob, String gender, String address,
-                   String contactInfo, List<String> medicalHistory) {
+    public Patient(String id, String name, String dobStr, String gender, String address,
+                   String contactInfo, List<String> medicalHistory) throws InvalidInputFormatException {
         assert id != null && !id.isBlank() : "Patient ID cannot be null or blank";
         assert name != null && !name.isBlank() : "Patient name cannot be null or blank";
-        assert dob != null : "Date of birth cannot be null";
+        assert dobStr != null : "Date of birth cannot be null";
         assert gender != null : "Gender cannot be null";
         assert address != null : "Address cannot be null";
         assert contactInfo != null : "Contact info cannot be null";
         assert medicalHistory != null : "Medical history list cannot be null";
         
-        this.id = id;
+        this.id = parseValidIC(id);
         this.name = name;
-        this.dob = dob;
-        this.gender = gender;
+        this.dob = parseAndValidateDob(dobStr);
+        this.gender = checkGender(gender);
         this.address = address;
-        this.contactInfo = contactInfo;
+        this.contactInfo = parseContactInfo(contactInfo);
         this.medicalHistory = new ArrayList<>(medicalHistory);
         this.appointments = new ArrayList<>();
     }
@@ -42,7 +47,7 @@ public class Patient {
         return name;
     }
 
-    public String getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
@@ -66,7 +71,7 @@ public class Patient {
         this.name = name;
     }
 
-    public void setDob(String dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
@@ -92,6 +97,52 @@ public class Patient {
         appointments.add(appointment);
     }
 
+    private String parseValidIC(String ic) throws InvalidInputFormatException {
+        if (ic == null || ic.length() != 9) {
+            throw new InvalidInputFormatException("IC must be exactly 9 characters long.");
+        }
+
+        String prefix = ic.substring(0, 1).toUpperCase();
+        String numberPart = ic.substring(1, 8);
+        String suffix = ic.substring(8).toUpperCase();
+
+        if (!prefix.matches("[STFGM]")) {
+            throw new InvalidInputFormatException("IC must start with S, T, F, G, or M.");
+        }
+
+        if (!numberPart.matches("\\d{7}")) {
+            throw new InvalidInputFormatException("IC must contain 7 digits after the prefix.");
+        }
+
+        if (!suffix.matches("[A-Z]")) {
+            throw new InvalidInputFormatException("IC must end with an uppercase letter.");
+        }
+
+        return ic;
+    }
+
+    private String checkGender(String gender) throws InvalidInputFormatException {
+        if(gender.equals("M") || gender.equals("F")) {
+            return gender;
+        }
+        else{
+            throw new InvalidInputFormatException("The gender must to be either M (male) or F (female)");
+        }
+    }
+
+    private LocalDate parseAndValidateDob(String dobStr) throws InvalidInputFormatException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        try {
+            LocalDate dob = LocalDate.parse(dobStr, formatter);
+            if (dob.isAfter(LocalDate.now())) {
+                throw new InvalidInputFormatException("Date of birth must be before the current date.");
+            }
+            return dob;
+        } catch (DateTimeParseException e) {
+            throw new InvalidInputFormatException("Invalid date format. Use dd-MM-yyyy.");
+        }
+    }
+
     public void deleteAppointment(String apptId) {
         assert apptId != null && !apptId.isBlank() : "Appointment ID cannot be null or blank";
         for (Appointment appt : appointments) {
@@ -102,6 +153,18 @@ public class Patient {
         }
     }
 
+    private String parseContactInfo(String contactInfo) throws InvalidInputFormatException {
+        try {
+            if (contactInfo.length() != 8 || !contactInfo.matches("\\d+")) {
+                throw new InvalidInputFormatException("Contact number must be 8 digits.");
+            }
+            return contactInfo;
+        } catch (NullPointerException e) {
+            throw new InvalidInputFormatException("Contact number cannot be null.");
+        }
+    }
+
+
     @Override
     public String toString() {
         String formattedMedicalHistory;
@@ -111,6 +174,7 @@ public class Patient {
             formattedMedicalHistory = String.join(", ", medicalHistory);
         }
 
+
         String result = String.format(
                 "Patient NRIC: %s\n"
                         + "Name: %s\n"
@@ -119,7 +183,8 @@ public class Patient {
                         + "Address: %s\n"
                         + "Contact: %s\n"
                         + "Medical History: %s",
-                id, name, dob, gender, address, contactInfo, formattedMedicalHistory);
+                id, name, dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                gender, address, contactInfo, formattedMedicalHistory);
 
         if (appointments.isEmpty()) {
             result += "\nAppointments: None";
@@ -145,7 +210,7 @@ public class Patient {
                         + "Gender: %s\n   "
                         + "Address: %s\n   "
                         + "Contact: %s",
-                id, name, dob, gender, address, contactInfo);
+                id, name, dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), gender, address, contactInfo);
 
         if (medicalHistory.isEmpty()) {
             result += "\n   Medical History: None";
@@ -174,7 +239,7 @@ public class Patient {
 
     public String toFileFormat() {
         String history = String.join(", ", this.medicalHistory);
-        return this.id + "|" + this.name + "|" + this.dob + "|" + this.gender + "|"
-                + this.address + "|" + this.contactInfo + "|" + history;
+        return this.id + "|" + this.name + "|" + dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                + "|" + this.gender + "|" + this.address + "|" + this.contactInfo + "|" + history;
     }
 }

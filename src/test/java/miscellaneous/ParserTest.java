@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 class ParserTest {
 
     @Test
@@ -40,7 +39,6 @@ class ParserTest {
     @Test
     void parseAddAppointment_invalidFormat_expectException() {
         String input = "add-appointment ic/S1234567D dt/2025-03-19 t/1200";
-
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseAddAppointment(input));
     }
 
@@ -108,7 +106,6 @@ class ParserTest {
     @Test
     void parseDeleteAppointment_invalidAppointmentId_expectException() {
         String input = "delete-appointment 100";
-
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseDeleteAppointment(input));
     }
 
@@ -122,9 +119,8 @@ class ParserTest {
 
     @Test
     void parseAddPatient_invalidInputFormat_expectException() {
-        String input = "add-patient n/John Doe ic/ dob/12-12-1999 g/M " +
-                "p/98765432 a/123 Main Street h/Diabetes, Hypertension";
-
+        String input = "add-patient n/John Doe ic/ dob/12-12-1999 g/M "
+                + "p/98765432 a/123 Main Street h/Diabetes, Hypertension";
         assertThrows(InvalidInputFormatException.class, () -> Parser.parseDeleteAppointment(input));
     }
 
@@ -151,30 +147,26 @@ class ParserTest {
 
     @Test
     void parseViewHistory_invalidInput_expectException() {
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseViewHistory("view-history"));
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseViewHistory("view-history  "));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseViewHistory("view-history"));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseViewHistory("view-history  "));
     }
 
     @Test
     void parseStoreHistory_validInput_expectSuccess() throws InvalidInputFormatException {
-        String[] result = Parser.parseStoreHistory("store-history n/John Doe ic/S1234567D h/Allergic to nuts");
-        assertEquals("John Doe", result[0]);
-        assertEquals("S1234567D", result[1]);
-        assertEquals("Allergic to nuts", result[2]);
+        String[] result = Parser.parseStoreHistory("store-history ic/S1234567D h/Allergic to nuts");
+        assertEquals("S1234567D", result[0]);
+        assertEquals("Allergic to nuts", result[1]);
     }
 
     @Test
     void parseStoreHistory_missingFields_expectException() {
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseStoreHistory("store-history ic/S1234567D h/Allergic to nuts"));
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseStoreHistory("store-history n/John Doe h/Allergic to nuts"));
-        assertThrows(InvalidInputFormatException.class, () ->
-                Parser.parseStoreHistory("store-history n/John Doe ic/S1234567D"));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseStoreHistory("store-history ic/S1234567D"));
+        assertThrows(InvalidInputFormatException.class,
+                () -> Parser.parseStoreHistory("store-history h/Allergic to nuts"));
     }
-
 
     @Test
     void parse_addAppointmentCommand_expectAddAppointmentCommand() throws InvalidInputFormatException,
@@ -247,4 +239,5 @@ class ParserTest {
     void parse_emptyInput_expectException() {
         assertThrows(InvalidInputFormatException.class, () -> Parser.parse(""));
     }
+
 }

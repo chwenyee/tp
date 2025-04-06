@@ -34,7 +34,7 @@ public class Patient {
         this.dob = parseAndValidateDob(dobStr);
         this.gender = gender;
         this.address = address;
-        this.contactInfo = contactInfo;
+        this.contactInfo = parseContactInfo(contactInfo);
         this.medicalHistory = new ArrayList<>(medicalHistory);
         this.appointments = new ArrayList<>();
     }
@@ -119,6 +119,18 @@ public class Patient {
             }
         }
     }
+
+    private String parseContactInfo(String contactInfo) throws InvalidInputFormatException {
+        try {
+            if (contactInfo.length() != 8 || !contactInfo.matches("\\d+")) {
+                throw new InvalidInputFormatException("Contact number must be 8 digits.");
+            }
+            return contactInfo;
+        } catch (NullPointerException e) {
+            throw new InvalidInputFormatException("Contact number cannot be null.");
+        }
+    }
+
 
     @Override
     public String toString() {

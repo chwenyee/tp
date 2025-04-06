@@ -78,6 +78,7 @@ Adds a new patient to the system with their credentials.
 Format: `add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS h/MEDICAL_HISTORY`
 
 * The `NRIC` must be unique to the existing ones in the system.
+* All inputs doesn't handle every ASCII characters, only alphabets and numbers.
 
 Example of usage: 
 

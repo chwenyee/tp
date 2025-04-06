@@ -9,6 +9,58 @@
 
 ---
 
+## Architecture
+
+![Architecture Diagram](diagrams/ArchitectureDiagram.png)
+
+The **Architecture Diagram** given above explains the high-level design of the ClinicEase application. The diagram shows the components of the system organized by packages and how they interact with each other.
+
+Given below is a quick overview of each component and how they interact with each other:
+
+### Main components of the architecture
+
+The application consists of the following components:
+
+* **miscellaneous**: Contains the user interface and parser components.
+  * **UI**: Handles user interaction, displays information to the user, and reads commands from the console.
+  * **Parser**: Processes user input strings and converts them into appropriate Command objects.
+
+* **command**: Follows the Command pattern to implement various operations.
+  * **Command**: An abstract class that all specific commands extend.
+  * **Various Commands**: Specific command classes (AddPatientCommand, DeletePatientCommand, etc.) that implement different operations.
+
+* **manager**: Contains entity classes and the management system that coordinates operations on them.
+  * **Entity Classes**: Patient, Appointment, and Prescription classes that represent domain objects.
+  * **ManagementSystem**: The central coordinator that manages collections of entities and implements business logic.
+
+* **storage**: Handles data persistence.
+  * **Storage**: Saves and loads data to/from files on disk.
+
+* **exception**: Contains custom exception classes for handling various error conditions.
+  * Various exceptions for handling input validation, patient lookup failures, etc.
+
+### How the architecture components interact with each other
+
+The **Sequence Diagram** below shows how the components interact for the scenario where the user executes a `delete-patient` command:
+
+![Sequence Diagram](diagrams/ArchitectureSequenceDiagram.png)
+
+The typical flow of execution in the system is as follows:
+
+1. User enters a command through the UI
+2. UI passes the command string to the Parser
+3. Parser analyzes the command and creates the appropriate Command object
+4. Command object executes the operation, interacting with the ManagementSystem
+5. ManagementSystem updates its internal state and may request the Storage to save changes
+6. Results are displayed to the user through the UI
+
+This architecture follows several design principles:
+
+1. **Single Responsibility Principle**: Each component has a specific responsibility
+2. **Separation of Concerns**: UI logic is separated from business logic which is separated from data persistence logic
+3. **Command Pattern**: Commands encapsulate actions and provide a uniform interface for execution
+4. **Entity-Control Separation**: Entity classes (Patient, Appointment, Prescription) are separate from the controlling ManagementSystem that operates on them
+
 ## Design & implementation
 
 ### View patient feature
@@ -663,8 +715,7 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
    - Run the compiled main class:
      ```
      java ClinicEase
-     ```
-   - You should see a welcome message that looks like this:
+     ```   - You should see a welcome message that looks like this:
      ```
      --------------------------------------------------------------------------------
      Welcome to ClinicEase!
@@ -1031,3 +1082,4 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
 6. **Exit** the program with `bye`.
 
 ---
+

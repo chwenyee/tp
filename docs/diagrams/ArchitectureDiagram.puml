@@ -1,0 +1,28 @@
+@startuml
+actor User
+
+component UI
+component Parser
+component Command
+component Manager
+component Model
+component Storage
+database FileSystem
+
+' Model contains patient, prescription, and appointment
+note right of Model
+  Patient
+  Prescription
+  Appointment
+end note
+
+User --> UI
+UI ..> Parser
+Parser ..> Command
+Command --> Manager
+Manager --> Model
+Manager --> Storage
+UI --> Command
+Storage --> FileSystem
+
+@enduml 

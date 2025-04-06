@@ -1,0 +1,44 @@
+@startuml
+
+actor User
+participant ":UI" as UI
+participant ":Parser" as Parser
+participant ":DeletePatientCommand" as Command
+participant ":ManagementSystem" as Management
+participant ":Storage" as Storage
+
+User -> UI : "delete-patient S1234567A"
+activate UI
+
+UI -> Parser : parse("delete-patient S1234567A")
+activate Parser
+Parser -> Parser : parseDeletePatient(userInput)
+Parser --> UI : new DeletePatientCommand("S1234567A")
+deactivate Parser
+
+UI -> Command : execute(manager, ui)
+activate Command
+
+Command -> Management : deletePatient("S1234567A")
+activate Management
+
+Management -> Storage : savePatients(patients)
+activate Storage
+Storage --> Management
+deactivate Storage
+
+Management --> Command : removedPatient
+deactivate Management
+
+Command -> UI : showPatientDeleted(removedPatient, "S1234567A")
+activate UI
+UI --> Command
+deactivate UI
+
+Command --> UI
+deactivate Command
+
+UI --> User
+deactivate UI
+
+@enduml 

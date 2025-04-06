@@ -170,7 +170,7 @@ Expected Output:
 <br>
 
 ### Editing a specified patient: `edit-patient`
-Displays a list of all registered patients in the system with details provided.
+Edits a specific patient credentials by NRIC.
 
 Format: `edit-patient ic/NRIC ATTRIBUTE`
 

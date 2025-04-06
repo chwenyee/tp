@@ -8,23 +8,26 @@ ClinicEase is an application designed to assist doctors in managing patient reco
 ## Table of Contents
 - [Quick Start](#quick-start)
 - [Features](#features-)
-    - [Adding a new patient: `add-patient`](#adding-a-new-patient--add-patient)
-    - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
-    - [Listing all patients: `list-patient`](#listing-all-patients-list-patient)
-    - [Editing a specified patient: `edit-patient`](#editing-a-specified-patient-edit-patient)
-    - [Adding an appointment: `add-appointment`](#adding-an-appointment-add-appointment)
-    - [Deleting an appointment: `delete-appointment`](#deleting-an-appointment-delete-appointment)
-    - [Sorting appointments: `sort-appointment`](#sorting-appointments-sort-appointment)
-    - [Marking an appointment as done: `mark-appointment`](#marking-an-appointment-as-done-mark-appointment)
-    - [Unmarking a completed appointment: `unmark-appointment`](#unmarking-a-completed-appointment-unmark-appointment)
-    - [Finding a patient's appointments: `find-appointment`](#finding-a-patients-appointments-find-appointment)
-    - [Managing Prescriptions](#managing-prescriptions)
+    - Managing Patients
+        - [Adding a new patient: `add-patient`](#adding-a-new-patient--add-patient)
+        - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
+        - [Listing all patients: `list-patient`](#listing-all-patients-list-patient)
+        - [Editing a specified patient: `edit-patient`](#editing-a-specified-patient-edit-patient)
+    - Managing Appointments
+        - [Adding an appointment: `add-appointment`](#adding-an-appointment-add-appointment)
+        - [Deleting an appointment: `delete-appointment`](#deleting-an-appointment-delete-appointment)
+        - [Sorting appointments: `sort-appointment`](#sorting-appointments-sort-appointment)
+        - [Marking an appointment as done: `mark-appointment`](#marking-an-appointment-as-done-mark-appointment)
+        - [Unmarking a completed appointment: `unmark-appointment`](#unmarking-a-completed-appointment-unmark-appointment)
+        - [Finding a patient's appointments: `find-appointment`](#finding-a-patients-appointments-find-appointment)
+    - Managing Prescriptions
         - [Adding a prescription: `add-prescription`](#adding-a-prescription-add-prescription)
         - [Viewing all prescriptions: `view-all-prescriptions`](#viewing-all-prescriptions-view-all-prescriptions)
         - [Viewing specific prescription: `view-prescription`](#viewing-specific-prescription-view-prescription)
-    - [Adding medical history: `store-history`](#adding-medical-history-store-history)
-    - [Viewing medical history: `view-history`](#viewing-medical-history-view-history)
-    - [Editing medical history: `edit-history`](#editing-medical-history-edit-history)
+    - Updating Medical History
+        - [Adding medical history: `store-history`](#adding-medical-history-store-history)
+        - [Viewing medical history: `view-history`](#viewing-medical-history-view-history)
+        - [Editing medical history: `edit-history`](#editing-medical-history-edit-history)
     - [Exiting the program: `bye`](#exiting-the-program-bye)
 - [FAQ](#faq)
 - [Known Issues](#known-issues)
@@ -500,9 +503,6 @@ Format: `bye`
 --- 
 
 ## Known Issues
-1. The parameter `NRIC` can take in any String format.
-2. The parameter `BIRTHDATE` doesn't have to be a valid past date.
-3. The parameter `PHONE` 
 
 ## Command Summary
 

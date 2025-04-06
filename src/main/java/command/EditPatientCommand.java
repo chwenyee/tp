@@ -1,9 +1,14 @@
 package command;
 
+import exception.InvalidInputFormatException;
 import exception.PatientNotFoundException;
 import exception.UnloadedStorageException;
 import manager.ManagementSystem;
 import miscellaneous.Ui;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class EditPatientCommand extends Command {
 
@@ -15,13 +20,24 @@ public class EditPatientCommand extends Command {
     }
 
     @Override
-    public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException, PatientNotFoundException {
+    public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException,
+            PatientNotFoundException, InvalidInputFormatException {
         String nric   = details[0];
         String name   = details[1];
         String dob    = details[2];
         String gender = details[3];
         String addr   = details[4];
         String phone  = details[5];
+
+        if (dob != null && !dob.isBlank()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            try {
+                LocalDate.parse(dob, formatter);
+            } catch (DateTimeParseException e) {
+                ui.showError("Invalid date format for Date of Birth! Please use yyyy-MM-dd (e.g., 1990-05-12).");
+                return;
+            }
+        }
 
         manager.editPatient(nric, name, dob, gender, addr, phone);
         Ui.showLine();

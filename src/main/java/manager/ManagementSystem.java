@@ -1,13 +1,17 @@
 package manager;
 
+import exception.PatientNotFoundException;
 import exception.AppointmentClashException;
 import exception.DuplicatePatientIDException;
-import exception.PatientNotFoundException;
+import exception.InvalidInputFormatException;
 import exception.UnloadedStorageException;
 import miscellaneous.Ui;
 import storage.Storage;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -69,7 +73,10 @@ public class ManagementSystem {
         for (Patient patient : patients) {
             if (patient.getId().equals(nric)) {
                 patients.remove(patient);
+                // delete all appointments associated with a patient to be deleted
+                appointments.removeIf(appointment -> appointment.getNric().equals(nric));
                 Storage.savePatients(patients);
+                Storage.saveAppointments(appointments);
                 return patient;
             }
         }
@@ -91,7 +98,8 @@ public class ManagementSystem {
 
     //@@author jyukuan
     public void editPatient(String nric, String newName, String newDob, String newGender, String newAddress,
-                            String newPhone) throws UnloadedStorageException, PatientNotFoundException {
+                            String newPhone) throws UnloadedStorageException, PatientNotFoundException,
+                            InvalidInputFormatException {
 
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
         assert patients != null : "Patient list cannot be null";
@@ -104,8 +112,18 @@ public class ManagementSystem {
             patient.setName(newName);
         }
         if (newDob != null && !newDob.isBlank()) {
-            patient.setDob(newDob);
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate parsedDob = LocalDate.parse(newDob, formatter);
+                if (parsedDob.isAfter(LocalDate.now())) {
+                    throw new InvalidInputFormatException("Date of birth must be before today.");
+                }
+                patient.setDob(parsedDob);
+            } catch (DateTimeParseException e) {
+                throw new InvalidInputFormatException("Invalid date format. Use dd-MM-yyyy.");
+            }
         }
+
         if (newGender != null && !newGender.isBlank()) {
             patient.setGender(newGender);
         }
@@ -119,19 +137,12 @@ public class ManagementSystem {
         System.out.println("Patient with NRIC " + nric + " updated successfully.");
     }
 
-    public void storeMedicalHistory(String name, String nric, String medHistory) throws PatientNotFoundException,
+    public void storeMedicalHistory(String nric, String medHistory) throws PatientNotFoundException,
             UnloadedStorageException {
         Patient existingPatient = findPatientByNric(nric);
 
-        assert name != null && !name.isBlank() : "Name must not be null or blank";
-        assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
-        assert medHistory != null && !medHistory.isBlank() : "Medical history must not be null or blank";
-
-
         if (existingPatient == null) {
-            throw new PatientNotFoundException("Patient with NRIC not found. Patient's history can not be added");
-        } else {
-            Ui.showLine();
+            throw new PatientNotFoundException("Patient with NRIC " + nric + " not found. Cannot add history.");
         }
 
         String[] historyEntries = medHistory.split(",\\s*");
@@ -140,10 +151,13 @@ public class ManagementSystem {
                 existingPatient.getMedicalHistory().add(entry.trim());
             }
         }
+
         Storage.savePatients(patients);
-        System.out.println("Medical history added for " + name + " (NRIC: " + nric + ").");
+        Ui.showLine();
+        System.out.println("Medical history added for " + existingPatient.getName() + " (NRIC: " + nric + ").");
         Ui.showLine();
     }
+
 
     public void viewMedicalHistoryByNric(String nric) throws PatientNotFoundException {
         Patient foundPatients = findPatientByNric(nric.trim());

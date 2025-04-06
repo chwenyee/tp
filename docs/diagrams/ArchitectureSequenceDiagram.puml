@@ -1,44 +1,38 @@
 @startuml
-actor User as user
-participant ":UI" as ui
-participant ":Parser" as parser
-participant ":AddPatientCommand" as command
-participant ":ManagementSystem" as model
-participant ":Storage" as storage
 
-user -> ui : "add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St"
-activate ui
+actor User
+participant ":UI" as UI
+participant ":Parser" as Parser
+participant ":DeleteCommand" as Command
+participant ":Model" as Model
+participant ":Storage" as Storage
 
-ui -> parser : parse(userInput)
-activate parser
-parser -> parser : parseAddPatient(userInput)
-parser --> ui : AddPatientCommand
-deactivate parser
+User -> UI : "delete 1"
+activate UI
 
-ui -> command : execute(model, ui)
-activate command
+UI -> Parser : parse("delete 1")
+activate Parser
+Parser --> UI : new DeleteCommand(1)
+deactivate Parser
 
-command -> model : addPatient(patient)
-activate model
+UI -> Command : execute()
+activate Command
 
-model -> model : validate patient
-model -> storage : savePatients(patients)
-activate storage
-storage --> model
-deactivate storage
+Command -> Model : deletePerson(1)
+activate Model
 
-model --> command
-deactivate model
+Model -> Storage : saveAddressBook()
+activate Storage
+Storage --> Model
+deactivate Storage
 
-command -> ui : showPatientAdded(patients)
-activate ui
-ui --> command
-deactivate ui
+Model --> Command : result
+deactivate Model
 
-command --> ui
-deactivate command
+Command --> UI
+deactivate Command
 
-ui --> user
-deactivate ui
+UI --> User
+deactivate UI
 
 @enduml 

@@ -16,8 +16,14 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+<<<<<<< HEAD
  * Handles saving and loading of patient, appointment, and prescription data
  * to and from the local file system.
+=======
+ * Handles data persistence for the clinic management system.
+ * Provides methods for saving and loading patients, appointments, prescriptions, 
+ * and generating HTML prescription documents.
+>>>>>>> AddJavaDoc
  */
 public class Storage {
     private static String directoryPath;
@@ -28,9 +34,16 @@ public class Storage {
     private static Patient patients;
 
     /**
+<<<<<<< HEAD
      * Initializes storage paths based on a given directory.
      *
      * @param directory The directory to store data files in.
+=======
+     * Constructs a Storage object with specified directory.
+     * Initializes file paths for patients, appointments, and prescriptions.
+     *
+     * @param directory The root directory for storage files
+>>>>>>> AddJavaDoc
      */
     public Storage(String directory) {
         directoryPath = directory;
@@ -41,10 +54,19 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Saves a list of patients to file.
      *
      * @param patientList The list of patients to save.
      * @throws UnloadedStorageException If storage is not initialized.
+=======
+     * Saves patients to file storage.
+     * Writes each patient in the list to the patient file in a formatted string.
+     *
+     * @param patientList The list of patients to save
+     * @throws UnloadedStorageException If the storage was not properly initialized
+     *         or if there was an error saving to file
+>>>>>>> AddJavaDoc
      */
     public static void savePatients(List<Patient> patientList) throws UnloadedStorageException {
         if (directoryPath == null || patientFilePath == null) {
@@ -67,10 +89,19 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Loads patients from file.
      *
      * @return A list of patients.
      * @throws UnloadedStorageException If patient data cannot be loaded.
+=======
+     * Loads patients from file storage.
+     * Reads and parses patient data from the patient file.
+     *
+     * @return A list of Patient objects loaded from file
+     * @throws UnloadedStorageException If there was an error reading from the file
+     *         or if the data could not be properly parsed
+>>>>>>> AddJavaDoc
      */
     public static List<Patient> loadPatients() throws UnloadedStorageException {
         List<Patient> patients = new ArrayList<>();
@@ -95,10 +126,19 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Saves a list of appointments to file.
      *
      * @param appointmentList The list of appointments to save.
      * @throws UnloadedStorageException If storage is not initialized.
+=======
+     * Saves appointments to file storage.
+     * Writes the running ID counter and each appointment in the list to the appointment file.
+     *
+     * @param appointmentList The list of appointments to save
+     * @throws UnloadedStorageException If the storage was not properly initialized
+     *         or if there was an error saving to file
+>>>>>>> AddJavaDoc
      */
     public static void saveAppointments(List<Appointment> appointmentList) throws UnloadedStorageException {
         if (directoryPath == null || appointmentFilePath == null) {
@@ -124,11 +164,22 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Loads appointments from file and links them to their corresponding patients.
      *
      * @param system The management system containing the patient list.
      * @return A list of appointments.
      * @throws UnloadedStorageException If appointment data cannot be loaded.
+=======
+     * Loads appointments from file storage.
+     * Reads and parses appointment data from the appointment file.
+     * Also adds appointments to their respective patients.
+     *
+     * @param system The management system used to find patients for appointment association
+     * @return A list of Appointment objects loaded from file
+     * @throws UnloadedStorageException If there was an error reading from the file
+     *         or if the data could not be properly parsed
+>>>>>>> AddJavaDoc
      */
     public static List<Appointment> loadAppointments(ManagementSystem system) throws UnloadedStorageException {
         List<Appointment> appointments = new ArrayList<>();
@@ -176,10 +227,19 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Saves a list of prescriptions to file.
      *
      * @param prescriptionList The list of prescriptions to save.
      * @throws UnloadedStorageException If storage is not initialized.
+=======
+     * Saves prescriptions to file storage.
+     * Writes each prescription in the list to the prescription file in a formatted string.
+     *
+     * @param prescriptionList The list of prescriptions to save
+     * @throws UnloadedStorageException If the storage was not properly initialized 
+     *         or if there was an error saving to file
+>>>>>>> AddJavaDoc
      */
     public static void savePrescriptions(List<Prescription> prescriptionList) throws UnloadedStorageException {
         if (directoryPath == null || prescriptionFilePath == null) {
@@ -202,10 +262,19 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Loads prescriptions from file.
      *
      * @return A list of prescriptions.
      * @throws UnloadedStorageException If prescription data cannot be loaded.
+=======
+     * Loads prescriptions from file storage.
+     * Reads and parses prescription data from the prescription file.
+     *
+     * @return A list of Prescription objects loaded from file
+     * @throws UnloadedStorageException If there was an error reading from the file
+     *         or if the data could not be properly parsed
+>>>>>>> AddJavaDoc
      */
     public static List<Prescription> loadPrescriptions() throws UnloadedStorageException {
         List<Prescription> prescriptions = new ArrayList<>();
@@ -233,6 +302,7 @@ public class Storage {
     }
 
     /**
+<<<<<<< HEAD
      * Generates and saves a prescription HTML file.
      *
      * @param prescription The prescription to convert to HTML.
@@ -240,6 +310,17 @@ public class Storage {
      * @throws UnloadedStorageException If storage is not initialized or HTML file cannot be written.
      */
     public static void savePrescriptionHtml(Prescription prescription, Patient patient)
+=======
+     * Generates and saves an HTML representation of a prescription.
+     * Creates a formatted HTML file that can be viewed in a browser and printed.
+     *
+     * @param prescription The prescription to generate HTML for
+     * @param patient The patient associated with the prescription, may be null
+     * @throws UnloadedStorageException If the storage was not properly initialized
+     *         or if there was an error writing the HTML file
+     */
+    public static void savePrescriptionHtml(Prescription prescription, Patient patient) 
+>>>>>>> AddJavaDoc
             throws UnloadedStorageException {
         if (directoryPath == null || prescriptionDirPath == null) {
             throw new UnloadedStorageException("Storage not initialized with a directory!");

@@ -39,7 +39,7 @@ The sequence diagram below illustrates how the operation for 'view-patient' woul
 
 ---
 
-### Add and Delete Appointment feature
+### Add/delete appointment feature
 The `add-appointment` and `delete-appointment` features allow users to manage appointments for registered patients. 
 The system ensures that the **patient exists** before adding the appointment and that the **appointment exists** before deleting it. 
 All changes are stored persistently.

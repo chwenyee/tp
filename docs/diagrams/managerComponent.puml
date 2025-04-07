@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "Manager Component"{
+class ManagementSystem {
+    - appointments : List<Appointment>
+    - patients : List<Patient>
+    - prescriptions : List<Prescription>
+
+    + ManagementSystem(List<Patient>, List<Appointment>)
+    + ManagementSystem(List<Patient>, List<Appointment>, List<Prescription>)
+
+    + getPatients() : List<Patient>
+    + setAppointments(List<Appointment>) : void
+    + getAppointments() : List<Appointment>
+    + addPatient(Patient) : void
+    + deletePatient(String) : Patient
+    + viewPatient(String) : Patient
+    + editPatient(String, String, String, String, String, String) : void
+    + storeMedicalHistory(String, String) : void
+    + viewMedicalHistoryByNric(String) : void
+    + viewMedicalHistoryByName(String) : void
+    + editPatientHistory(String, String, String) : void
+    + findPatientByNric(String) : Patient
+    + addAppointment(Appointment) : void
+    + deleteAppointment(String) : Appointment
+    + sortAppointmentsByDateTime(List<Appointment>) : List<Appointment>
+    + sortAppointmentsById(List<Appointment>) : List<Appointment>
+    + markAppointment(String) : Appointment
+    + unmarkAppointment(String) : Appointment
+    + findAppointmentsByNric(String) : List<Appointment>
+    + getPrescriptions() : List<Prescription>
+    + addPrescription(Prescription) : Prescription
+}
+}
+
+ClinicEase --> ManagementSystem
+ManagementSystem --> Patient
+ManagementSystem --> Appointment
+ManagementSystem --> Prescription
+
+hide circle
+@enduml
+

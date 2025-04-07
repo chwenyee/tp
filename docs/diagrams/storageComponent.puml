@@ -2,7 +2,7 @@
 skinparam componentStyle rectangle
 hide circle
 
-package "Storage" {
+package "Storage Component" {
 
   class Storage {
     - directoryPath : String
@@ -22,6 +22,8 @@ package "Storage" {
     + savePrescriptionHtml(prescription : Prescription, patient : Patient) : void
   }
 
+  }
+
   package "Objects" {
     class Patient
     class Appointment
@@ -33,11 +35,10 @@ package "Storage" {
     class ManagementSystem
   }
 
-  Storage --> Patient
-  Storage --> Appointment
-  Storage --> Prescription
-  Storage --> Parser
-  Storage --> ManagementSystem
-}
+  Storage ..> Patient
+  Storage ..> Appointment
+  Storage ..> Prescription
+  Storage ..> Parser
+  Storage <..> ManagementSystem
 
 @enduml

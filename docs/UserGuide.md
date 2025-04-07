@@ -90,7 +90,7 @@ Format: `add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS h/M
 
 Example of usage: 
 
-`add-patient n/John Doe ic/S1234567D dob/12-12-1999 g/M p/98765432 a/123 Main Street h/Diabetes, Hypertension`
+`add-patient n/John Doe ic/S1234567D dob/1999-12-12 g/M p/98765432 a/123 Main Street h/Diabetes, Hypertension`
 
 Expected output:
 
@@ -133,7 +133,7 @@ Expected Output:
 <pre>------------------------------------------Patient Details------------------------------------------
 Patient NRIC: S1234567D
 Name: John Doe
-Date of Birth: 12-12-1999
+Date of Birth: 1999-12-12
 Gender: M
 Address: 123 Main Street
 Contact: 98765432
@@ -156,7 +156,7 @@ Expected Output:
 <pre>------------------------------------------Patient Details------------------------------------------
 1. Patient NRIC: S1234567D
    Name: John Doe
-   Date of Birth: 12-12-1999
+   Date of Birth: 1999-12-12
    Gender: M
    Address: 123 Main Street
    Contact: 98765432
@@ -167,7 +167,7 @@ Expected Output:
 ----------------------------------------------------------------------------------------------------
 2. Patient NRIC: S8765432F
    Name: Jane Donna
-   Date of Birth: 12-05-2000
+   Date of Birth: 2000-05-19
    Gender: F
    Address: 546 Main Street
    Contact: 91209310
@@ -187,7 +187,7 @@ Format: `edit-patient ic/NRIC ATTRIBUTE`
 
 Example of usage:
 
-`edit-patient ic/S1234567D p/91238989` or `edit-patient ic/S1234567D dob/17-08-1945`
+`edit-patient ic/S1234567D p/91238989` or `edit-patient ic/S1234567D dob/1945-08-17`
 
 Expected output:
 

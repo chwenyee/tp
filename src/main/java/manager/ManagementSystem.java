@@ -84,6 +84,17 @@ public class ManagementSystem {
     }
 
     //@@author dylancmznus
+    /**
+     * Retrieves the patient object that matches the specified NRIC.
+     *
+     * <p>The method iterates through the list of existing patients to find a match
+     * based on the NRIC. If a match is found, the corresponding Patient object is returned;
+     * otherwise, it returns null.</p>
+     *
+     * @param nric The NRIC of the patient to be retrieved.
+     * @return The Patient object matching the given NRIC, or null if no match is found.
+     * @throws AssertionError if the input NRIC is null or blank.
+     */
     public Patient viewPatient(String nric) {
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
         Patient matchedPatient = null;
@@ -348,6 +359,17 @@ public class ManagementSystem {
     }
 
     //@@author dylancmznus
+    /**
+     * Marks the appointment with the given appointment ID as done.
+     *
+     * <p>The method searches through the list of appointments to find the one that matches
+     * the given ID (case-insensitive). If found, it marks the appointment as done and saves
+     * the updated list to storage.</p>
+     *
+     * @param apptId The ID of the appointment to be marked as done.
+     * @return The Appointment object that was marked, or null if no match is found.
+     * @throws UnloadedStorageException If the storage system has not been properly initialized.
+     */
     public Appointment markAppointment(String apptId) throws UnloadedStorageException {
         for (Appointment appointment : appointments) {
             if (appointment.getId().equalsIgnoreCase(apptId)) {
@@ -359,6 +381,17 @@ public class ManagementSystem {
         return null;
     }
 
+    /**
+     * Unmarks the appointment with the given appointment ID as not done.
+     *
+     * <p>This method searches through the list of appointments to find the one that matches
+     * the given ID (case-insensitive). If found, it unmarks the appointment and saves
+     * the updated list to storage.</p>
+     *
+     * @param apptId The ID of the appointment to be unmarked.
+     * @return The Appointment object that was unmarked, or null if no match is found.
+     * @throws UnloadedStorageException If the storage system has not been properly initialized.
+     */
     public Appointment unmarkAppointment(String apptId) throws UnloadedStorageException {
         for (Appointment appointment : appointments) {
             if (appointment.getId().equalsIgnoreCase(apptId)) {
@@ -370,6 +403,16 @@ public class ManagementSystem {
         return null;
     }
 
+
+    /**
+     * Finds all appointments associated with the specified NRIC.
+     *
+     * <p>This method searches through the list of stored appointments and collects
+     * all appointments that match the given NRIC exactly.</p>
+     *
+     * @param nric The NRIC used to search for matching appointments.
+     * @return A list of appointments that are associated with the provided NRIC.
+     */
     public List<Appointment> findAppointmentsByNric(String nric) {
         List<Appointment> matchingAppointments = new ArrayList<>();
         for (Appointment appt : appointments) {

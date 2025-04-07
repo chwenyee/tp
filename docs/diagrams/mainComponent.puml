@@ -1,6 +1,7 @@
 @startuml
 skinparam classAttributeIconSize 0
 
+package "Main Component"{
 class ClinicEase {
     - ManagementSystem manager
     - Ui ui
@@ -10,9 +11,12 @@ class ClinicEase {
     + run(): void
     + main(args: String[]): void
 }
+}
 
-ClinicEase --> Ui
+ClinicEase --> UI
 ClinicEase --> Storage
 ClinicEase --> ManagementSystem
 ClinicEase ..> Command
+
+hide circle
 @enduml

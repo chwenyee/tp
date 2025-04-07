@@ -28,4 +28,6 @@ package "UI Component" {
 
 UI ..> Object
 Main --> UI
+
+hide circle
 @enduml

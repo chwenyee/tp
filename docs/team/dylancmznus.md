@@ -80,6 +80,10 @@ Given below are my contributions to the project.
     - Created **Sequence Diagrams** for the `view-patient` feature, demonstrating how the command interacts with the `Parser`, `ManagementSystem`, and `Storage` components.
     - Updated UML diagrams to reflect the data flow and validation steps involved in retrieving patient information using NRIC.
 
+3. **Components and Class Diagrams**
+    - Created **Class Diagrams** for the Manager Component and Object Component.
+    - Provided details about these components in the Architecture Diagram,.
+
 ---
 
 ### Community Involvement

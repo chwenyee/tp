@@ -61,6 +61,52 @@ This architecture follows several design principles:
 3. **Command Pattern**: Commands encapsulate actions and provide a uniform interface for execution
 4. **Entity-Control Separation**: Entity classes (Patient, Appointment, Prescription) are separate from the controlling ManagementSystem that operates on them
 
+<br>
+
+### Storage Component
+
+The `Storage` component is responsible for reading from and writing to the file system to ensure persistence of application data in `ClinicEase`.
+
+#### Responsibilities
+
+The `Storage` class handles:
+- Saving and loading **Patients** from `patient_data.txt`
+- Saving and loading **Appointments** from `appointment_data.txt`
+- Saving and loading **Prescriptions** from `prescription_data.txt`
+- Generating HTML files for prescriptions into a `/prescriptions/` directory
+
+#### Key Features
+
+- Each data type is stored in its own file.
+- Upon loading, `Storage` uses the `Parser` class to reconstruct objects like `Patient` and `Appointment`.
+- When appointments are loaded, they are automatically linked to the corresponding patients via the `ManagementSystem`.
+
+#### Structure
+
+All methods are defined within a **single `Storage` class** with static methods like `savePatients()`, `loadAppointments()`, etc.  
+Initialization is done through the constructor `Storage(String directory)`, which sets the correct file paths.
+
+#### Dependencies
+
+- **Model**: Uses `Patient`, `Appointment`, and `Prescription` objects for reading/writing.
+- **Commons**: Uses constants and utility methods if applicable.
+- **Parser**: Converts text from the file back into model objects.
+- **ManagementSystem**: Required to link appointments to patients during data loading.
+
+#### Design Considerations
+
+- Implements **centralised file handling**, keeping storage logic simple and manageable.
+- Ensures **robust error handling** by throwing `UnloadedStorageException` if I/O operations fail or if initialization is not completed.
+- Separates file paths by type for modular persistence and ease of maintenance.
+
+> **Note:** `Storage` should be initialised before calling any static methods that rely on file paths. Otherwise, `UnloadedStorageException` will be thrown.
+
+### Remarks
+
+- The `Storage` component is **stateless**, which means all its methods are static and operate on input data.
+- It must be initialized with a file directory path before any load/save operations can be performed.
+- All file paths are determined at runtime and stored as static fields internally.
+
 ## Design & implementation
 
 ### View patient feature

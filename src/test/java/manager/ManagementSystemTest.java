@@ -205,7 +205,7 @@ class ManagementSystemTest {
         ManagementSystem manager = new ManagementSystem(patients, new ArrayList<>());
 
         LocalDateTime appointmentTime1 = LocalDateTime.parse("2025-03-20 1900", DATE_TIME_FORMAT);
-        LocalDateTime appointmentTime2 = LocalDateTime.parse("2025-03-20 1950", DATE_TIME_FORMAT);
+        LocalDateTime appointmentTime2 = LocalDateTime.parse("2025-03-20 1930", DATE_TIME_FORMAT);
 
         Patient patient = new Patient("S1234567D", "Billy", "1990-10-01",
                 "M", "124 High St", "81234567", new ArrayList<>());

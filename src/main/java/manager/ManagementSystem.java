@@ -525,7 +525,7 @@ public class ManagementSystem {
      *
      * @param prescription The prescription to add (without final ID)
      * @return The newly created prescription with final ID
-     * @throws IllegalArgumentException If the patient doesn't exist
+     * @throws IllegalArgumentException If the patient doesn't exist or maximum prescriptions reached
      * @throws UnloadedStorageException If there was an error saving to storage
      */
     public Prescription addPrescription(Prescription prescription) 
@@ -546,6 +546,14 @@ public class ManagementSystem {
             }
         }
         
+        // Check for maximum prescription limit
+        final int MAX_PRESCRIPTIONS_PER_PATIENT = 100; // Reasonable upper limit
+        if (prescriptionCount > MAX_PRESCRIPTIONS_PER_PATIENT) {
+            throw new IllegalArgumentException("Maximum number of prescriptions (" + 
+                                              MAX_PRESCRIPTIONS_PER_PATIENT + 
+                                              ") reached for patient: " + prescription.getPatientId());
+        }
+        
         String prescriptionId = prescription.getPatientId() + "-" + prescriptionCount;
         
         // Create a new prescription with updated ID
@@ -559,7 +567,14 @@ public class ManagementSystem {
         );
         
         prescriptions.add(newPrescription);
-        Storage.savePrescriptions(prescriptions);
+        
+        try {
+            Storage.savePrescriptions(prescriptions);
+        } catch (UnloadedStorageException e) {
+            // Roll back the addition if saving fails
+            prescriptions.remove(newPrescription);
+            throw e; // Re-throw to notify the caller
+        }
         
         return newPrescription;
     }

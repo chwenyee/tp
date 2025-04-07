@@ -168,12 +168,19 @@ public class Prescription {
      */
     public static Prescription fromFileFormat(String fileEntry) {
         String[] parts = fileEntry.split("\\|");
+        
+        // Check if we have sufficient parts to create a valid prescription
+        if (parts.length < 5) {
+            System.out.println("Warning: Invalid prescription format: " + fileEntry);
+            return null;
+        }
+        
         String prescriptionId = parts[0];
         String patientId = parts[1];
         LocalDateTime timestamp = LocalDateTime.parse(parts[2], DATE_TIME_FORMATTER);
-        List<String> symptoms = Arrays.asList(parts[3].split(","));
-        List<String> medicines = Arrays.asList(parts[4].split(","));
-        String notes = parts[5];
+        List<String> symptoms = parts[3].isEmpty() ? new ArrayList<>() : Arrays.asList(parts[3].split(","));
+        List<String> medicines = parts[4].isEmpty() ? new ArrayList<>() : Arrays.asList(parts[4].split(","));
+        String notes = parts.length > 5 ? parts[5] : ""; // Default to empty string if notes aren't provided
         
         return new Prescription(patientId, prescriptionId, timestamp, symptoms, medicines, notes);
     }

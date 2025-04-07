@@ -128,8 +128,8 @@ The `Storage` class handles:
 
 #### Structure
 
-All methods are defined within a **single `Storage` class** with static methods like `savePatients()`, `loadAppointments()`, etc.  
-Initialization is done through the constructor `Storage(String directory)`, which sets the correct file paths.
+- All methods are defined within a **single `Storage` class** with static methods like `savePatients()`, `loadAppointments()`, etc.  
+- Initialization is done through the constructor `Storage(String directory)`, which sets the correct file paths.
 
 #### Dependencies
 
@@ -138,19 +138,9 @@ Initialization is done through the constructor `Storage(String directory)`, whic
 - **Parser**: Converts text from the file back into model objects.
 - **ManagementSystem**: Required to link appointments to patients during data loading.
 
-#### Design Considerations
-
-- Implements **centralised file handling**, keeping storage logic simple and manageable.
-- Ensures **robust error handling** by throwing `UnloadedStorageException` if I/O operations fail or if initialization is not completed.
-- Separates file paths by type for modular persistence and ease of maintenance.
-
 > **Note:** `Storage` should be initialised before calling any static methods that rely on file paths. Otherwise, `UnloadedStorageException` will be thrown.
 
-### Remarks
-
-- The `Storage` component is **stateless**, which means all its methods are static and operate on input data.
-- It must be initialized with a file directory path before any load/save operations can be performed.
-- All file paths are determined at runtime and stored as static fields internally.
+<br>
 
 ## Design & implementation
 

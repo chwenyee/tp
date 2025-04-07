@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Handles saving and loading of patient, appointment, and prescription data
+ * to and from the local file system.
+ */
 public class Storage {
     private static String directoryPath;
     private static String patientFilePath;
@@ -23,6 +27,11 @@ public class Storage {
     private static String prescriptionDirPath;
     private static Patient patients;
 
+    /**
+     * Initializes storage paths based on a given directory.
+     *
+     * @param directory The directory to store data files in.
+     */
     public Storage(String directory) {
         directoryPath = directory;
         patientFilePath = directory + File.separator + "patient_data.txt";
@@ -31,6 +40,12 @@ public class Storage {
         prescriptionDirPath = directory + File.separator + "prescriptions";
     }
 
+    /**
+     * Saves a list of patients to file.
+     *
+     * @param patientList The list of patients to save.
+     * @throws UnloadedStorageException If storage is not initialized.
+     */
     public static void savePatients(List<Patient> patientList) throws UnloadedStorageException {
         if (directoryPath == null || patientFilePath == null) {
             throw new UnloadedStorageException("Storage not initialized with a directory!");
@@ -51,6 +66,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads patients from file.
+     *
+     * @return A list of patients.
+     * @throws UnloadedStorageException If patient data cannot be loaded.
+     */
     public static List<Patient> loadPatients() throws UnloadedStorageException {
         List<Patient> patients = new ArrayList<>();
         File file = new File(patientFilePath);
@@ -73,6 +94,12 @@ public class Storage {
         return patients;
     }
 
+    /**
+     * Saves a list of appointments to file.
+     *
+     * @param appointmentList The list of appointments to save.
+     * @throws UnloadedStorageException If storage is not initialized.
+     */
     public static void saveAppointments(List<Appointment> appointmentList) throws UnloadedStorageException {
         if (directoryPath == null || appointmentFilePath == null) {
             throw new UnloadedStorageException("Storage not initialized with a directory!");
@@ -96,7 +123,13 @@ public class Storage {
         }
     }
 
-
+    /**
+     * Loads appointments from file and links them to their corresponding patients.
+     *
+     * @param system The management system containing the patient list.
+     * @return A list of appointments.
+     * @throws UnloadedStorageException If appointment data cannot be loaded.
+     */
     public static List<Appointment> loadAppointments(ManagementSystem system) throws UnloadedStorageException {
         List<Appointment> appointments = new ArrayList<>();
         File file = new File(appointmentFilePath);
@@ -142,6 +175,12 @@ public class Storage {
         return appointments;
     }
 
+    /**
+     * Saves a list of prescriptions to file.
+     *
+     * @param prescriptionList The list of prescriptions to save.
+     * @throws UnloadedStorageException If storage is not initialized.
+     */
     public static void savePrescriptions(List<Prescription> prescriptionList) throws UnloadedStorageException {
         if (directoryPath == null || prescriptionFilePath == null) {
             throw new UnloadedStorageException("Storage not initialized with a directory!");
@@ -162,10 +201,16 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads prescriptions from file.
+     *
+     * @return A list of prescriptions.
+     * @throws UnloadedStorageException If prescription data cannot be loaded.
+     */
     public static List<Prescription> loadPrescriptions() throws UnloadedStorageException {
         List<Prescription> prescriptions = new ArrayList<>();
         File file = new File(prescriptionFilePath);
-        
+
         if (!file.exists()) {
             return prescriptions;
         }
@@ -187,7 +232,14 @@ public class Storage {
         return prescriptions;
     }
 
-    public static void savePrescriptionHtml(Prescription prescription, Patient patient) 
+    /**
+     * Generates and saves a prescription HTML file.
+     *
+     * @param prescription The prescription to convert to HTML.
+     * @param patient      The patient associated with the prescription.
+     * @throws UnloadedStorageException If storage is not initialized or HTML file cannot be written.
+     */
+    public static void savePrescriptionHtml(Prescription prescription, Patient patient)
             throws UnloadedStorageException {
         if (directoryPath == null || prescriptionDirPath == null) {
             throw new UnloadedStorageException("Storage not initialized with a directory!");
@@ -198,7 +250,7 @@ public class Storage {
             dir.mkdirs();
         }
 
-        String fileName = "prescription_" + prescription.getPatientId() + "_" 
+        String fileName = "prescription_" + prescription.getPatientId() + "_"
                 + prescription.getPrescriptionId().split("-")[1] + ".html";
         String filePath = prescriptionDirPath + File.separator + fileName;
 
@@ -208,4 +260,4 @@ public class Storage {
             throw new UnloadedStorageException("Unable to generate HTML prescription: " + e.getMessage());
         }
     }
-} 
+}

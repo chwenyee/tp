@@ -222,6 +222,7 @@ public class Parser {
             throw new InvalidInputFormatException(msg);
         }
 
+        // Check if the input format of Singapore's NRIC is valid
         if (!nric.trim().matches("(?i)[STFGM]\\d{7}[A-Z]")) {
             throw new InvalidInputFormatException("Invalid IC format. Please use a valid IC e.g. S1234567D");
         }
@@ -290,6 +291,13 @@ public class Parser {
         return patientId;
     }
 
+    /**
+     * Extracts parameter values from command strings.
+     *
+     * @param input The string containing parameters
+     * @param prefix The parameter prefix to extract (e.g. "ic/")
+     * @return The extracted value or null if not found
+     */
     private static String extractValue(String input, String prefix) {
         assert prefix != null : "Prefix cannot be null";
 
@@ -381,6 +389,12 @@ public class Parser {
         return new String[]{nric, oldHistory, newHistory};
     }
 
+    /**
+     * Parses patient data from storage format.
+     *
+     * @param line The pipe-delimited storage string of the patient
+     * @return Patient object or null if invalid
+     */
     public static Patient parseLoadPatient(String line) throws InvalidInputFormatException {
         String[] tokens = line.split("\\|");
         if (tokens.length < 7) {
@@ -400,6 +414,12 @@ public class Parser {
         return new Patient(id, name, dobStr, gender, address, contact, medHistory);
     }
 
+    /**
+     * Parses appointment data from storage format.
+     *
+     * @param line The pipe-delimited storage string of the appointment
+     * @return Appointment object or null if invalid
+     */
     public static Appointment parseLoadAppointment(String line) {
         if (line.startsWith("countId:")) {
             return null;

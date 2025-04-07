@@ -20,8 +20,11 @@ are present.
 4. Restructured the code in `ClinicEase.java` and `Parser.java`, and created a `command` package to make the codebase more OOP after v1.0.
 5. Linked `Appointment` Class to `Patient` Class to ensure appointments stored in a `Patient` object are kept in sync 
 with the appointment list in `ManagementSystem`.
-6. Changed the data type of `dateTime` variable in `Appointment` to be `LocalDateTime` or better input validation with 
+6. Changed the data type of `dateTime` variable in `Appointment` to be `LocalDateTime` for better input validation of 
 `dt/` and `t/`, and to simplify the implementation of the `sort-appointment` feature.
+7. Added comprehensive validation for: NRIC format compliance, appointment scheduling conflicts (throws `AppointmentClashException`) 
+and future-dated appointments (prevents past-date/time entries)
+8. Implemented cleanup of associated appointment records when the patient is deleted.
 
 #### Features Implemented
 1. **add-appointment**: Adds a new appointment to the list of appointment.
@@ -60,16 +63,27 @@ parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 
 **Sections:**
 
+- **Design: Parser component**
+  - Documented the `Parser` class and its interaction with `Command` subclasses
+  - Created:
+    - Class diagram `parserClassDiagram.png`, showing the structure
+    - Sequence diagram `parserSequence.png`, showing the parsing flow
+  - Explained the parsing workflow in `Parser` 
+
+
 - **Add and Delete Appointment feature:**
 
   - Documented the implementation details of the `add-appointment` and `delete-appointment` features, 
     including step-by-step usage scenarios to clarify system behavior.
-  - Created a sequence diagram for both `add-appointment` and `delete-appointment` features, 
-    visualizing how the command interacts with the `Parser`, `ManagementSystem`, and `Storage` components.
+  - Created sequence diagrams to visualize how the command interacts with the `Parser`, `ManagementSystem`, and `Storage` components.
+    - `addAppointmentSequence.png` for `add-appointment`
+    - `deleteAppointmentSequence.png` for `delete-appointment`
   - Explained the reason they are implemented this way
   - Explained the alternatives considered and justified their rejection
 
 - Non-functional requirements
+
+
 - Glossary 
 
 #### Contributions to team-based tasks:
@@ -81,5 +95,6 @@ parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 #### Review/mentoring contributions:
 
 - Helped teammates resolve Git merge conflicts and guided them on pull request practices.
-- Reminding teammates of important deadlines
+- Reminding teammates of important deadlines.
 - Helped to test out the newly-implemented features to ensure the feature works as desired.
+- Discussed with teammates on what to include for Design and Implementation section in Developer Guide.

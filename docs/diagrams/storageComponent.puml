@@ -1,0 +1,43 @@
+@startuml
+skinparam componentStyle rectangle
+hide circle
+
+package "Storage" {
+
+  class Storage {
+    - directoryPath : String
+    - patientFilePath : String
+    - appointmentFilePath : String
+    - prescriptionFilePath : String
+    - prescriptionDirPath : String
+    - patients : Patient
+
+    + Storage(directory : String)
+    + savePatients(patientList : List<Patient>) : void
+    + loadPatients() : List<Patient>
+    + saveAppointments(appointmentList : List<Appointment>) : void
+    + loadAppointments(system : ManagementSystem) : List<Appointment>
+    + savePrescriptions(prescriptionList : List<Prescription>) : void
+    + loadPrescriptions() : List<Prescription>
+    + savePrescriptionHtml(prescription : Prescription, patient : Patient) : void
+  }
+
+  package "Objects" {
+    class Patient
+    class Appointment
+    class Prescription
+  }
+
+  package "Utils" {
+    class Parser
+    class ManagementSystem
+  }
+
+  Storage --> Patient
+  Storage --> Appointment
+  Storage --> Prescription
+  Storage --> Parser
+  Storage --> ManagementSystem
+}
+
+@enduml

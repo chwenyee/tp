@@ -304,8 +304,8 @@ public class ManagementSystem {
         for (Appointment appointmentInList : appointments) {
             long timeDiff = Math.abs(Duration.between(appointmentInList.getDateTime(),
                     appointment.getDateTime()).toMinutes());
-            if (timeDiff < 60) {
-                throw new AppointmentClashException("This appointment clashes with another scheduled within 1 hour.");
+            if (timeDiff <= 30) {
+                throw new AppointmentClashException("This appointment clashes with another scheduled within 30 minutes.");
             }
         }
 

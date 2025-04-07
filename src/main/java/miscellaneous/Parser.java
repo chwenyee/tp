@@ -209,7 +209,7 @@ public class Parser {
             throw new InvalidInputFormatException(msg);
         }
 
-        if (!nric.trim().matches("(?i)[A-Z]\\d{7}[A-Z]")) {
+        if (!nric.trim().matches("(?i)[STFGM]\\d{7}[A-Z]")) {
             throw new InvalidInputFormatException("Invalid IC format. Please use a valid IC e.g. S1234567D");
         }
 

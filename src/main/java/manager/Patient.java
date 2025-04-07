@@ -124,8 +124,7 @@ public class Patient {
     private String checkGender(String gender) throws InvalidInputFormatException {
         if(gender.equals("M") || gender.equals("F")) {
             return gender;
-        }
-        else{
+        } else {
             throw new InvalidInputFormatException("The gender must to be either M (male) or F (female)");
         }
     }

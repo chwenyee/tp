@@ -64,6 +64,93 @@ This architecture follows several design principles:
 
 <br>
 
+---
+## Command Component
+**API** : [Command Classes](https://github.com/AY2425S2-CS2113-T11b-4/tp/tree/master/src/main/java/command)  
+
+![Command Component](diagrams/Command.png)  
+
+---
+
+### Overview
+
+The `Command` component is responsible for **handling and executing user commands** in ClinicEase. It defines a common interface (`Command`) for all commands and organizes the various command classes (e.g., `AddAppointmentCommand`, `DeletePatientCommand`) that operate on the `ManagementSystem` and interact with the `Ui` to provide application functionality.
+
+---
+### Responsibilities
+
+1. **Encapsulate Command Logic**: Each command class holds the data or parameters needed to carry out a specific user request (e.g., adding a new appointment, deleting a patient).
+2. **Execute on System**: Using a uniform `execute()` interface, commands interact with the `ManagementSystem` to perform the requested action.
+3. **Provide Exit Control**: Certain commands can signal the application to terminate (e.g., `ExitCommand`), by overriding `isExit()` to return `true`.
+
+---
+
+### Key Features
+
+- **Abstract Base Class**  
+  `Command` is declared as an abstract class, defining two key methods:
+    - `execute(manager: ManagementSystem, ui: Ui) : void` – where the command’s logic is implemented.
+    - `isExit() : boolean` – indicates if the command should terminate the main program loop.
+
+- **Multiple Subclasses**  
+  Each subclass, such as `AddPatientCommand` or `FindAppointmentCommand`, implements the `execute()` method to fulfill a specific function (adding a patient, finding an appointment, etc.).
+
+- **Command Pattern**  
+  This design follows a simplified [Command Pattern](https://en.wikipedia.org/wiki/Command_pattern), enabling a clear separation of concerns between **input parsing**, **system logic**, and **UI presentation**.
+
+---
+
+### Structure
+
+1. **Single Abstract Class**  
+   `Command` resides at the top of the hierarchy.
+
+2. **Subclasses**
+    - **AddAppointmentCommand** — adds a new appointment to the system.
+    - **DeletePatientCommand** — removes a patient by NRIC.
+    - **SortAppointmentCommand** — sorts appointments by date or ID.
+    - *(... other commands like `EditPatientCommand`, `ViewPrescriptionCommand`, etc.)*
+
+3. **Uniform Execution**  
+   All command classes share the same `execute()` signature but implement distinct behaviors.
+
+---
+
+### Dependencies
+
+- **`ManagementSystem`**: Each command calls methods from `ManagementSystem` to manipulate the core data (patients, appointments, prescriptions).
+- **`Ui`**: Commands display success/failure messages and prompt user outputs via the `Ui` component.
+- **`Parser`**: Typically, commands themselves do not parse raw input strings. Instead, the `Parser` constructs a command object with the necessary parameters before execution.
+- **`Storage`**: Some commands (e.g., `AddPatientCommand`) indirectly trigger save operations, relying on `ManagementSystem` which delegates to `Storage` to persist changes.
+
+---
+
+### Design Considerations
+
+- **Extensibility**  
+  Adding a new user action only requires creating a new `Command` subclass and updating `Parser` to recognize the new keyword(s).
+
+- **Error Handling**  
+  Commands may throw or handle exceptions such as `PatientNotFoundException` or `UnloadedStorageException`, ensuring robust operation even if data is invalid or storage is unavailable.
+
+- **Single Responsibility**  
+  Each command focuses on exactly one task (e.g., marking an appointment). This keeps classes small, cohesive, and easier to test or maintain.
+
+---
+
+### Remarks
+
+- Commands are **stateless** aside from storing the **parameters** needed for execution (e.g., an appointment ID to be deleted).
+- The **flow** is typically:
+    1. `Parser` reads user input and creates an appropriate `Command` instance.
+    2. The main loop calls `command.execute(manager, ui)`.
+    3. If `command.isExit()` is `true`, the application terminates.
+
+- This approach **decouples** user input parsing from application logic, making the system easier to extend without modifying existing commands.
+
+> **Note:** The `Command` classes rely on the `Parser` to supply valid parameters. If parsing fails, `Parser` throws appropriate exceptions before the `Command` is even constructed.
+---
+
 ### UI Component
 **API**: [`Ui.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Ui.java)
 

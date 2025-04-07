@@ -96,6 +96,22 @@ public class ManagementSystem {
         return matchedPatient;
     }
 
+
+    /**
+     * Edits the information of an existing patient. Updates only the fields
+     * that are not null or blank in the provided parameters.
+     *
+     * @param nric      The NRIC of the patient to edit.
+     * @param newName   The new name to set. (Pass null or blank to leave it unchanged)
+     * @param newDob    The new date of birth in "yyyy-MM-dd" format. (null/blank to skip)
+     * @param newGender The new gender (e.g., "M" or "F"). (null/blank to skip)
+     * @param newAddress The new address. (null/blank to skip)
+     * @param newPhone  The new phone number. (null/blank to skip)
+     * @throws UnloadedStorageException  If saving the edited patient data to storage fails.
+     * @throws PatientNotFoundException  If no patient is found with the given NRIC.
+     * @throws InvalidInputFormatException If the newDob string is invalid or
+     *                                     if the parsed date is after the current date.
+     */
     //@@author jyukuan
     public void editPatient(String nric, String newName, String newDob, String newGender, String newAddress,
                             String newPhone) throws UnloadedStorageException, PatientNotFoundException,
@@ -137,6 +153,16 @@ public class ManagementSystem {
         System.out.println("Patient with NRIC " + nric + " updated successfully.");
     }
 
+    /**
+     * Stores new medical history entries for the patient with the specified NRIC.
+     * Entries can be comma-separated, and each unique entry is appended to
+     * the patient's existing medical history if not already present.
+     *
+     * @param nric The NRIC of the patient whose medical history is to be updated.
+     * @param medHistory A comma-separated list of new medical history entries.
+     * @throws PatientNotFoundException if no patient matches the given NRIC.
+     * @throws UnloadedStorageException if saving to storage fails.
+     */
     public void storeMedicalHistory(String nric, String medHistory) throws PatientNotFoundException,
             UnloadedStorageException {
         Patient existingPatient = findPatientByNric(nric);
@@ -159,6 +185,13 @@ public class ManagementSystem {
     }
 
 
+    /**
+     * Views the medical history for a single patient identified by NRIC,
+     * and displays it to the user via the Ui component.
+     *
+     * @param nric The NRIC of the patient whose medical history should be displayed.
+     * @throws PatientNotFoundException if no patient with the specified NRIC is found.
+     */
     public void viewMedicalHistoryByNric(String nric) throws PatientNotFoundException {
         Patient foundPatients = findPatientByNric(nric.trim());
 
@@ -170,6 +203,12 @@ public class ManagementSystem {
         }
     }
 
+    /**
+     * Finds one or more patients by name, then displays each patient's medical history.
+     * If multiple patients share the same name, all their histories are shown.
+     *
+     * @param name The name of the patient(s) whose medical history should be displayed.
+     */
     public void viewMedicalHistoryByName(String name) {
         List<Patient> foundPatients = findPatientsByName(name.trim());
 
@@ -186,6 +225,14 @@ public class ManagementSystem {
         }
     }
 
+    /**
+     * Replaces an existing medical history entry for a given patient with new content.
+     *
+     * @param nric The NRIC of the patient whose medical history will be edited.
+     * @param oldHistory The old history text to be replaced.
+     * @param newHistory The new history text to replace with.
+     * @throws UnloadedStorageException if saving the updated data to storage fails.
+     */
     public void editPatientHistory(String nric, String oldHistory, String newHistory) throws UnloadedStorageException {
 
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
@@ -213,6 +260,13 @@ public class ManagementSystem {
         }
     }
 
+
+    /**
+     * Finds a patient by their NRIC, ignoring case.
+     *
+     * @param nric The NRIC string to search for.
+     * @return The Patient object if found, or null if no matching patient is found.
+     */
     public Patient findPatientByNric(String nric) {
         String object = nric.trim().toUpperCase();
         for (Patient p : patients) {
@@ -224,6 +278,12 @@ public class ManagementSystem {
         return null;
     }
 
+    /**
+     * Finds a list of patients who have a matching name (case-insensitive).
+     *
+     * @param name The name string to search for.
+     * @return A List of Patient objects that match the given name (could be empty if none found).
+     */
     private List<Patient> findPatientsByName(String name) {
         List<Patient> result = new ArrayList<>();
         for (Patient p : patients) {

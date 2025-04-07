@@ -34,6 +34,8 @@ and future-dated appointments (prevents past-date/time entries)
 3. **sort-appointment**: Sorts the appointments in the appointment list and display the sorted list to the user. Sorting
    can be performed by either `byDate` or `byId`.
 
+4. **help**: Simple command that outputs all available command inputs of the application. 
+
 #### Contributions to the UG:
 
 **Sections:** 

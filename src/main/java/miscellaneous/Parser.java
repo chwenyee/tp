@@ -37,7 +37,20 @@ import java.util.stream.Collectors;
 
 import static manager.Appointment.INPUT_FORMAT;
 
+/**
+ * Parses user input strings into executable Command objects.
+ * Handles all command types and parameter extraction for the clinic management system.
+ */
 public class Parser {
+
+    /**
+     * Parses raw user input and returns the corresponding Command object.
+     *
+     * @param userInput The full command string entered by the user
+     * @return A Command object for execution
+     * @throws InvalidInputFormatException If user input format is invalid
+     * @throws UnknownCommandException If command is not recognized
+     */
     public static Command parse(String userInput) throws InvalidInputFormatException, UnknownCommandException {
         // Handle empty input
         if (userInput == null || userInput.trim().isEmpty()) {

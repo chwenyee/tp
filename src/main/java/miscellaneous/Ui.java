@@ -8,6 +8,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The Ui class handles all user interaction for the clinic management system.
+ * It provides methods to display information to the user and collect input.
+ * This class is responsible for formatting output in a consistent way and
+ * providing a clean interface between the system and the user.
+ */
 public class Ui {
     public static final String DIVIDER = "-".repeat(100);
     public static final DateTimeFormatter OUTPUT_TIME_FORMAT = DateTimeFormatter.ofPattern("h:mm a");

@@ -8,14 +8,32 @@ import miscellaneous.Ui;
 
 import java.util.List;
 
+/**
+ * Command to view all prescriptions for a specific patient.
+ * Lists all prescriptions with their basic details for the given patient ID.
+ */
 //@@author Basudeb2005
 public class ViewAllPrescriptionsCommand extends Command {
     private final String patientId;
 
+    /**
+     * Constructs a ViewAllPrescriptionsCommand with the specified patient ID.
+     *
+     * @param patientId The ID of the patient whose prescriptions will be displayed
+     */
     public ViewAllPrescriptionsCommand(String patientId) {
         this.patientId = patientId;
     }
 
+    /**
+     * Executes the view all prescriptions command.
+     * Retrieves and displays all prescriptions associated with the specified patient.
+     * Shows an appropriate message if no prescriptions exist or if the patient is not found.
+     *
+     * @param manager The management system that handles the data
+     * @param ui The user interface to display results
+     * @throws UnloadedStorageException If there was an error with storage operations
+     */
     @Override
     public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException {
         Patient patient = manager.viewPatient(patientId);
@@ -58,6 +76,11 @@ public class ViewAllPrescriptionsCommand extends Command {
         ui.showLine();
     }
 
+    /**
+     * Returns whether this command should exit the application.
+     *
+     * @return false (this command does not exit the application)
+     */
     @Override
     public boolean isExit() {
         return false;

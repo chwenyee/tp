@@ -16,11 +16,23 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The ManagementSystem class handles all business logic for the clinic management system.
+ * It manages patients, appointments, and prescriptions, and coordinates with the storage system.
+ * This class serves as the central component that maintains the state of the application
+ * and provides operations to access and modify that state.
+ */
 public class ManagementSystem {
     private final List<Appointment> appointments;
     private final List<Patient> patients;
     private final List<Prescription> prescriptions;
 
+    /**
+     * Constructs a ManagementSystem with patients and appointments but no prescriptions.
+     * 
+     * @param loadedPatients The list of patients to initialize with
+     * @param loadedAppointments The list of appointments to initialize with
+     */
     public ManagementSystem(List<Patient> loadedPatients, List<Appointment> loadedAppointments) {
         assert loadedPatients != null : "Patient list cannot be null";
         assert loadedAppointments != null : "Appointment list cannot be null";
@@ -29,6 +41,13 @@ public class ManagementSystem {
         prescriptions = new ArrayList<>();
     }
 
+    /**
+     * Constructs a ManagementSystem with patients, appointments, and prescriptions.
+     * 
+     * @param loadedPatients The list of patients to initialize with
+     * @param loadedAppointments The list of appointments to initialize with
+     * @param loadedPrescriptions The list of prescriptions to initialize with
+     */
     public ManagementSystem(List<Patient> loadedPatients, List<Appointment> loadedAppointments,
                             List<Prescription> loadedPrescriptions) {
         assert loadedPatients != null : "Patient list cannot be null";
@@ -39,15 +58,31 @@ public class ManagementSystem {
         prescriptions = loadedPrescriptions;
     }
 
+    /**
+     * Gets the list of all patients in the system.
+     *
+     * @return List of all Patient objects
+     */
     public List<Patient> getPatients() {
         return patients;
     }
 
+    /**
+     * Updates the list of appointments in the system.
+     * Replaces the entire appointment list with the provided one.
+     *
+     * @param appointments The new list of appointments to set
+     */
     public void setAppointments(List<Appointment> appointments) {
         this.appointments.clear();
         this.appointments.addAll(appointments);
     }
 
+    /**
+     * Gets the list of all appointments in the system.
+     *
+     * @return List of all Appointment objects
+     */
     public List<Appointment> getAppointments() {
         return appointments;
     }
@@ -258,12 +293,13 @@ public class ManagementSystem {
     }
 
     /**
-     * Replaces an existing medical history entry for a given patient with new content.
-     *
-     * @param nric The NRIC of the patient whose medical history will be edited.
-     * @param oldHistory The old history text to be replaced.
-     * @param newHistory The new history text to replace with.
-     * @throws UnloadedStorageException if saving the updated data to storage fails.
+     * Edits a specific medical history entry for a patient.
+     * Replaces the old history text with new text if the old text is found.
+     * 
+     * @param nric The patient's unique identifier
+     * @param oldHistory The existing history text to be replaced
+     * @param newHistory The new history text to replace it with
+     * @throws UnloadedStorageException If there was an error saving to storage
      */
     public void editPatientHistory(String nric, String oldHistory, String newHistory) throws UnloadedStorageException {
 
@@ -388,11 +424,25 @@ public class ManagementSystem {
         return null;
     }
 
+    /**
+     * Sorts a list of appointments by date and time.
+     * Orders appointments chronologically from earliest to latest.
+     *
+     * @param appointments The list of appointments to sort
+     * @return The sorted list of appointments
+     */
     public List<Appointment> sortAppointmentsByDateTime(List<Appointment> appointments) {
         appointments.sort(Comparator.comparing(Appointment::getDateTime));
         return appointments;
     }
 
+    /**
+     * Sorts a list of appointments by their ID.
+     * Orders appointments alphanumerically based on their appointment ID.
+     *
+     * @param appointments The list of appointments to sort
+     * @return The sorted list of appointments
+     */
     public List<Appointment> sortAppointmentsById(List<Appointment> appointments) {
         appointments.sort(Comparator.comparing(Appointment::getId));
         return appointments;
@@ -457,6 +507,11 @@ public class ManagementSystem {
     }
 
     //@@author Basudeb2005
+    /**
+     * Gets all prescriptions stored in the system.
+     *
+     * @return A list of all prescription records
+     */
     public List<Prescription> getPrescriptions() {
         return prescriptions;
     }
@@ -510,6 +565,13 @@ public class ManagementSystem {
     }
 
     //@@author Basudeb2005
+    /**
+     * Retrieves all prescriptions for a specific patient.
+     * Filters the complete prescription list to find those matching the provided patient ID.
+     *
+     * @param patientId The unique identifier of the patient
+     * @return A list of prescriptions for the specified patient (may be empty if none found)
+     */
     public List<Prescription> getPrescriptionsForPatient(String patientId) {
         List<Prescription> patientPrescriptions = new ArrayList<>();
         for (Prescription prescription : prescriptions) {
@@ -521,6 +583,12 @@ public class ManagementSystem {
     }
 
     //@@author Basudeb2005
+    /**
+     * Finds a specific prescription by its unique identifier.
+     *
+     * @param prescriptionId The unique ID of the prescription to find
+     * @return The prescription if found, or null if no matching prescription exists
+     */
     public Prescription getPrescriptionById(String prescriptionId) {
         for (Prescription prescription : prescriptions) {
             if (prescription.getPrescriptionId().equals(prescriptionId)) {

@@ -113,14 +113,14 @@ public class ManagementSystem {
         }
         if (newDob != null && !newDob.isBlank()) {
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate parsedDob = LocalDate.parse(newDob, formatter);
                 if (parsedDob.isAfter(LocalDate.now())) {
                     throw new InvalidInputFormatException("Date of birth must be before today.");
                 }
                 patient.setDob(parsedDob);
             } catch (DateTimeParseException e) {
-                throw new InvalidInputFormatException("Invalid date format. Use dd-MM-yyyy.");
+                throw new InvalidInputFormatException("Invalid date format. Use yyyy-MM-dd.");
             }
         }
 

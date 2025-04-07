@@ -259,7 +259,7 @@ The system loads the stored list of patients and appointments. The user is now r
 **Step 2.**
 The user executes the following command to add a new patient:
 
-`add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension`
+`add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension`
 
 This command is read by the `ClinicEase` class and passed to the `Parser`.  
 The `Parser` class identifies the command as `add-patient` and parses the fields. A `Patient` object is then constructed from the parsed data.

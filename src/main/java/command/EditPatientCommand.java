@@ -19,6 +19,16 @@ public class EditPatientCommand extends Command {
         this.details = details;
     }
 
+    /**
+     * Executes the edit-patient command by validating the new date of birth (if present),
+     * and then delegating to {@code manager.editPatient(...)} with the appropriate parameters.
+     *
+     * @param manager The ManagementSystem that manages patient data.
+     * @param ui      The UI used to show error or success messages.
+     * @throws UnloadedStorageException   If editing the patient data fails when saving to storage.
+     * @throws PatientNotFoundException   If no patient with the specified NRIC is found.
+     * @throws InvalidInputFormatException If the provided date is invalid or if newDob is after the current date.
+     */
     @Override
     public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException,
             PatientNotFoundException, InvalidInputFormatException {
@@ -29,6 +39,7 @@ public class EditPatientCommand extends Command {
         String addr = details[4];
         String phone = details[5];
 
+        // If dob is specified, we parse it here to confirm validity before calling editPatient
         if (dob != null && !dob.isBlank()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             try {

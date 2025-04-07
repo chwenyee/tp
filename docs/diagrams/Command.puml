@@ -1,0 +1,184 @@
+@startuml
+skinparam componentStyle rectangle
+hide circle
+
+left to right direction
+skinparam ranksep 30
+skinparam nodesep 20
+
+package "Commands" {
+  abstract class Command {
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class AddAppointmentCommand {
+    - appointment : Appointment
+    +AddAppointmentCommand(appointment : Appointment)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class AddPatientCommand {
+    - patient : Patient
+    +AddPatientCommand(patient : Patient)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class AddPrescriptionCommand {
+    - prescription : Prescription
+    +AddPrescriptionCommand(prescription : Prescription)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class DeleteAppointmentCommand {
+    - apptId : String
+    +DeleteAppointmentCommand(apptId : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class DeletePatientCommand {
+    - nric : String
+    +DeletePatientCommand(nric : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class EditPatientCommand {
+    - details : String[]
+    +EditPatientCommand(details : String[])
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class EditPatientHistoryCommand {
+    - details : String[]
+    +EditPatientHistoryCommand(details : String[])
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ExitCommand {
+    +ExitCommand()
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class FindAppointmentCommand {
+    - nric : String
+    +FindAppointmentCommand(nric : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class HelpCommand {
+    +HelpCommand()
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ListAppointmentCommand {
+    +ListAppointmentCommand()
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ListPatientCommand {
+    +ListPatientCommand()
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class MarkApppointmentCommand {
+    - apptId : String
+    +MarkApppointmentCommand(apptId : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class SortAppointmentCommand {
+    - type : String
+    +SortAppointmentCommand(type : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class StoreMedHistoryCommand {
+    - nric : String
+    - medHistory : String
+    +StoreMedHistoryCommand(details : String[])
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class UnmarkAppointmentCommand {
+    - apptId : String
+    +UnmarkAppointmentCommand(apptId : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ViewAllPrescriptionsCommand {
+    - patientId : String
+    +ViewAllPrescriptionsCommand(patientId : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ViewMedHistoryCommand {
+    - type : String
+    - nameOrIc : String
+    +ViewMedHistoryCommand(details : String[])
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ViewPatientCommand {
+    - nric : String
+    +ViewPatientCommand(nric : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  class ViewPrescriptionCommand {
+    - prescriptionId : String
+    +ViewPrescriptionCommand(prescriptionId : String)
+    +execute(manager: ManagementSystem, ui: Ui) : void
+    +isExit() : boolean
+  }
+
+  Command <|-- AddAppointmentCommand
+  Command <|-- AddPatientCommand
+  Command <|-- AddPrescriptionCommand
+  Command <|-- DeleteAppointmentCommand
+  Command <|-- DeletePatientCommand
+  Command <|-- EditPatientCommand
+  Command <|-- EditPatientHistoryCommand
+  Command <|-- ExitCommand
+  Command <|-- FindAppointmentCommand
+  Command <|-- HelpCommand
+  Command <|-- ListAppointmentCommand
+  Command <|-- ListPatientCommand
+  Command <|-- MarkApppointmentCommand
+  Command <|-- SortAppointmentCommand
+  Command <|-- StoreMedHistoryCommand
+  Command <|-- UnmarkAppointmentCommand
+  Command <|-- ViewAllPrescriptionsCommand
+  Command <|-- ViewMedHistoryCommand
+  Command <|-- ViewPatientCommand
+  Command <|-- ViewPrescriptionCommand
+
+  AddAppointmentCommand -[hidden]-> FindAppointmentCommand
+  AddPatientCommand -[hidden]-> HelpCommand
+  AddPrescriptionCommand -[hidden]-> ListAppointmentCommand
+  DeleteAppointmentCommand -[hidden]-> ListPatientCommand
+  DeletePatientCommand -[hidden]-> MarkApppointmentCommand
+  EditPatientCommand -[hidden]-> SortAppointmentCommand
+  EditPatientHistoryCommand -[hidden]-> StoreMedHistoryCommand
+  ExitCommand -[hidden]-> UnmarkAppointmentCommand
+}
+
+@enduml

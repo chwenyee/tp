@@ -1,0 +1,52 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+abstract class Command {
+  + {abstract} execute(manager: ManagementSystem, ui: Ui): void
+  + {abstract} isExit(): boolean
+}
+
+class Parser {
+  + {static} parse(input: String): Command
+  - {static} parseAddPatient(input: String): Patient
+  - {static} parseDeletePatient(input: String): String
+  - {static} parseViewPatient(input: String): String
+  + {static} parseViewHistory(input: String): String[]
+  + {static} parseStoreHistory(input: String): String[]
+  - {static} parseAddAppointment(input: String): Appointment
+  - {static} parseDeleteAppointment(input: String): String
+  - {static} parseSortAppointment(input: String): String
+  - {static} parseMarkAppointment(input: String): String
+  - {static} parseUnmarkAppointment(input: String): String
+  - {static} parseFindAppointment(input: String): String
+  - {static} parseEditPatient(input: String): String[]
+  - {static} parseEditHistory(input: String): String[]
+  + {static} parseLoadPatient(line: String): Patient
+  + {static} parseLoadAppointment(line: String): Appointment
+  + {static} parseAddPrescription(input: String): Prescription
+  + {static} parseViewAllPrescriptions(input: String): String
+  + {static} parseViewPrescription(input: String): String
+  - {static} extractValue(input: String, prefix: String): String
+}
+
+class XYZCommand extends Command {
+  # commandData: SubData
+  + execute(manager: ManagementSystem, ui: Ui): void
+  + isExit(): boolean
+}
+
+class SubData {
+  - field1: Type
+  - field2: Type
+}
+
+Parser --> "1" XYZCommand : creates >
+Parser -->  SubData : creates >
+
+XYZCommand --> SubData : uses >
+
+note top of Parser : Parses input into executable commands
+note bottom of XYZCommand: - XYZcommand = AddPatientCommand, AddAppointmentCommand, etc...  \n- execute and isExit are overridden \n- Constructor: XYZCommand(SubData data)
+note right of SubData : - Subdata = Patient, Appointment and Prescription \n- field1 and field2 represent the variables extracted using Parser.extractValue()
+@enduml

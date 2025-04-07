@@ -58,6 +58,10 @@ This architecture follows several design principles:
 3. **Command Pattern**: Commands encapsulate actions and provide a uniform interface for execution
 4. **Entity-Control Separation**: Entity classes (Patient, Appointment, Prescription) are separate from the controlling ManagementSystem that operates on them
 
+---
+
+## Design 
+
 <br>
 
 ### UI Component
@@ -105,6 +109,59 @@ The `Main` component is the **entry point** of the application.
 > While not a logic-heavy component itself, `Main` serves as the **coordinator** that ties together UI, command parsing, logic execution, and data storage.
 
 <br>
+
+
+### Parser Component
+**API** : [`Parser.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Parser.java)
+
+#### Overview of the `Parser` Component
+![parser-class-diagram](diagrams/parserClassDiagram.png)
+
+- **Parser:**
+  - **Public API:** `parse(input)` 
+
+  - **Helper Methods:** `parseAddPatient()`, `parseAddAppointment()`, etc.
+    - These methods extract and validate input (using extractValue()), then return domain objects (Patient, Appointment, etc.).
+
+  - **Utility Method:** `extractValue()` (reusable parameter extractor).
+
+- **Command:** 
+  - **Abstract Superclass:** Defines `execute()` and `isExit()` for all commands.
+  - **Subclasses:** `AddPatientCommand`, `DeleteAppointmentCommand`, etc.
+  - Each accepts specific data (e.g., `AddAppointmentCommand` takes an `Appointment`).
+
+The sequence diagram below illustrates the interactions within the `Parser` component, taking parse(`add-appointment ic/S1234567D dt/2025-04-05 t/1400 dsc/Consultation`)
+as example:
+![parser-sequence-diagram](diagrams/parserSequence.png)
+
+> [!NOTE]: This sequence diagram only focus on the interactions within the `Parser` component, the other components 
+> such as `Ui`, `ManagementSystem` and `Storage` are omitted.
+
+How the `Parser` component works:
+1. When `Parser` is called upon to parse a user command, `Parser` splits the input to identify the command type (e.g. `add-appointment`).
+   A `switch-case` delegates to the appropriate helper method:
+````
+public static Command parse(String userInput) throws InvalidInputFormatException, UnknownCommandException {
+    //...  
+    String[] parts = userInput.split(" ", 2);
+    String commandWord = parts[0].toLowerCase();
+    switch (commandWord) {
+    //...
+    case "add-appointment":
+        return new AddAppointmentCommand(parseAddAppointment(userInput));
+    //...
+````
+
+2. The helper method (e.g., `parseAddAppointment()`) uses `extractValue()` to:
+    - Extract parameters (`ic/`, `dt/`, `t/`, `dsc/`) from the raw user input
+    - Validate formats (e.g., NRIC format, date parsing)
+
+3. The `Appointment` object will be constructed using extracted data. Then, `AddAppointmentCommand` 
+    object is created, it will be returned to `ClinicEase` for further operations.
+---
+
+<br>
+
 
 ### Manager Component
 
@@ -215,6 +272,7 @@ The `Prescription` class represents a prescription, typically linked to a patien
 
 <br>
 
+
 ### Storage Component
 **API** : [`Storage.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/storage/Storage.java)
 
@@ -251,7 +309,7 @@ The `Storage` class handles:
 
 <br>
 
-## Design & implementation
+## Implementation
 
 ### View patient feature
 
@@ -323,6 +381,7 @@ If saving fails, `ClinicEase` catches an `UnloadedStorageException` and informs 
 
 The following sequence diagram shows how an `add-appointment` operation goes through the system:
 ![add-appointment](./diagrams/addAppointmentSequence.png)
+Note: Ui component is omitted (only represented by "Display message" here) for simplicity reason.
 
 To clarify how is extractValue() called to extract each parameter:
 ````

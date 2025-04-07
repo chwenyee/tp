@@ -15,6 +15,10 @@ public class AddAppointmentCommand extends Command {
         this.appointment = appointment;
     }
 
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
     @Override
     public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException, PatientNotFoundException,
             AppointmentClashException {

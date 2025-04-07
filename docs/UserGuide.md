@@ -509,6 +509,14 @@ Format: `bye`
 
 ## Known Issues
 
+1. **Command-Parameter Parsing Issue**
+   When users input commands without a space between the command word and parameters (e.g., `add-appointmentic/` instead of `add-appointment ic/`), 
+   the system incorrectly treats this as an unknown command rather than identifying it as a valid command with incorrect formatting. 
+   - **Cause:**
+   This behavior is due to from the current parser implementation's strict space-delimited tokenization logic in the initial input splitting phase.
+   - **Impact:** The system cannot recognize the intended valid command, provide appropriate format-suggestion error messages.
+   - **Current Resolution:** This is an intended design trade-off to maintain parsing consistency, though it may be revisited in future versions.
+
 ## Command Summary
 
 | Action                     | Format, Examples                                                                                                                                                                               |

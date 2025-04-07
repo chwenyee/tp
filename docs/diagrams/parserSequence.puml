@@ -1,0 +1,45 @@
+@startuml
+hide footbox
+
+
+participant ":ClinicEase" as ClinicEase
+box "Interactions happened in Parser" #F0F0F0
+participant ":Parser" as Parser
+participant ":Appointment" as Appointment
+participant ":AddAppointmentCommand" as AddAppointmentCommand
+end box
+
+ClinicEase -> Parser : parse("add-appointment ic/...")
+activate ClinicEase
+
+activate Parser
+Parser -> Parser : parseAddAppointment(userInput)
+activate Parser #lightblue
+
+Parser -> Parser : extractValue(userInput)
+activate Parser #lightgreen
+note right of Parser:  extractValue is called separately \n (not in a loop) to parse input and extract each parameter \n: NRIC, date, time, and description
+Parser --> Parser : :String
+deactivate Parser
+
+create Appointment
+Parser -> Appointment : new Appointment()
+activate Appointment
+Appointment --> Parser : appt :Appointment
+deactivate Appointment
+
+Parser --> Parser : appt :Appointment
+deactivate Parser
+
+
+create AddAppointmentCommand
+Parser -> AddAppointmentCommand : new AddAppointmentCommand(appt)
+activate AddAppointmentCommand
+AddAppointmentCommand --> Parser : :AddAppointmentCommand
+deactivate AddAppointmentCommand
+Parser --> ClinicEase : :AddAppointmentCommand
+deactivate Parser
+deactivate ClinicEase
+
+
+@enduml

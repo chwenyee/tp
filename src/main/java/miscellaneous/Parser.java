@@ -196,7 +196,7 @@ public class Parser {
         return new String[]{nric.trim(), medHistory.trim()};
     }
 
-    public static Appointment parseAddAppointment(String input) throws InvalidInputFormatException {
+    private static Appointment parseAddAppointment(String input) throws InvalidInputFormatException {
         String temp = input.replaceFirst("(?i)add-appointment\\s+", "");
         String nric = extractValue(temp, "ic/");
         String date = extractValue(temp, "dt/");
@@ -229,7 +229,7 @@ public class Parser {
         }
     }
 
-    public static String parseDeleteAppointment(String input) throws InvalidInputFormatException {
+    private static String parseDeleteAppointment(String input) throws InvalidInputFormatException {
         if (!input.matches("(?i)delete-appointment\\s+A\\d+")) {
             throw new InvalidInputFormatException("Invalid format! Please use: " +
                     "delete-appointment APPOINTMENT_ID");

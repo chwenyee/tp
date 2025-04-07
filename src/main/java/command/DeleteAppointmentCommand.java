@@ -12,6 +12,10 @@ public class DeleteAppointmentCommand extends Command {
         this.apptId = apptId;
     }
 
+    public String getApptId() {
+        return apptId;
+    }
+
     @Override
     public void execute(ManagementSystem manager, Ui ui) throws UnloadedStorageException {
         Appointment removedAppointment = manager.deleteAppointment(apptId);

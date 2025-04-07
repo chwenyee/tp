@@ -221,7 +221,7 @@ The sequence diagram below illustrates the interactions within the `Parser` comp
 as example:
 ![parser-sequence-diagram](diagrams/parserSequence.png)
 
-> [!NOTE]: This sequence diagram only focus on the interactions within the `Parser` component, the other components 
+> This sequence diagram only focus on the interactions within the `Parser` component, the other components 
 > such as `Ui`, `ManagementSystem` and `Storage` are omitted.
 
 How the `Parser` component works:
@@ -410,7 +410,7 @@ The 'view-patient' feature allows the user to retrieve and view the personal det
 - This command lets `ClinicEase` read the user input through the `UI` and pass it to `Parser`.
 - The `Parser` class determines that the command is `view-patient` and creates a `ViewPatientCommand` object.
 
-> [!NOTE]:  
+> **Note:**
 > If the input does not match the expected format, an `InvalidInputFormatException` is thrown. Hence, the patient's details will not be retrieved.
 
 **Step 3.** The system calls `execute()` method in `ViewPatientCommand`.
@@ -452,7 +452,7 @@ public static Command parse(String userInput) throws InvalidInputFormatException
     //...
 ````
 
-> [!NOTE]:
+> **Note:** <br>
 > If the input does not match the expected format, an InvalidInputFormatException is thrown. Hence, the appointment will
 > not be successfully added and stored. 
 
@@ -510,7 +510,7 @@ which removes the corresponding `Appointment` object from the list.
 - If found, it removes the appointment from the list.
 - It also retrieves the corresponding patient using findPatientByNric() and updates the patient's internal appointment list.
 
->[!NOTE]:
+> **Note:**
 > - If the `APPOINTMENT_ID` is invalid, an error message will be displayed and the deletion will not proceed.
 > - When a **specified patient** is **deleted**, all **appointment records associated** with that patient will be **removed** too. 
 
@@ -731,7 +731,7 @@ Step 4. If the prescription is found, the system:
    - Generates an HTML file with `Storage.savePrescriptionHtml()`
    - Shows the file location to the user
 
-> [!NOTE]:
+> **Note:**
 > If the prescription ID is invalid, an error message will be displayed and no HTML will be generated.
 
 #### HTML Prescription Generation

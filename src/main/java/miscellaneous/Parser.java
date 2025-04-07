@@ -508,14 +508,12 @@ public class Parser {
     public static String parseViewAllPrescriptions(String input) throws InvalidInputFormatException {
         String trimmedInput = input.trim();
         if (trimmedInput.equals("view-all-prescriptions") || trimmedInput.length() <= 22) {
-            throw new InvalidInputFormatException("Invalid command format. Use: view-all-prescriptions PATIENT_ID. "
-                    + "Make sure there is a space between the command and the patient ID.");
+            throw new InvalidInputFormatException("Invalid command format. Use: view-all-prescriptions PATIENT_ID");
         }
 
         String patientId = trimmedInput.substring(22).trim();
         if (patientId.isEmpty()) {
-            throw new InvalidInputFormatException("Invalid command format. Use: view-all-prescriptions PATIENT_ID. "
-                    + "Make sure there is a space between the command and the patient ID.");
+            throw new InvalidInputFormatException("Invalid command format. Use: view-all-prescriptions PATIENT_ID");
         }
         return patientId;
     }
@@ -531,14 +529,12 @@ public class Parser {
     public static String parseViewPrescription(String input) throws InvalidInputFormatException {
         String trimmedInput = input.trim();
         if (trimmedInput.equals("view-prescription") || trimmedInput.length() <= 17) {
-            throw new InvalidInputFormatException("Invalid command format. Use: view-prescription PRESCRIPTION_ID. "
-                    + "Make sure there is a space between the command and the prescription ID.");
+            throw new InvalidInputFormatException("Invalid command format. Use: view-prescription PRESCRIPTION_ID");
         }
 
         String prescriptionId = trimmedInput.substring(17).trim();
         if (prescriptionId.isEmpty()) {
-            throw new InvalidInputFormatException("Invalid command format. Use: view-prescription PRESCRIPTION_ID. "
-                    + "Make sure there is a space between the command and the prescription ID.");
+            throw new InvalidInputFormatException("Invalid command format. Use: view-prescription PRESCRIPTION_ID");
         }
         return prescriptionId;
     }

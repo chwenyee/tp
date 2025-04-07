@@ -42,7 +42,7 @@ class DeleteAppointmentCommandTest {
     @Test
     void execute_validNric_expectAppointmentDeleted() throws DuplicatePatientIDException, UnloadedStorageException,
             PatientNotFoundException, AppointmentClashException, InvalidInputFormatException {
-        Patient patient = new Patient("S1234567D", "Billy", "01-10-1990",
+        Patient patient = new Patient("S1234567D", "Billy", "1990-10-01",
                 "M", "124 High St", "81234567", new ArrayList<>());
         new AddPatientCommand(patient).execute(manager, ui);
 

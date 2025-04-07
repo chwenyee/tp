@@ -114,7 +114,7 @@ class ParserTest {
 
     @Test
     void parseAddPatient_invalidInputFormat_expectException() {
-        String input = "add-patient n/John Doe ic/ dob/12-12-1999 g/M "
+        String input = "add-patient n/John Doe ic/ dob/1999-12-12 g/M "
                 + "p/98765432 a/123 Main Street h/Diabetes, Hypertension";
         assertThrows(InvalidInputFormatException.class, () -> Parser.parse(input));
     }

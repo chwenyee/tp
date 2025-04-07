@@ -130,7 +130,7 @@ public class Patient {
     }
 
     private LocalDate parseAndValidateDob(String dobStr) throws InvalidInputFormatException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             LocalDate dob = LocalDate.parse(dobStr, formatter);
             if (dob.isAfter(LocalDate.now())) {
@@ -138,7 +138,7 @@ public class Patient {
             }
             return dob;
         } catch (DateTimeParseException e) {
-            throw new InvalidInputFormatException("Invalid date format. Use dd-MM-yyyy.");
+            throw new InvalidInputFormatException("Invalid date format. Use yyyy-MM-dd.");
         }
     }
 
@@ -182,7 +182,7 @@ public class Patient {
                         + "Address: %s\n"
                         + "Contact: %s\n"
                         + "Medical History: %s",
-                id, name, dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                id, name, dob.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 gender, address, contactInfo, formattedMedicalHistory);
 
         if (appointments.isEmpty()) {
@@ -209,7 +209,7 @@ public class Patient {
                         + "Gender: %s\n   "
                         + "Address: %s\n   "
                         + "Contact: %s",
-                id, name, dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), gender, address, contactInfo);
+                id, name, dob.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), gender, address, contactInfo);
 
         if (medicalHistory.isEmpty()) {
             result += "\n   Medical History: None";
@@ -238,7 +238,7 @@ public class Patient {
 
     public String toFileFormat() {
         String history = String.join(", ", this.medicalHistory);
-        return this.id + "|" + this.name + "|" + dob.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        return this.id + "|" + this.name + "|" + dob.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 + "|" + this.gender + "|" + this.address + "|" + this.contactInfo + "|" + history;
     }
 }

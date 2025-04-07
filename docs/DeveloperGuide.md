@@ -106,6 +106,115 @@ The `Main` component is the **entry point** of the application.
 
 <br>
 
+### Manager Component
+
+**API**: [`ManagementSystem.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/ManagementSystem.java)
+
+![Manager Component](diagrams/managerComponent.png)
+
+The `ManagementSystem` class in manager component acts as the central coordinator, responsible for managing features for **Patient**, **Appointment**, and **Prescription** entities. It provides methods to add, remove, and retrieve these objects, ensuring business logic is applied and maintaining the integrity of the system’s data.
+
+#### Responsibilities
+
+- Manages instances of **Patient**, **Appointment**, and **Prescription** objects.
+- Provides centralized methods for adding, removing, and retrieving from **Patients**, **Appointments**, and **Prescriptions**.
+- Links **Appointments** and **Prescriptions** to their respective **Patients**.
+- Ensures consistency of data, validating changes before committing them to the system.
+- Handles business logic related to managing patients, their appointments, and prescriptions.
+
+#### Key Features
+
+- Provides **methods** for managing **Patients**, **Appointments**, and **Prescriptions**.
+- Ensures relationships between **Patients**, **Appointments**, and **Prescriptions** are properly maintained.
+- Handles validation logic to ensure that the data is accurate and consistent (e.g., cannot add duplicate appointments or prescriptions).
+- Can interact with **Storage** to persist changes made to patients, appointments, and prescriptions.
+
+#### Structure
+
+- The core functionality is provided through a **single class** (ManagementSystem), where all methods for interacting with the system’s data are defined.
+- Utilizes **arraylists** to store and manage **Patient**, **Appointment**, and **Prescription** objects.
+- The **ManagementSystem** class contains methods like `addPatient()`, `removePatient()`, `getPatient()`, etc., and primarily serve to manage the logic behind those operations.
+
+<br>
+
+### Objects Component
+
+![Object Component](diagrams/objectComponent.png)
+
+
+The **Objects** component defines the objects used by the **Manager** component, which are **Patient**, **Appointment**, and **Prescription**. These objects encompass the data and behavior specific to their respective classes.
+
+---
+
+#### Patient Class
+
+**API**: [`Patient.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/Patient.java)
+
+The `Patient` class represents a patient, including personal details, appointments, and prescriptions.
+
+##### Responsibilities
+
+- Encapsulates the **patient’s personal data** (e.g., name, contact information).
+- Manages associated **appointments** and **prescriptions** for the patient.
+
+##### Key Features
+
+- Stores **personal details** like name, gender, and contact information.
+- Can hold **appointments** and **prescriptions** for the patient.
+- Provides methods for managing appointments and prescriptions directly tied to the patient.
+
+---
+
+#### Appointment Class
+
+**API**: [`Appointment.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/Appointment.java)
+
+The `Appointment` class represents an appointment, typically linked to a patient and a date and time. It contains details such as the appointment time, description and status.
+
+##### Responsibilities
+
+- Represents an **appointment** between a **patient** and a **doctor**.
+- Stores information about the **date**, **time**, and **status** of the appointment.
+- Allows updating the **status** of the appointment as completed.
+
+##### Key Features
+
+- Holds **appointment-related data**, including date, time, and status.
+- Links to a **Patient** and optionally to a **Doctor**.
+- Provides functionality to mark it as done.
+
+##### Dependencies
+
+- **Model**: Dependent on the **Patient** class for representing relationships with appointments.
+- **ManagementSystem**: The **ManagementSystem** interacts with this class to manage appointments for patients.
+
+---
+
+#### Prescription Class
+
+**API**: [`Prescription.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/Prescription.java)
+
+The `Prescription` class represents a prescription, typically linked to a patient and a doctor. It contains the prescribed medications and dosage instructions.
+
+##### Responsibilities
+
+- Represents a **prescription** issued by a **doctor** for a **patient**.
+- Stores information about **medicines**, **dosage**, and **doctor notes**.
+- Allows updates to the **dosage** or addition of new medications.
+
+##### Key Features
+
+- Holds **prescription-related data**, including medicine names, dosage, and additional instructions.
+- Links to a **Patient** to ensure the prescription is tied to the correct patient.
+- Provides methods to update the **dosage** or add new medicines.
+
+##### Dependencies
+
+- **Model**: Dependent on the **Patient** class to represent which patient the prescription is associated with.
+- **ManagementSystem**: The **ManagementSystem** interacts with this class to manage prescriptions and ensure they are associated with the correct patient.
+
+<br>
+
 ### Storage Component
 **API** : [`Storage.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/storage/Storage.java)
 

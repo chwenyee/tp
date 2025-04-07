@@ -1,0 +1,89 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "Object Component" {
+class Patient {
+    - id: String
+    - name: String
+    - dob: LocalDate
+    - contactInfo: String
+    - gender: String
+    - address: String
+    - medicalHistory: List<String>
+    - appointments: List<Appointment>
+
+    + Patient(id, name, dobStr, gender, address, contactInfo, medicalHistory)
+    + getId(): String
+    + getName(): String
+    + getDob(): LocalDate
+    + getGender(): String
+    + getAddress(): String
+    + getContactInfo(): String
+    + getMedicalHistory(): List<String>
+    + setName(name: String): void
+    + setDob(dob: LocalDate): void
+    + setContactInfo(info: String): void
+    + setGender(gender: String): void
+    + setAddress(address: String): void
+    + getAppointments(): List<Appointment>
+    + addAppointment(appointment: Appointment): void
+    + deleteAppointment(apptId: String): void
+    + toString(): String
+    + toStringForListView(): String
+    + toFileFormat(): String
+}
+
+class Appointment {
+    - id : String
+    - nric : String
+    - dateTime : LocalDateTime
+    - description : String
+    - isDone : boolean
+
+    + Appointment(nric: String, dateTime: LocalDateTime, description: String)
+    + Appointment(id: String, nric: String, dateTime: LocalDateTime, description: String)
+    + getId(): String
+    + setRunningId(newId: int): void
+    + getNric(): String
+    + getDate(): LocalDate
+    + getTime(): LocalTime
+    + getDateTime(): LocalDateTime
+    + getRunningId(): int
+    + getDescription(): String
+    + isDone(): boolean
+    + markAsDone(): void
+    + unmarkAsDone(): void
+    + setIsDone(mark: boolean): void
+    + getStatusIcon(): String
+    + toString(): String
+    + toFileFormat(): String
+}
+
+class Prescription {
+    - patientId : String
+    - timestamp : LocalDateTime
+    - prescriptionId : String
+    - symptoms : List<String>
+    - medicines : List<String>
+    - notes : String
+
+    + getPatientId(): String
+    + getPrescriptionId(): String
+    + getTimestamp(): LocalDateTime
+    + getSymptoms(): List<String>
+    + getMedicines(): List<String>
+    + getNotes(): String
+    + toString(): String
+    + toFileFormat(): String
+    + static fromFileFormat(String): Prescription
+    + generateHtml(Patient): String
+}
+
+}
+
+ManagementSystem --> Patient
+ManagementSystem --> Appointment
+ManagementSystem --> Prescription
+
+hide circle
+@enduml

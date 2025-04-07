@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Represents a medical prescription in the clinic management system.
+ * Contains information about the patient, symptoms, prescribed medicines,
+ * and additional notes provided by the doctor.
+ */
 //@@author Basudeb2005
 public class Prescription {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -17,6 +22,15 @@ public class Prescription {
     private final List<String> medicines;
     private final String notes;
     
+    /**
+     * Constructs a new Prescription with the current timestamp.
+     * This constructor is used when creating a new prescription in the system.
+     *
+     * @param patientId The ID of the patient this prescription is for
+     * @param symptoms List of patient symptoms
+     * @param medicines List of prescribed medicines
+     * @param notes Additional instructions or notes for the patient
+     */
     public Prescription(String patientId, List<String> symptoms, List<String> medicines, String notes) {
         this.patientId = patientId;
         this.timestamp = LocalDateTime.now();
@@ -26,6 +40,17 @@ public class Prescription {
         this.notes = notes;
     }
     
+    /**
+     * Constructs a Prescription with specified prescriptionId and timestamp.
+     * This constructor is primarily used when loading prescriptions from storage.
+     *
+     * @param patientId The ID of the patient this prescription is for
+     * @param prescriptionId The unique identifier for this prescription
+     * @param timestamp The date and time when the prescription was created
+     * @param symptoms List of patient symptoms
+     * @param medicines List of prescribed medicines
+     * @param notes Additional instructions or notes for the patient
+     */
     public Prescription(String patientId, String prescriptionId, LocalDateTime timestamp, 
                        List<String> symptoms, List<String> medicines, String notes) {
         this.patientId = patientId;
@@ -36,30 +61,66 @@ public class Prescription {
         this.notes = notes;
     }
     
+    /**
+     * Gets the patient ID associated with this prescription.
+     *
+     * @return The patient's unique identifier
+     */
     public String getPatientId() {
         return patientId;
     }
     
+    /**
+     * Gets the unique identifier for this prescription.
+     *
+     * @return The prescription's ID in format "patientID-number"
+     */
     public String getPrescriptionId() {
         return prescriptionId;
     }
     
+    /**
+     * Gets the timestamp when this prescription was created.
+     *
+     * @return LocalDateTime representing when the prescription was written
+     */
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
     
+    /**
+     * Gets the list of symptoms recorded for this prescription.
+     *
+     * @return List of symptom descriptions
+     */
     public List<String> getSymptoms() {
         return symptoms;
     }
     
+    /**
+     * Gets the list of medicines prescribed.
+     *
+     * @return List of medicine names and dosage instructions
+     */
     public List<String> getMedicines() {
         return medicines;
     }
     
+    /**
+     * Gets any additional notes or instructions for this prescription.
+     *
+     * @return Notes string or empty if no notes were provided
+     */
     public String getNotes() {
         return notes;
     }
     
+    /**
+     * Returns a string representation of the prescription with formatted details.
+     * Includes prescription ID, timestamp, patient ID, and lists of symptoms and medicines.
+     *
+     * @return A formatted multi-line string representation of the prescription
+     */
     @Override
     public String toString() {
         StringBuilder symptomsStr = new StringBuilder();
@@ -82,6 +143,12 @@ public class Prescription {
             patientId, symptomsStr.toString(), medicinesStr.toString(), notes);
     }
     
+    /**
+     * Converts the prescription to a storage-friendly string format.
+     * Uses pipe-delimited format to store all prescription attributes.
+     *
+     * @return A string representation suitable for file storage
+     */
     public String toFileFormat() {
         return String.join("|", 
             prescriptionId,
@@ -92,6 +159,13 @@ public class Prescription {
             notes);
     }
     
+    /**
+     * Creates a Prescription object from a storage file entry.
+     * Parses the pipe-delimited string from storage into a Prescription object.
+     *
+     * @param fileEntry The string from the storage file
+     * @return A new Prescription object with the stored data
+     */
     public static Prescription fromFileFormat(String fileEntry) {
         String[] parts = fileEntry.split("\\|");
         String prescriptionId = parts[0];
@@ -104,6 +178,14 @@ public class Prescription {
         return new Prescription(patientId, prescriptionId, timestamp, symptoms, medicines, notes);
     }
     
+    /**
+     * Generates a formatted HTML document for the prescription.
+     * Creates a professional-looking prescription that can be printed.
+     * Includes patient details if provided, symptoms, medicines, and notes.
+     *
+     * @param patient The Patient object (can be null if patient details unavailable)
+     * @return A string containing HTML markup for the prescription
+     */
     public String generateHtml(Patient patient) {
         StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n")

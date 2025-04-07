@@ -501,9 +501,24 @@ Format: `bye`
 
 ## FAQ
 
+**Q**: How do I save my data?
+
+**A**: ClinicEase's data, i.e. patients, appointments and prescriptions, are saved in the hard disk automatically after any command that changes the data.
+There is no need to save manually.
+
+**Q**: Can I edit the data file e.g. `patient_data.txt`?
+
+**A**: ClinicEase's data are saved automatically as a text file at [your current directory in Command Prompt]/data/[patient_data/appointment_data/prescription_data].txt. 
+Advanced users are welcome to update data directly by editing that data file.
+
 **Q**: How do I transfer my data to another computer? 
 
 **A**: You can copy the 'data' folder and paste it in the directory that you save your jar file in another computer. 
+
+> **CAUTION:**
+> - If your changes to the data file makes its format invalid, ClinicEase will skip that row.
+> - Consequently, that row of data will not be loaded.
+> - Therefore, only edit the data file if you are confident in making the correct updates.
 
 --- 
 
@@ -517,6 +532,7 @@ Format: `bye`
    - **Impact:** The system cannot recognize the intended valid command, provide appropriate format-suggestion error messages.
    - **Current Resolution:** This is an intended design trade-off to maintain parsing consistency, though it may be revisited in future versions.
 
+---
 ## Command Summary
 
 | Action                     | Format, Examples                                                                                                                                                                               |

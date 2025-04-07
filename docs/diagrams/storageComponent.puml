@@ -33,11 +33,11 @@ package "Storage" {
     class ManagementSystem
   }
 
-  Storage --> Patient
-  Storage --> Appointment
-  Storage --> Prescription
-  Storage --> Parser
-  Storage --> ManagementSystem
+  Storage ..> Patient
+  Storage ..> Appointment
+  Storage ..> Prescription
+  Storage ..> Parser
+  Storage <..> ManagementSystem
 }
 
 @enduml

@@ -1,0 +1,31 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "UI Component" {
+    class UI {
+        - Scanner sc
+        + Ui()
+        + showWelcome(): void
+        + showBye(): void
+        + showLine(): void
+        + readCommand(): String
+        + showError(message: String): void
+        + showHelp(): void
+        + showPatientAdded(patients: List<Patient>): void
+        + showPatientDeleted(removedPatient: Patient, nric: String): void
+        + showPatientViewed(matchedPatient: Patient, nric: String): void
+        + showPatientList(patients: List<Patient>): void
+        + showPatientHistory(patient: Patient): void
+        + showAppointmentAdded(appointments: List<Appointment>): void
+        + showAppointmentDeleted(appointments: List<Appointment>, removedAppointment: Appointment, apptId: String): void
+        + showAppointmentMarked(appointments: List<Appointment>, markedAppointment: Appointment, apptId: String): void
+        + showAppointmentUnmarked(appointments: List<Appointment>, markedAppointment: Appointment, apptId: String): void
+        + showAppointmentList(appointments: List<Appointment>): void
+        + showAppointmentsFound(appointments: List<Appointment>, nric: String): void
+    }
+
+}
+
+UI ..> Object
+Main --> UI
+@enduml

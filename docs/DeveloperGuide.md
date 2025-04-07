@@ -20,23 +20,21 @@ Given below is a quick overview of each component and how they interact with eac
 
 The application consists of the following components:
 
-* **miscellaneous**: Contains the user interface and parser components.
+* **Miscellaneous**: Contains the user interface and parser components.
   * **UI**: Handles user interaction, displays information to the user, and reads commands from the console.
   * **Parser**: Processes user input strings and converts them into appropriate Command objects.
 
-* **command**: Follows the Command pattern to implement various operations.
-  * **Command**: An abstract class that all specific commands extend.
+* **Main**: The entry point of the application and acts as the orchestrator that connects all other components
+
+* **Command**: Follows the Command pattern to implement various operations.
+  * **Command (Main)**: An abstract class that all specific commands extend.
   * **Various Commands**: Specific command classes (AddPatientCommand, DeletePatientCommand, etc.) that implement different operations.
 
-* **manager**: Contains entity classes and the management system that coordinates operations on them.
-  * **Entity Classes**: Patient, Appointment, and Prescription classes that represent domain objects.
-  * **ManagementSystem**: The central coordinator that manages collections of entities and implements business logic.
+* **Manager**: The central coordinator that manages collections of entities and implements business logic.
 
-* **storage**: Handles data persistence.
-  * **Storage**: Saves and loads data to/from files on disk.
+* **Object**: Patient, Appointment, and Prescription classes that represent domain objects.
 
-* **exception**: Contains custom exception classes for handling various error conditions.
-  * Various exceptions for handling input validation, patient lookup failures, etc.
+* **Storage**: Saves and loads data to/from files on disk.
 
 ### How the architecture components interact with each other
 
@@ -59,6 +57,52 @@ This architecture follows several design principles:
 2. **Separation of Concerns**: UI logic is separated from business logic which is separated from data persistence logic
 3. **Command Pattern**: Commands encapsulate actions and provide a uniform interface for execution
 4. **Entity-Control Separation**: Entity classes (Patient, Appointment, Prescription) are separate from the controlling ManagementSystem that operates on them
+
+<br>
+
+### UI Component
+**API**: [`Ui.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Ui.java)
+
+![UI Component](diagrams/uiComponent.png)
+
+The `UI` component is responsible for handling all user interactions. It presents messages to the user, reads user inputs, and displays command results or errors.
+
+#### Responsibilities
+
+- Display a welcome message, help instructions, and goodbye message.
+- Accept and return user input from the command line.
+- Display confirmation messages and outputs for commands such as `add-patient`, `delete-patient`, `view-patient`, `add-appointment`, etc.
+- Print errors and validation issues clearly to the user.
+
+#### Key Features
+
+- Uses `Scanner` to read input from `System.in`.
+- Methods like `showPatientAdded()`, `showAppointmentMarked()`, and `showPatientList()` format data in a readable and consistent way.
+- Provides contextual error messages via `showError()` to aid debugging and usage.
+
+#### Dependencies
+
+**Model**: Uses `Patient` and `Appointment` for displaying information.
+
+<br>
+
+### Main component
+**API**: [`ClinicEase.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/ClinicEase.java)
+
+![Main Component](diagrams/mainComponent.png)
+The `Main` component is the **entry point** of the application.
+
+#### Responsibilities
+
+- Initializes core components: `Ui`, `Storage`, and `ManagementSystem`.
+- Loads previously saved patient, appointment, and prescription data using `Storage`.
+- Runs the main input loop by:
+    - Reading commands via `Ui`
+    - Parsing them into `Command` objects via `Parser`
+    - Executing commands with access to `ManagementSystem` and `Ui`
+- Handles exceptions gracefully and displays errors to the user when needed.
+
+> While not a logic-heavy component itself, `Main` serves as the **coordinator** that ties together UI, command parsing, logic execution, and data storage.
 
 <br>
 

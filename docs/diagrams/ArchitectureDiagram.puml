@@ -8,15 +8,17 @@ component Command
 component Manager
 component Object
 component Storage
-component Commons
+component Main
 }
 database FileSystem
 
 User --> UI
 UI ..> Object
-UI ..> Parser
-UI --> Manager
-UI --> Storage
+Main --> UI
+Main ..>Command
+Main --> Manager
+Main --> Storage
+Main ..> Object
 Parser ..> Command
 Parser ..> Object
 Command --> Object
@@ -26,7 +28,8 @@ Command ..> Storage
 Manager --> Object
 Manager <..> Storage
 Storage ..> Object
-UI --> Command
+Storage ..> Parser
 Storage --> FileSystem
+
 
 @enduml

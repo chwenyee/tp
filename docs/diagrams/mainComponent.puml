@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class ClinicEase {
+    - ManagementSystem manager
+    - Ui ui
+    - Storage storage
+
+    + ClinicEase(filePath: String)
+    + run(): void
+    + main(args: String[]): void
+}
+
+ClinicEase --> Ui
+ClinicEase --> Storage
+ClinicEase --> ManagementSystem
+ClinicEase ..> Command
+@enduml

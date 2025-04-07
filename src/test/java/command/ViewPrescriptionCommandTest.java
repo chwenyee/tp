@@ -45,7 +45,7 @@ public class ViewPrescriptionCommandTest {
             
             // Add a test patient
             Patient patient = new Patient(
-                "S1234567A", "John Doe", "01-01-1990", "M",
+                "S1234567A", "John Doe", "1990-10-01", "M",
                 "123 Main St", "98765432", new ArrayList<>()
             );
             system.addPatient(patient);

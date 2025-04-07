@@ -1,28 +1,35 @@
 @startuml
 actor User
 
+package "ClinicEase"{
 component UI
 component Parser
 component Command
 component Manager
-component Model
+component Object
 component Storage
+component Main
+}
 database FileSystem
 
-' Model contains patient, prescription, and appointment
-note right of Model
-  Patient
-  Prescription
-  Appointment
-end note
-
 User --> UI
-UI ..> Parser
+UI ..> Object
+Main --> UI
+Main ..>Command
+Main --> Manager
+Main --> Storage
+Main ..> Object
 Parser ..> Command
-Command --> Manager
-Manager --> Model
-Manager --> Storage
-UI --> Command
+Parser ..> Object
+Command --> Object
+Command ..> UI
+Command ..> Manager
+Command ..> Storage
+Manager --> Object
+Manager <..> Storage
+Storage ..> Object
+Storage ..> Parser
 Storage --> FileSystem
 
-@enduml 
+
+@enduml

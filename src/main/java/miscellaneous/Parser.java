@@ -106,7 +106,7 @@ public class Parser {
 
         if (name == null || nric == null || birthdate == null || gender == null || phone == null || address == null) {
             throw new InvalidInputFormatException("Patient details are incomplete!" + System.lineSeparator()
-                    + "Please use: add-patient n/NAME ic/NRIC dob/BIRTHDATE(dd-MM-yyyy) g/GENDER p/PHONE a/ADDRESS");
+                    + "Please use: add-patient n/NAME ic/NRIC dob/BIRTHDATE(yyyy-MM-dd) g/GENDER p/PHONE a/ADDRESS");
         }
 
         List<String> medHistory = new ArrayList<>();

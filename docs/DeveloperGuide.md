@@ -20,23 +20,21 @@ Given below is a quick overview of each component and how they interact with eac
 
 The application consists of the following components:
 
-* **miscellaneous**: Contains the user interface and parser components.
+* **Miscellaneous**: Contains the user interface and parser components.
   * **UI**: Handles user interaction, displays information to the user, and reads commands from the console.
   * **Parser**: Processes user input strings and converts them into appropriate Command objects.
 
-* **command**: Follows the Command pattern to implement various operations.
-  * **Command**: An abstract class that all specific commands extend.
+* **Main**: The entry point of the application and acts as the orchestrator that connects all other components
+
+* **Command**: Follows the Command pattern to implement various operations.
+  * **Command (Main)**: An abstract class that all specific commands extend.
   * **Various Commands**: Specific command classes (AddPatientCommand, DeletePatientCommand, etc.) that implement different operations.
 
-* **manager**: Contains entity classes and the management system that coordinates operations on them.
-  * **Entity Classes**: Patient, Appointment, and Prescription classes that represent domain objects.
-  * **ManagementSystem**: The central coordinator that manages collections of entities and implements business logic.
+* **Manager**: The central coordinator that manages collections of entities and implements business logic.
 
-* **storage**: Handles data persistence.
-  * **Storage**: Saves and loads data to/from files on disk.
+* **Object**: Patient, Appointment, and Prescription classes that represent domain objects.
 
-* **exception**: Contains custom exception classes for handling various error conditions.
-  * Various exceptions for handling input validation, patient lookup failures, etc.
+* **Storage**: Saves and loads data to/from files on disk.
 
 ### How the architecture components interact with each other
 
@@ -63,6 +61,55 @@ This architecture follows several design principles:
 ---
 
 ## Design 
+
+<br>
+
+### UI Component
+**API**: [`Ui.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Ui.java)
+
+![UI Component](diagrams/uiComponent.png)
+
+The `UI` component is responsible for handling all user interactions. It presents messages to the user, reads user inputs, and displays command results or errors.
+
+#### Responsibilities
+
+- Display a welcome message, help instructions, and goodbye message.
+- Accept and return user input from the command line.
+- Display confirmation messages and outputs for commands such as `add-patient`, `delete-patient`, `view-patient`, `add-appointment`, etc.
+- Print errors and validation issues clearly to the user.
+
+#### Key Features
+
+- Uses `Scanner` to read input from `System.in`.
+- Methods like `showPatientAdded()`, `showAppointmentMarked()`, and `showPatientList()` format data in a readable and consistent way.
+- Provides contextual error messages via `showError()` to aid debugging and usage.
+
+#### Dependencies
+
+**Model**: Uses `Patient` and `Appointment` for displaying information.
+
+<br>
+
+### Main component
+**API**: [`ClinicEase.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/ClinicEase.java)
+
+![Main Component](diagrams/mainComponent.png)
+The `Main` component is the **entry point** of the application.
+
+#### Responsibilities
+
+- Initializes core components: `Ui`, `Storage`, and `ManagementSystem`.
+- Loads previously saved patient, appointment, and prescription data using `Storage`.
+- Runs the main input loop by:
+    - Reading commands via `Ui`
+    - Parsing them into `Command` objects via `Parser`
+    - Executing commands with access to `ManagementSystem` and `Ui`
+- Handles exceptions gracefully and displays errors to the user when needed.
+
+> While not a logic-heavy component itself, `Main` serves as the **coordinator** that ties together UI, command parsing, logic execution, and data storage.
+
+<br>
+
 
 ### Parser Component
 **API** : [`Parser.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Parser.java)
@@ -112,6 +159,155 @@ public static Command parse(String userInput) throws InvalidInputFormatException
 3. The `Appointment` object will be constructed using extracted data. Then, `AddAppointmentCommand` 
     object is created, it will be returned to `ClinicEase` for further operations.
 ---
+
+<br>
+
+
+### Manager Component
+
+**API**: [`ManagementSystem.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/ManagementSystem.java)
+
+![Manager Component](diagrams/managerComponent.png)
+
+The `ManagementSystem` class in manager component acts as the central coordinator, responsible for managing features for **Patient**, **Appointment**, and **Prescription** entities. It provides methods to add, remove, and retrieve these objects, ensuring business logic is applied and maintaining the integrity of the system’s data.
+
+#### Responsibilities
+
+- Manages instances of **Patient**, **Appointment**, and **Prescription** objects.
+- Provides centralized methods for adding, removing, and retrieving from **Patients**, **Appointments**, and **Prescriptions**.
+- Links **Appointments** and **Prescriptions** to their respective **Patients**.
+- Ensures consistency of data, validating changes before committing them to the system.
+- Handles business logic related to managing patients, their appointments, and prescriptions.
+
+#### Key Features
+
+- Provides **methods** for managing **Patients**, **Appointments**, and **Prescriptions**.
+- Ensures relationships between **Patients**, **Appointments**, and **Prescriptions** are properly maintained.
+- Handles validation logic to ensure that the data is accurate and consistent (e.g., cannot add duplicate appointments or prescriptions).
+- Can interact with **Storage** to persist changes made to patients, appointments, and prescriptions.
+
+#### Structure
+
+- The core functionality is provided through a **single class** (ManagementSystem), where all methods for interacting with the system’s data are defined.
+- Utilizes **arraylists** to store and manage **Patient**, **Appointment**, and **Prescription** objects.
+- The **ManagementSystem** class contains methods like `addPatient()`, `removePatient()`, `getPatient()`, etc., and primarily serve to manage the logic behind those operations.
+
+<br>
+
+### Objects Component
+
+![Object Component](diagrams/objectComponent.png)
+
+
+The **Objects** component defines the objects used by the **Manager** component, which are **Patient**, **Appointment**, and **Prescription**. These objects encompass the data and behavior specific to their respective classes.
+
+---
+
+#### Patient Class
+
+**API**: [`Patient.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/Patient.java)
+
+The `Patient` class represents a patient, including personal details, appointments, and prescriptions.
+
+##### Responsibilities
+
+- Encapsulates the **patient’s personal data** (e.g., name, contact information).
+- Manages associated **appointments** and **prescriptions** for the patient.
+
+##### Key Features
+
+- Stores **personal details** like name, gender, and contact information.
+- Can hold **appointments** and **prescriptions** for the patient.
+- Provides methods for managing appointments and prescriptions directly tied to the patient.
+
+---
+
+#### Appointment Class
+
+**API**: [`Appointment.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/Appointment.java)
+
+The `Appointment` class represents an appointment, typically linked to a patient and a date and time. It contains details such as the appointment time, description and status.
+
+##### Responsibilities
+
+- Represents an **appointment** between a **patient** and a **doctor**.
+- Stores information about the **date**, **time**, and **status** of the appointment.
+- Allows updating the **status** of the appointment as completed.
+
+##### Key Features
+
+- Holds **appointment-related data**, including date, time, and status.
+- Links to a **Patient** and optionally to a **Doctor**.
+- Provides functionality to mark it as done.
+
+##### Dependencies
+
+- **Model**: Dependent on the **Patient** class for representing relationships with appointments.
+- **ManagementSystem**: The **ManagementSystem** interacts with this class to manage appointments for patients.
+
+---
+
+#### Prescription Class
+
+**API**: [`Prescription.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/Prescription.java)
+
+The `Prescription` class represents a prescription, typically linked to a patient and a doctor. It contains the prescribed medications and dosage instructions.
+
+##### Responsibilities
+
+- Represents a **prescription** issued by a **doctor** for a **patient**.
+- Stores information about **medicines**, **dosage**, and **doctor notes**.
+- Allows updates to the **dosage** or addition of new medications.
+
+##### Key Features
+
+- Holds **prescription-related data**, including medicine names, dosage, and additional instructions.
+- Links to a **Patient** to ensure the prescription is tied to the correct patient.
+- Provides methods to update the **dosage** or add new medicines.
+
+##### Dependencies
+
+- **Model**: Dependent on the **Patient** class to represent which patient the prescription is associated with.
+- **ManagementSystem**: The **ManagementSystem** interacts with this class to manage prescriptions and ensure they are associated with the correct patient.
+
+<br>
+
+
+### Storage Component
+**API** : [`Storage.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/storage/Storage.java)
+
+![Storage Component](diagrams/storageComponent.png)
+The `Storage` component is responsible for reading from and writing to the file system to ensure persistence of application data in `ClinicEase`.
+
+#### Responsibilities
+
+The `Storage` class handles:
+- Saving and loading **Patients** from `patient_data.txt`
+- Saving and loading **Appointments** from `appointment_data.txt`
+- Saving and loading **Prescriptions** from `prescription_data.txt`
+- Generating HTML files for prescriptions into a `/prescriptions/` directory
+
+#### Key Features
+
+- Each data type is stored in its own file.
+- Upon loading, `Storage` uses the `Parser` class to reconstruct objects like `Patient` and `Appointment`.
+- When appointments are loaded, they are automatically linked to the corresponding patients via the `ManagementSystem`.
+
+#### Structure
+
+- All methods are defined within a **single `Storage` class** with static methods like `savePatients()`, `loadAppointments()`, etc.  
+- Initialization is done through the constructor `Storage(String directory)`, which sets the correct file paths.
+
+#### Dependencies
+
+- **Model**: Uses `Patient`, `Appointment`, and `Prescription` objects for reading/writing.
+- **Commons**: Uses constants and utility methods if applicable.
+- **Parser**: Converts text from the file back into model objects.
+- **ManagementSystem**: Required to link appointments to patients during data loading.
+
+> **Note:** `Storage` should be initialised before calling any static methods that rely on file paths. Otherwise, `UnloadedStorageException` will be thrown.
+
+<br>
 
 ## Implementation
 
@@ -281,7 +477,7 @@ The system loads the stored list of patients and appointments. The user is now r
 **Step 2.**
 The user executes the following command to add a new patient:
 
-`add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension`
+`add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St h/Diabetes, Hypertension`
 
 This command is read by the `ClinicEase` class and passed to the `Parser`.  
 The `Parser` class identifies the command as `add-patient` and parses the fields. A `Patient` object is then constructed from the parsed data.

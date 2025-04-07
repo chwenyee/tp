@@ -93,7 +93,7 @@ public class PrescriptionTest {
 
         // Create a sample patient
         Patient patient = new Patient(
-                patientId, "John Doe", "01-01-1990", "M",
+                patientId, "John Doe", "1990-01-01", "M",
                 "123 Main St", "98765432", new ArrayList<>()
         );
 

@@ -52,14 +52,7 @@ store, view, and edit patients’ medical histories with robust validation and p
     - Helped maintain consistent Java coding conventions (e.g., method naming, usage of final variables) throughout the
       codebase.
 
-5. **Contributions to Team-Based Tasks**
-
-    - Participated in **team discussions** to decide on the command naming patterns (`store-history` vs. `add-history`)
-      and the approach to handle multiple comma-separated entries.
-    - Ensured consistent **exception messages** across the project for invalid data entries.
-    - Reviewed and tested merges from teammates, particularly those that affected `ManagementSystem` or `Parser`.
-
-6. **Review / Mentoring Contributions**
+5. **Review / Mentoring Contributions**
 
     - Provided code reviews on pull requests that impacted the data structures storing patient details.
     - Helped maintain consistent Java coding conventions (e.g., method naming, usage of final variables) throughout the

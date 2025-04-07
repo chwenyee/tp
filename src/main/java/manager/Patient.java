@@ -89,38 +89,85 @@ public class Patient {
         return new Patient(id, name, dobStr, gender, address, contact, medHistory);
     }
 
-    /** @return the patient NRIC */
-    public String getId() { return id; }
+    /**
+     * @return the patient NRIC
+     */
+    public String getId() {
+        return id;
+    }
 
-    /** @return the patient name */
-    public String getName() { return name; }
+    /**
+     * @return the patient name
+     */
+    public String getName() {
+        return name;
+    }
 
-    /** @return the patient's date of birth */
-    public LocalDate getDob() { return dob; }
+    /**
+     * @return the patient's date of birth
+     */
+    public LocalDate getDob() {
+        return dob;
+    }
 
-    /** @return the patient's gender */
-    public String getGender() { return gender; }
+    /**
+     * @return the patient's gender
+     */
+    public String getGender() {
+        return gender;
+    }
 
-    /** @return the patient's address */
-    public String getAddress() { return address; }
+    /**
+     * @return the patient's address
+     */
+    public String getAddress() {
+        return address;
+    }
 
-    /** @return the patient's contact number */
-    public String getContactInfo() { return contactInfo; }
+    /**
+     * @return the patient's contact number
+     */
+    public String getContactInfo() {
+        return contactInfo;
+    }
 
-    /** @return the patient's medical history list */
-    public List<String> getMedicalHistory() { return medicalHistory; }
+    /**
+     * @return the patient's medical history list
+     */
+    public List<String> getMedicalHistory() {
+        return medicalHistory;
+    }
 
-    public void setName(String name) { this.name = name; }
-    public void setDob(LocalDate dob) { this.dob = dob; }
-    public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
-    public void setGender(String gender) { this.gender = gender; }
-    public void setAddress(String address) { this.address = address; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    /** @return the patient's list of appointments */
-    public List<Appointment> getAppointments() { return appointments; }
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the patient's list of appointments
+     */
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
 
     /**
      * Adds an appointment to the patient.
+     *
      * @param appointment Appointment to be added.
      */
     public void addAppointment(Appointment appointment) {
@@ -131,6 +178,7 @@ public class Patient {
 
     /**
      * Removes an appointment from the patient by appointment ID.
+     *
      * @param apptId ID of the appointment to be removed.
      */
     public void deleteAppointment(String apptId) {
@@ -145,6 +193,7 @@ public class Patient {
 
     /**
      * Returns a string representation of the patient for display.
+     *
      * @return Formatted patient details and appointments.
      */
     @Override
@@ -180,6 +229,7 @@ public class Patient {
 
     /**
      * Returns a formatted string for list display.
+     *
      * @return Compact patient details for list view.
      */
     public String toStringForListView() {
@@ -219,6 +269,7 @@ public class Patient {
 
     /**
      * Returns a pipe-delimited string for file storage.
+     *
      * @return File format string.
      */
     public String toFileFormat() {
@@ -229,6 +280,7 @@ public class Patient {
 
     /**
      * Validates and parses the NRIC format.
+     *
      * @param ic The NRIC string to validate.
      * @return A validated NRIC string.
      * @throws InvalidInputFormatException If the NRIC format is invalid.
@@ -255,12 +307,13 @@ public class Patient {
 
     /**
      * Validates the gender input.
+     *
      * @param gender Gender string to validate.
      * @return Validated gender.
      * @throws InvalidInputFormatException If the gender is not M or F.
      */
     private String checkGender(String gender) throws InvalidInputFormatException {
-        if(gender.equals("M") || gender.equals("F")) {
+        if (gender.equals("M") || gender.equals("F")) {
             return gender;
         } else {
             throw new InvalidInputFormatException("The gender must be either M (male) or F (female)");
@@ -269,6 +322,7 @@ public class Patient {
 
     /**
      * Parses and validates the date of birth string.
+     *
      * @param dobStr Date of birth in yyyy-MM-dd format.
      * @return Parsed LocalDate object.
      * @throws InvalidInputFormatException If format is incorrect or date is in the future.
@@ -288,6 +342,7 @@ public class Patient {
 
     /**
      * Validates and parses the contact number.
+     *
      * @param contactInfo Contact number string.
      * @return Validated contact number.
      * @throws InvalidInputFormatException If not an 8-digit number.

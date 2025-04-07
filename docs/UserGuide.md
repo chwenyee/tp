@@ -87,6 +87,8 @@ Format: `add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS h/M
 
 * The `NRIC` must be unique to the existing ones in the system.
 * All inputs doesn't handle every ASCII characters, only alphabets and numbers.
+* `h/MEDICAL_HISTORY` is optional, so users can use add-patient without it.
+* `p/PHONE` & `a/ADDRESS` can be duplicate, since some patient may be represented by the same phone number and/or address.
 
 Example of usage: 
 

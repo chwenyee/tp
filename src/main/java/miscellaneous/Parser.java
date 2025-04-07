@@ -370,7 +370,8 @@ public class Parser {
 
     public static Patient parseLoadPatient(String line) throws InvalidInputFormatException {
         String[] tokens = line.split("\\|");
-        if (tokens.length < 7) {
+        boolean isHistoryNonpresent = tokens.length == 6;
+        if (tokens.length < 6) {
             return null;
         }
 
@@ -380,7 +381,7 @@ public class Parser {
         String gender = tokens[3];
         String address = tokens[4];
         String contact = tokens[5];
-        List<String> medHistory = Arrays.stream(tokens[6].split(","))
+        List<String> medHistory = isHistoryNonpresent ? new ArrayList<>() : Arrays.stream(tokens[6].split(","))
                                         .map(String::trim)
                                         .collect(Collectors.toList());
 

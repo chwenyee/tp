@@ -17,18 +17,23 @@ activate Parser
 
 Parser -> Parser : parseAddAppointment(userInput)
 activate Parser
+
 Parser -> Parser : extractValue(userInput)
 activate Parser
-note right of Parser: extractValue is called multiple times\n to parse input and extract parameters
+note right of Parser:  extractValue is called separately \n (not in a loop) to parse input and extract each parameter \n: NRIC, date, time, and description
 Parser --> Parser : :String
 deactivate Parser
 
 create Appointment
 Parser -> Appointment : new Appointment()
 activate Appointment
-Appointment --> Parser : appt : Appointment
+Appointment --> Parser : appt :Appointment
 deactivate Appointment
+
+Parser --> Parser : appt :Appointment
 deactivate Parser
+
+
 
 create AddAppointmentCommand
 Parser -> AddAppointmentCommand : new AddAppointmentCommand(appt)
@@ -42,12 +47,14 @@ ClinicEase -> AddAppointmentCommand : execute()
 activate AddAppointmentCommand
 AddAppointmentCommand -> ManagementSystem : addAppointment(appointment)
 activate ManagementSystem
+
 ManagementSystem -> ManagementSystem : findPatientByNRIC()
 activate ManagementSystem
 ManagementSystem -> Appointment : getNric()
 activate Appointment
 Appointment --> ManagementSystem : nric :String
 deactivate Appointment
+ManagementSystem --> ManagementSystem : nric :String
 deactivate ManagementSystem
 
 ManagementSystem -> Storage : saveAppointments()

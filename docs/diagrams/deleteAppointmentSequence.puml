@@ -5,9 +5,9 @@ actor User
 
 participant ":ClinicEase" as ClinicEase
 participant ":Parser" as Parser
-participant ":Appointment" as Appointment
 participant ":DeleteAppointmentCommand" as DeleteAppointmentCommand
 participant ":ManagementSystem" as ManagementSystem
+participant ":Appointment" as Appointment
 participant ":Storage" as Storage
 
 User -> ClinicEase : enter input
@@ -39,6 +39,7 @@ ManagementSystem -> Appointment : getNric()
 activate Appointment
 Appointment --> ManagementSystem : nric :String
 deactivate Appointment
+ManagementSystem --> ManagementSystem : nric :String
 deactivate ManagementSystem
 
 ManagementSystem -> Storage : saveAppointments()

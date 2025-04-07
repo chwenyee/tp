@@ -1,6 +1,5 @@
 # Developer Guide
 
-
 ---
 
 ## Acknowledgements
@@ -92,7 +91,7 @@ The sequence diagram below illustrates how the operation for 'view-patient' woul
 
 ---
 
-### Add and Delete Appointment feature
+### Add/delete appointment feature
 The `add-appointment` and `delete-appointment` features allow users to manage appointments for registered patients. 
 The system ensures that the **patient exists** before adding the appointment and that the **appointment exists** before deleting it. 
 All changes are stored persistently.
@@ -134,6 +133,17 @@ If saving fails, `ClinicEase` catches an `UnloadedStorageException` and informs 
 The following sequence diagram shows how an `add-appointment` operation goes through the system:
 ![add-appointment](./diagrams/addAppointmentSequence.png)
 
+To clarify how is extractValue() called to extract each parameter:
+````
+public static Appointment parseAddAppointment(String input) throws InvalidInputFormatException {
+    //...
+    String nric = extractValue(temp, "ic/");
+    String date = extractValue(temp, "dt/");
+    String time = extractValue(temp, "t/");
+    String desc = extractValue(temp, "dsc/");
+    //...
+````
+
 #### Delete Appointment
 The `delete-appointment` feature allows users to remove an appointment that is no longer required.
 
@@ -164,7 +174,8 @@ which removes the corresponding `Appointment` object from the list.
 - It also retrieves the corresponding patient using findPatientByNric() and updates the patient's internal appointment list.
 
 >[!NOTE]:
-> If the `APPOINTMENT_ID` is invalid, an error message will be displayed and the deletion will not proceed.
+> - If the `APPOINTMENT_ID` is invalid, an error message will be displayed and the deletion will not proceed.
+> - When a **specified patient** is **deleted**, all **appointment records associated** with that patient will be **removed** too. 
 
 Step 5. After successful deletion, the system updates the stored list using `Storage.saveAppointments()`.
 
@@ -185,20 +196,23 @@ This structure helps improve modularity, testability, and clarity in our codebas
 This design also aligns with the **Separation of Concerns** principle, allowing changes in one component (e.g., how appointments are stored) 
 without affecting others (e.g., how commands are parsed or executed).
 
-### Alternatives considered
-1. **Allowing appointment creation without verifying patient existence** <br>
-    - **Description:** This could simplify the logic slightly.
-    
-    - **Reason for rejection:** It compromises data integrity, as appointments could become orphaned (unlinked to valid patients).
+### Design considerations:
+#### Aspect: Where to store appointment data
 
+1. **Alternative 1 (current choice)**: Maintain a centralized appointment list in `ManagementSystem` and update each patient's internal appointment list.
+   - **Pros:** Enables efficient listing, searching, and clash detection.
+   - **Cons:** Requires synchronization between the central list and per-patient records (slight redundancy).
+   
 
-2. **Store appointments exclusively in `Patient` objects** <br>
-    - **Description:** Remove the separate appointments list in `ManagementSystem` and rely only on per-patient storage.
-    
-    - **Reason for rejection:** 
-      - **Performance impact:** Aggregating all appointments (e.g., for a doctor's view) would require
-         iterating through every patient, which is inefficient.
-      - Features like finding appointments across patients become harder to implement cleanly.
+2. **Alternative 2:** Allowing appointment creation without verifying patient existence <br>
+    - **Pros:** Simplifies implementation as patient verification is not needed.
+    - **Cons:** Compromises data integrity, as appointments could become orphaned (unlinked to valid patients).
+   
+
+3. **Alternative 3:** Store appointments exclusively in `Patient` objects <br>
+    - **Pros:** Keeps appointment data stored within each patient and reduces need for cross-references.
+    - **Cons:** Aggregating all appointments becomes inefficient (require
+      iterating through every patient); harder to search across patients and detect conflicts.
 
 ---
 

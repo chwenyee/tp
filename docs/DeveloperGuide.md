@@ -63,7 +63,9 @@ This architecture follows several design principles:
 <br>
 
 ### Storage Component
+**API** : [`Storage.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/storage/Storage.java)
 
+![Storage Component](diagrams/storageComponent.png)
 The `Storage` component is responsible for reading from and writing to the file system to ensure persistence of application data in `ClinicEase`.
 
 #### Responsibilities

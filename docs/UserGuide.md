@@ -53,6 +53,7 @@ ClinicEase is an application designed to assist doctors in managing patient reco
    - `bye`: Exits the app.
 6. Refer to the Features below for details of each command.
 
+<div style="page-break-after: always;"></div>
 ---
 ## Features 
 Here are some feature that the product provides:
@@ -229,6 +230,7 @@ Edit-patient command executed.
 ---------------------------------------------------------------------------------------------------- </pre>
 <br>
 
+<div style="page-break-after: always;"></div>
 
 ### Adding an appointment: `add-appointment`
 Adds a new appointment to the list of appointment.
@@ -353,6 +355,8 @@ Expected output:
 ----------------------------------------------------------------------------------------------------</pre>
 <br>
 
+<div style="page-break-after: always;"></div>
+
 ### Adding a prescription: `add-prescription`
 
 Adds a new prescription for a patient.
@@ -461,6 +465,8 @@ Open this file in a web browser to view and print the prescription.
 ----------------------------------------------------------------------------------------------------</pre>
 <br>
 
+<div style="page-break-after: always;"></div>
+
 ### Adding Medical History: `store-history`
 Adds one or more entries to a patient's medical history.
 
@@ -531,6 +537,8 @@ Exits the program.
 Format: `bye`
 <br>
 
+<div style="page-break-after: always;"></div>
+
 ## FAQ
 
 **Q**: How do I save my data?
@@ -565,6 +573,8 @@ Advanced users are welcome to update data directly by editing that data file.
    - **Current Resolution:** This is an intended design trade-off to maintain parsing consistency, though it may be revisited in future versions.
 
 ---
+<div style="page-break-after: always;"></div>
+
 ## Command Summary
 
 | Action                     | Format, Examples                                                                                                                                                                               |

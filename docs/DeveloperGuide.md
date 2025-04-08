@@ -1307,7 +1307,7 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
    - Run the compiled main class:
      ```
      java ClinicEase
-     ```   
+     ```
      You should see a welcome message that looks like this:
      ```
      --------------------------------------------------------------------------------

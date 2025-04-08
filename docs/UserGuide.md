@@ -72,13 +72,14 @@ Here are some feature that the product provides:
 > - Command words are **case-insensitive**. <br>
     e.g. `liST-paTIEnt` will be interpreted as `list-patient`.
 
+
+
 ### Viewing help: `help`
 Shows all available commands of the application.
 
 Format: `help`
 
----
-
+<br>
 
 ### Adding a new patient : `add-patient`
 Adds a new patient to the system with their credentials.
@@ -199,7 +200,6 @@ Edit-patient command executed.
 ---------------------------------------------------------------------------------------------------- </pre>
 <br>
 
----
 
 ### Adding an appointment: `add-appointment`
 Adds a new appointment to the list of appointment.

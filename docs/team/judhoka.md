@@ -2,98 +2,114 @@
 
 ## Project: ClinicEase
 
-**ClinicEase** is a Command-Line Interface (CLI) based clinic management application designed to streamline the handling of patient records, appointment tracking, and medical history storage. The system simplifies daily administrative workflows while ensuring reliability and user-friendliness.
+**ClinicEase** is a CLI-based clinic management system that allows users to manage patient records, appointments, and prescriptions efficiently. The application streamlines administrative workflows in clinics by offering reliable, user-friendly, and persistent command-line interactions.
+
+My main contribution in features was to design and implement patient related features (`add-patient`, `delete-patient`, etc...) to ensure that users can store patient data properly with their respective credentials. I also mainly contributed in creating the storage system for the entire system to ensure that data is properly kept and saved.
 
 ---
 
-### Code Contributed
+## Code Contributed
 
-- **Code Dashboard Link**: [Click the link to see my code contribution](<iframe src="https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=judh&sort=groupTitle&sortWithin=title&timeframe=commit&mergegroup=&groupSelect=groupByRepos&breakdown=true&checkedFileTypes=docs~functional-code&since=2025-02-21" frameBorder="0" width="800px" height="142px"></iframe>)
+**Code Dashboard Link**: [Click here to see my code contribution](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=judhoka&sort=groupTitle&sortWithin=title&timeframe=commit&mergegroup=&groupSelect=groupByRepos&breakdown=true&checkedFileTypes=docs~functional-code~test-code~other&since=2025-02-21)
+
+---
 
 ## Features Implemented
 
+
+
 ### `add-patient`
-- Registers a new patient using their NRIC, name, birthdate, gender, phone number, and address.
-- Prevents duplicate entries by checking for existing NRICs.
-- Example: `add-patient n/John Doe ic/S1234567A dob/01-01-1990 g/M p/98765432 a/123 Main St`
+- Allows users to register a new patient by specifying fields such as name, NRIC, date of birth, gender, phone number, and address.
+- Includes validation to prevent duplicate NRIC entries, ensuring each patient is uniquely identified.
+- Example:  
+  `add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St #diabetic #followup`
 
 ### `delete-patient`
-- Deletes a patient's information from the system using their NRIC.
-- Verifies the NRIC exists before deletion.
-- Example: `delete-patient ic/S1234567A`
+- Enables the removal of a patient using their NRIC.
+- Validates whether the NRIC exists in the system before attempting deletion, and provides informative error messages if not found.
+- Upon successful deletion, confirms the action and removes any associated appointments and prescription references.
 
 ### `list-patient`
-- Lists all current patients in a formatted and numbered list.
-- Improves usability by including separators for readability.
+- Displays all patients currently stored in the system in a numbered and neatly formatted list.
+- Includes name, NRIC, and other key attributes in a concise format.
+- Improves usability with consistent dividers and spacing for readability.
+- Helpful in providing an overview of all registered patients before performing operations like `delete-patient` or `view-patient`.
+
+### `view-patient`
+- Shows full details of a selected patient, including:
+  - Name, NRIC, date of birth, gender, phone number, and address.
+  - Optionally, linked appointments and prescriptions (if supported by system design).
+- Supports lookup by NRIC (e.g., `view-patient ic/S1234567A`), with input validation and out-of-bounds handling.
+- Designed to be clear and informative, acting as a one-stop overview of a patient's data.
 
 ---
 
-## Command Parsing
+## Parser Integration
 
-- Implemented parsing logic for:
-    - `add-patient`
-    - `delete-patient`
-    - `list-patient`
-- Used consistent prefixes (`n/`, `ic/`, `dob/`, `g/`, `p/`, `a/`) for structured input.
-- Added validation and exception handling for malformed or incomplete inputs.
+- Developed parser logic for all implemented commands and storage system.
+- Handled command recognition, parameter extraction, and error messaging.
+- Validated argument formats and threw custom exceptions like `InvalidInputFormatException`.
 
 ---
 
-## Persistent Storage
+## Storage System
 
-- Built the file storage system for:
-    - Saving and loading patients
-    - Saving and loading appointments
-- Used serialization to ensure data persists across sessions.
-- Automatically syncs after adding or deleting entries.
-
----
-
-## Unit Testing
-
-- Created JUnit test cases for:
-    - `addPatient_Success`
-    - `deletePatient_Success`
-    - `addPatient_IncompleteDetails`
-- Verified both valid and invalid inputs.
-- Used `ByteArrayOutputStream` to capture and assert printed outputs.
+- Designed and implemented the file-based persistent `Storage` class.
+- Saved and loaded:
+  - Patient data from `patient_data.txt`
+  - Appointment data from `appointment_data.txt`
+  - Prescription data from `prescription_data.txt`
+- Linked appointments to patients during data load.
+- Generated HTML versions of prescriptions for viewing and printing.
+- Ensured initialization safety via `UnloadedStorageException`.
 
 ---
 
 ## Exception Handling
 
-- Ensured invalid input commands are safely rejected.
-- Gave clear feedback to users for:
-    - Duplicate NRICs
-    - Deleting non-existent patients
-    - Incomplete command inputs
+- Designed exception handling framework with custom messages.
+- Threw descriptive exceptions when:
+  - File paths were missing.
+  - Data parsing failed.
+  - Commands were malformed or incomplete.
+- Used try-catch in the main loop to ensure graceful error handling.
+
+---
+
+## Testing
+
+- Wrote JUnit test cases for parser logic, patient model, and storage.
+- Threw various types of exceptions (e.g, `UnloadedStorageException`) if data writing fails, allowing the system to safely abort the operation.
+- Manually tested combinations of valid and invalid inputs.
 
 ---
 
 ## User Guide (UG)
 
-- Designed and authored sections on:
-    - Adding patients
-    - Deleting patients
-    - Listing patients
-- Structured the UG to be browsable and beginner-friendly.
-- Included command format, usage examples, and error notes.
+- Contributed to documentation for all implemented commands.
+- Provided consistent format, expected outputs, and usage examples.
+- Documented edge cases and failure scenarios for better UX.
 
 ---
 
 ## Developer Guide (DG)
 
-- Documented feature-specific implementation details for patient commands.
-- Wrote sequence diagrams for:
-    - `add-patient`
-    - `delete-patient`
-- Helped standardize the Feature section format across the DG for consistency.
+- Authored complete component sections:
+  - Architecture
+  - `UI` component
+  - `Storage` component
+  - `Main` component
+- Explained design considerations, structure, and responsibilities.
+- Created and updated UML diagrams (Architecture, Class, and Sequence).
+- Maintained consistency in formatting, phrasing, and layout across the DG.
 
 ---
 
 ## Community Involvement
 
-- Reviewed PRs related to appointment and patient logic.
-- Provided feedback on command parsing patterns and error messaging.
-- Collaborated with teammates on refining UG/DG formats.
-- Ensured consistent coding style and naming conventions across related modules.
+- Reviewed teammate pull requests, particularly those related to parser, patient, and appointment logic.
+- Proposed improvements for error messaging and user experience.
+- Ensured coding style consistency (naming, spacing, error format).
+- Participated in team sync-ups to align features, naming conventions, and architecture decisions.
+
+---

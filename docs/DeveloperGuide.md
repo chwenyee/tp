@@ -50,6 +50,8 @@ The **Architecture Diagram** given above explains the high-level design of the C
 
 Given below is a quick overview of each component and how they interact with each other:
 
+<div style="page-break-after: always;"></div>
+
 ### Main components of the architecture
 
 The application consists of the following components:
@@ -575,6 +577,7 @@ The `Storage` component is responsible for reading from and writing to the file 
 
 ---
 
+<div style="page-break-after: always;"></div>
 
 ## Implementation
 
@@ -1018,6 +1021,8 @@ The class diagram below shows the relationships between these classes:
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 ## Appendix: Requirements
 
 ## Product scope
@@ -1287,6 +1292,8 @@ Use case resumes at step 1.
 * *OS Platform Compatibility* – The ability for data files and system functionality to work consistently across different operating systems.
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## Appendix: Instructions for Manual Testing
 

@@ -6,7 +6,7 @@ package exception;
  * exists in the system.
  */
 public class DuplicatePatientIDException extends Exception {
-    
+
     /**
      * Constructs a DuplicatePatientIDException with the specified detail message.
      *

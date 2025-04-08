@@ -120,7 +120,7 @@ public class Ui {
             return;
         }
 
-        System.out.println("-".repeat(42)+ "Patient Details" + "-".repeat(42));
+        System.out.println("-".repeat(42) + "Patient Details" + "-".repeat(42));
 
         int count = 1;
         for (Patient p : patients) {
@@ -206,7 +206,7 @@ public class Ui {
             return;
         }
 
-        System.out.println("-".repeat(43)+ "Appointments" + "-".repeat(45));
+        System.out.println("-".repeat(43) + "Appointments" + "-".repeat(45));
         int count = 1;
         for (Appointment a : appointments) {
             System.out.println(count + ". " + a);

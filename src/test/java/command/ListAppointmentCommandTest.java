@@ -50,9 +50,9 @@ class ListAppointmentCommandTest {
         List<Patient> patients = List.of(
                 new Patient("S1234567D", "Billy", "1990-10-01",
                         "M", "124 High St", "81234567", new ArrayList<>()),
-                new Patient("S2345678D", "James" , "1980-12-31",
+                new Patient("S2345678D", "James", "1980-12-31",
                         "M", "133 Main St", "81229312", new ArrayList<>()),
-                new Patient("S3456789D", "William" , "1970-08-21",
+                new Patient("S3456789D", "William", "1970-08-21",
                         "M", "17 Cornelia St", "81009214", new ArrayList<>())
         );
         manager.addPatient(patients.get(0));
@@ -60,9 +60,9 @@ class ListAppointmentCommandTest {
         manager.addPatient(patients.get(2));
 
         List<Appointment> appointments = List.of(
-                new Appointment("S1234567D", dateTime1 , "Checkup"),
-                new Appointment("S2345678D", dateTime2 , "CT scan"),
-                new Appointment("S3456789D", dateTime3 , "Consultation")
+                new Appointment("S1234567D", dateTime1, "Checkup"),
+                new Appointment("S2345678D", dateTime2, "CT scan"),
+                new Appointment("S3456789D", dateTime3, "Consultation")
         );
         manager.addAppointment(appointments.get(0));
         manager.addAppointment(appointments.get(1));

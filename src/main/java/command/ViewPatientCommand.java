@@ -34,7 +34,7 @@ public class ViewPatientCommand extends Command {
      * displays the details using Ui.
      *
      * @param manager the {@link ManagementSystem} responsible for handling patient data
-     * @param ui the {@link Ui} responsible for displaying the patient information
+     * @param ui      the {@link Ui} responsible for displaying the patient information
      * @throws AssertionError if the manager or ui instances are null
      * @throws AssertionError if no patient is found for the given NRIC
      */

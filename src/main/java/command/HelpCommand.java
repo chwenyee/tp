@@ -11,7 +11,7 @@ public class HelpCommand extends Command {
      * Executes the help command by displaying the help message.
      *
      * @param manager The management system (unused in this command).
-     * @param ui The user interface used to display all available commands of the application.
+     * @param ui      The user interface used to display all available commands of the application.
      */
     @Override
     public void execute(ManagementSystem manager, Ui ui) {

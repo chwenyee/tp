@@ -20,7 +20,7 @@ import java.util.List;
  * Main class of the ClinicEase application, responsible for initializing
  * components and driving the command execution loop.
  * ClinicEase is a desktop application designed for clinic management,
- * providing a command-line interface for managing patients, appointments, 
+ * providing a command-line interface for managing patients, appointments,
  * and prescriptions.
  */
 public class ClinicEase {
@@ -56,7 +56,7 @@ public class ClinicEase {
 
     /**
      * Starts the application's main execution loop.
-     * Displays welcome message, continuously reads user commands, 
+     * Displays welcome message, continuously reads user commands,
      * executes them until an exit command is received.
      * Handles exceptions by displaying appropriate error messages.
      */

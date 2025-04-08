@@ -36,9 +36,9 @@ public class AddAppointmentCommand extends Command {
      * Executes the command to add the appointment to the appointment list in management system.
      *
      * @param manager The management system that stores the appointment.
-     * @param ui The user interface for displaying messages.
-     * @throws UnloadedStorageException If the storage component is not properly loaded.
-     * @throws PatientNotFoundException If the patient associated with the appointment is not found.
+     * @param ui      The user interface for displaying messages.
+     * @throws UnloadedStorageException  If the storage component is not properly loaded.
+     * @throws PatientNotFoundException  If the patient associated with the appointment is not found.
      * @throws AppointmentClashException If the appointment time conflicts with an existing appointment.
      */
     @Override

@@ -31,7 +31,7 @@ public class MarkApppointmentCommand extends Command {
      * displays the updated appointment list and confirmation via the Ui.
      *
      * @param manager the ManagementSystem responsible for managing appointments
-     * @param ui the Ui responsible for displaying results to the user
+     * @param ui      the Ui responsible for displaying results to the user
      * @throws UnloadedStorageException if the storage system was not initialized when the command was executed
      */
     @Override

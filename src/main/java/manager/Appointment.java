@@ -25,15 +25,15 @@ public class Appointment {
     /**
      * Constructs a new Appointment with auto-generated ID.
      *
-     * @param nric The NRIC of the patient for this appointment
-     * @param dateTime The date and time of the appointment
+     * @param nric        The NRIC of the patient for this appointment
+     * @param dateTime    The date and time of the appointment
      * @param description The description of the appointment
      */
     public Appointment(String nric, LocalDateTime dateTime, String description) {
         assert nric != null && !nric.isBlank() : "NRIC cannot be null or blank";
         assert dateTime != null : "DateTime cannot be null";
         assert description != null && !description.isBlank() : "Description cannot be null or blank";
-        
+
         this.id = "A" + runningId++;
         this.nric = nric;
         this.dateTime = dateTime;
@@ -44,9 +44,9 @@ public class Appointment {
     /**
      * Constructs an Appointment with a specific ID (used for loading from storage).
      *
-     * @param id The predefined ID for the appointment
-     * @param nric The NRIC of the patient
-     * @param dateTime The date and time of the appointment
+     * @param id          The predefined ID for the appointment
+     * @param nric        The NRIC of the patient
+     * @param dateTime    The date and time of the appointment
      * @param description The description of the appointment
      */
     public Appointment(String id, String nric, LocalDateTime dateTime, String description) {

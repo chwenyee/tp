@@ -20,11 +20,11 @@ public abstract class Command {
      * Each subclass must implement this method with its specific behavior.
      *
      * @param manager The management system that provides operations on data
-     * @param ui The user interface to display results
+     * @param ui      The user interface to display results
      * @throws DuplicatePatientIDException If a patient with the same ID already exists
-     * @throws UnloadedStorageException If there was an error with storage operations
-     * @throws PatientNotFoundException If a requested patient was not found
-     * @throws AppointmentClashException If an appointment conflicts with existing ones
+     * @throws UnloadedStorageException    If there was an error with storage operations
+     * @throws PatientNotFoundException    If a requested patient was not found
+     * @throws AppointmentClashException   If an appointment conflicts with existing ones
      * @throws InvalidInputFormatException If the input format is invalid
      */
     public abstract void execute(ManagementSystem manager, Ui ui)

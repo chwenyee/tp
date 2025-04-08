@@ -1,3 +1,0 @@
-S1234567A-1|S1234567A|2025-04-08 03:53|headache,fever|paracetamol,ibuprofen|Take twice daily after meals
-S1234567A-2|S1234567A|2025-04-08 03:55|sore throat,cough|lozenges,cough syrup|Take every 6 hours
-S8765432B-1|S8765432B|2025-04-08 03:56|migraine|aspirin|Take as needed

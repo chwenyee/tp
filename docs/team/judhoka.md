@@ -20,7 +20,7 @@ My main contribution in features was to design and implement patient related fea
 - Allows users to register a new patient by specifying fields such as name, NRIC, date of birth, gender, phone number, and address.
 - Includes validation to prevent duplicate NRIC entries, ensuring each patient is uniquely identified.
 - Example:  
-  `add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St #diabetic #followup`
+  `add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St`
 
 ### [`delete-patient`](../UserGuide.md/#deleting-a-patient--delete-patient)
 - Enables the removal of a patient using their NRIC.

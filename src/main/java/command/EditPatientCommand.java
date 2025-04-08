@@ -25,8 +25,8 @@ public class EditPatientCommand extends Command {
      *
      * @param manager The ManagementSystem that manages patient data.
      * @param ui      The UI used to show error or success messages.
-     * @throws UnloadedStorageException   If editing the patient data fails when saving to storage.
-     * @throws PatientNotFoundException   If no patient with the specified NRIC is found.
+     * @throws UnloadedStorageException    If editing the patient data fails when saving to storage.
+     * @throws PatientNotFoundException    If no patient with the specified NRIC is found.
      * @throws InvalidInputFormatException If the provided date is invalid or if newDob is after the current date.
      */
     @Override

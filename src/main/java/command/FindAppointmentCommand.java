@@ -1,6 +1,7 @@
 package command;
 
 import java.util.List;
+
 import manager.Appointment;
 import manager.ManagementSystem;
 import miscellaneous.Ui;
@@ -13,7 +14,6 @@ import miscellaneous.Ui;
  * <p> This command follows the Command pattern, which encapsulates the appointment search
  * functionality to allow for consistent execution without directly manipulating the system's components.
  * </p>
- *
  */
 public class FindAppointmentCommand extends Command {
     protected String nric;
@@ -33,7 +33,7 @@ public class FindAppointmentCommand extends Command {
      * and displays the results using Ui.
      *
      * @param manager ManagementSystem responsible for handling appointment data
-     * @param ui Ui responsible for displaying the list of appointments
+     * @param ui      Ui responsible for displaying the list of appointments
      */
     @Override
     public void execute(ManagementSystem manager, Ui ui) {

@@ -34,7 +34,7 @@ public class DeleteAppointmentCommand extends Command {
      * Executes the command to delete the appointment from the management system.
      *
      * @param manager The management system that contains the appointment.
-     * @param ui The user interface for displaying messages.
+     * @param ui      The user interface for displaying messages.
      * @throws UnloadedStorageException If the storage component is not properly loaded.
      */
     @Override

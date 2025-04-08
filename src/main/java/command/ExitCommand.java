@@ -13,7 +13,7 @@ public class ExitCommand extends Command {
      * Executes the exit command by displaying the goodbye message.
      *
      * @param manager The management system (unused in this command).
-     * @param ui The user interface used to display the goodbye message.
+     * @param ui      The user interface used to display the goodbye message.
      */
     @Override
     public void execute(ManagementSystem manager, Ui ui) {

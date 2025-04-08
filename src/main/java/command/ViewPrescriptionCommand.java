@@ -33,7 +33,7 @@ public class ViewPrescriptionCommand extends Command {
      * Also generates an HTML file for printing the prescription.
      *
      * @param manager The management system that handles the data
-     * @param ui The user interface to display results
+     * @param ui      The user interface to display results
      * @throws UnloadedStorageException If there was an error with storage operations
      */
     @Override
@@ -45,22 +45,22 @@ public class ViewPrescriptionCommand extends Command {
         }
 
         Patient patient = manager.viewPatient(prescription.getPatientId());
-        
+
         ui.showLine();
         System.out.println("Prescription details:");
         System.out.println(prescription.toString());
         System.out.println("");
-        
+
         // Generate HTML file
         Storage.savePrescriptionHtml(prescription, patient);
-        
-        String fileName = "prescription_" + prescription.getPatientId() + "_" 
+
+        String fileName = "prescription_" + prescription.getPatientId() + "_"
                 + prescription.getPrescriptionId().split("-")[1] + ".html";
-        String filePath = new File("").getAbsolutePath() 
-                + File.separator + "data" 
-                + File.separator + "prescriptions" 
+        String filePath = new File("").getAbsolutePath()
+                + File.separator + "data"
+                + File.separator + "prescriptions"
                 + File.separator + fileName;
-        
+
         System.out.println("Prescription HTML file generated at: " + filePath);
         System.out.println("Open this file in a web browser to view and print the prescription.");
         ui.showLine();

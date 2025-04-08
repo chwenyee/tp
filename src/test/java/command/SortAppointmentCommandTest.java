@@ -44,9 +44,9 @@ class SortAppointmentCommandTest {
         List<Patient> patients = List.of(
                 new Patient("S1234567D", "Billy", "1990-10-01",
                         "M", "124 High St", "81234567", new ArrayList<>()),
-                new Patient("S2345678D", "James" , "1980-12-31",
+                new Patient("S2345678D", "James", "1980-12-31",
                         "M", "133 Main St", "81229312", new ArrayList<>()),
-                new Patient("S3456789D", "William" , "1970-08-20",
+                new Patient("S3456789D", "William", "1970-08-20",
                         "M", "17 Cornelia St", "81009214", new ArrayList<>())
         );
         manager.addPatient(patients.get(0));

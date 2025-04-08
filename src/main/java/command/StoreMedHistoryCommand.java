@@ -36,7 +36,7 @@ public class StoreMedHistoryCommand extends Command {
      * Executes the command to store the given medical history for the specified patient.
      *
      * @param manager The ManagementSystem that manages patient and appointment data.
-     * @param ui The Ui used to display success or error messages.
+     * @param ui      The Ui used to display success or error messages.
      * @throws UnloadedStorageException if saving to storage fails due to uninitialized storage.
      * @throws PatientNotFoundException if the patient with the given NRIC is not found.
      */

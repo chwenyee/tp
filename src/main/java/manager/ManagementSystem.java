@@ -29,8 +29,8 @@ public class ManagementSystem {
 
     /**
      * Constructs a ManagementSystem with patients and appointments but no prescriptions.
-     * 
-     * @param loadedPatients The list of patients to initialize with
+     *
+     * @param loadedPatients     The list of patients to initialize with
      * @param loadedAppointments The list of appointments to initialize with
      */
     public ManagementSystem(List<Patient> loadedPatients, List<Appointment> loadedAppointments) {
@@ -43,9 +43,9 @@ public class ManagementSystem {
 
     /**
      * Constructs a ManagementSystem with patients, appointments, and prescriptions.
-     * 
-     * @param loadedPatients The list of patients to initialize with
-     * @param loadedAppointments The list of appointments to initialize with
+     *
+     * @param loadedPatients      The list of patients to initialize with
+     * @param loadedAppointments  The list of appointments to initialize with
      * @param loadedPrescriptions The list of prescriptions to initialize with
      */
     public ManagementSystem(List<Patient> loadedPatients, List<Appointment> loadedAppointments,
@@ -94,7 +94,7 @@ public class ManagementSystem {
      *
      * @param patient The patient to add
      * @throws DuplicatePatientIDException If a patient with the same NRIC already exists
-     * @throws UnloadedStorageException If there was an error saving to storage
+     * @throws UnloadedStorageException    If there was an error saving to storage
      */
     public void addPatient(Patient patient) throws DuplicatePatientIDException, UnloadedStorageException {
         assert patient != null : "Patient cannot be null";
@@ -122,7 +122,7 @@ public class ManagementSystem {
     public Patient deletePatient(String nric) throws UnloadedStorageException {
         assert nric != null && !nric.isBlank() : "NRIC must not be null or blank";
         assert patients != null : "Patient list cannot be null";
-        
+
         for (Patient patient : patients) {
             if (patient.getId().equals(nric)) {
                 patients.remove(patient);
@@ -137,6 +137,7 @@ public class ManagementSystem {
     }
 
     //@@author dylancmznus
+
     /**
      * Retrieves the patient object that matches the specified NRIC.
      *
@@ -166,12 +167,12 @@ public class ManagementSystem {
      * Updates only the fields that are provided (non-null).
      * Saves changes to storage after successful update.
      *
-     * @param nric The NRIC of the patient to edit (cannot be changed)
-     * @param newName New name for the patient, or null to keep unchanged
-     * @param newDob New date of birth, or null to keep unchanged
-     * @param newGender New gender, or null to keep unchanged
+     * @param nric       The NRIC of the patient to edit (cannot be changed)
+     * @param newName    New name for the patient, or null to keep unchanged
+     * @param newDob     New date of birth, or null to keep unchanged
+     * @param newGender  New gender, or null to keep unchanged
      * @param newAddress New address, or null to keep unchanged
-     * @param newPhone New phone number, or null to keep unchanged
+     * @param newPhone   New phone number, or null to keep unchanged
      * @throws UnloadedStorageException If there was an error saving to storage
      * @throws PatientNotFoundException If no patient with the given NRIC exists
      */
@@ -221,7 +222,7 @@ public class ManagementSystem {
      * If an entry already exists in the patient's history, it will not be duplicated.
      * Saves the updated patient list to storage.
      *
-     * @param nric The NRIC of the patient
+     * @param nric       The NRIC of the patient
      * @param medHistory Comma-separated medical history entries to add
      * @throws PatientNotFoundException If no patient with the given NRIC exists
      * @throws UnloadedStorageException If there was an error saving to storage
@@ -295,8 +296,8 @@ public class ManagementSystem {
     /**
      * Edits a specific medical history entry for a patient.
      * Replaces the old history text with new text if the old text is found.
-     * 
-     * @param nric The patient's unique identifier
+     *
+     * @param nric       The patient's unique identifier
      * @param oldHistory The existing history text to be replaced
      * @param newHistory The new history text to replace it with
      * @throws UnloadedStorageException If there was an error saving to storage
@@ -363,14 +364,15 @@ public class ManagementSystem {
     }
 
     //@@author chwenyee
+
     /**
      * Adds a new appointment to the system.
      * Checks for appointment clashes (within 1 hour) and verifies the patient exists.
      * Saves the updated appointment list to storage after successful addition.
      *
      * @param appointment The appointment to add
-     * @throws UnloadedStorageException If there was an error saving to storage
-     * @throws PatientNotFoundException If the patient associated with the appointment doesn't exist
+     * @throws UnloadedStorageException  If there was an error saving to storage
+     * @throws PatientNotFoundException  If the patient associated with the appointment doesn't exist
      * @throws AppointmentClashException If the appointment clashes with an existing appointment
      */
     public void addAppointment(Appointment appointment) throws UnloadedStorageException, PatientNotFoundException,
@@ -379,7 +381,7 @@ public class ManagementSystem {
         assert patients != null : "Patient list cannot be null";
 
         // Check if there is any scheduled appointment in the list clashing with this newly-added one
-        for (Appointment appointmentInList : appointments)  {
+        for (Appointment appointmentInList : appointments) {
             long timeDiff = Math.abs(Duration.between(appointmentInList.getDateTime(),
                     appointment.getDateTime()).toMinutes());
             if (timeDiff < 60) {
@@ -409,7 +411,7 @@ public class ManagementSystem {
     public Appointment deleteAppointment(String apptId) throws UnloadedStorageException {
         assert apptId != null && !apptId.isBlank() : "Appointment ID cannot be null or blank";
         assert appointments != null : "Appointment list cannot be null";
-        
+
         for (Appointment appointment : appointments) {
             if (appointment.getId().equalsIgnoreCase(apptId)) {
                 appointments.remove(appointment);
@@ -507,6 +509,7 @@ public class ManagementSystem {
     }
 
     //@@author Basudeb2005
+
     /**
      * Gets all prescriptions stored in the system.
      *
@@ -517,6 +520,7 @@ public class ManagementSystem {
     }
 
     //@@author Basudeb2005
+
     /**
      * Adds a new prescription to the system.
      * Verifies the patient exists before adding the prescription.
@@ -528,11 +532,11 @@ public class ManagementSystem {
      * @throws IllegalArgumentException If the patient doesn't exist or maximum prescriptions reached
      * @throws UnloadedStorageException If there was an error saving to storage
      */
-    public Prescription addPrescription(Prescription prescription) 
+    public Prescription addPrescription(Prescription prescription)
             throws IllegalArgumentException, UnloadedStorageException {
         assert prescription != null : "Prescription cannot be null";
         assert patients != null : "Patient list cannot be null";
-        
+
         Patient patient = findPatientByNric(prescription.getPatientId());
         if (patient == null) {
             throw new IllegalArgumentException("Patient with NRIC: " + prescription.getPatientId() + " not found");
@@ -545,29 +549,29 @@ public class ManagementSystem {
                 prescriptionCount++;
             }
         }
-        
+
         // Check for maximum prescription limit
         final int MAX_PRESCRIPTIONS_PER_PATIENT = 100; // Reasonable upper limit
         if (prescriptionCount > MAX_PRESCRIPTIONS_PER_PATIENT) {
-            throw new IllegalArgumentException("Maximum number of prescriptions (" + 
-                                              MAX_PRESCRIPTIONS_PER_PATIENT + 
-                                              ") reached for patient: " + prescription.getPatientId());
+            throw new IllegalArgumentException("Maximum number of prescriptions (" +
+                    MAX_PRESCRIPTIONS_PER_PATIENT +
+                    ") reached for patient: " + prescription.getPatientId());
         }
-        
+
         String prescriptionId = prescription.getPatientId() + "-" + prescriptionCount;
-        
+
         // Create a new prescription with updated ID
         Prescription newPrescription = new Prescription(
-            prescription.getPatientId(),
-            prescriptionId,
-            prescription.getTimestamp(),
-            prescription.getSymptoms(),
-            prescription.getMedicines(),
-            prescription.getNotes()
+                prescription.getPatientId(),
+                prescriptionId,
+                prescription.getTimestamp(),
+                prescription.getSymptoms(),
+                prescription.getMedicines(),
+                prescription.getNotes()
         );
-        
+
         prescriptions.add(newPrescription);
-        
+
         try {
             Storage.savePrescriptions(prescriptions);
         } catch (UnloadedStorageException e) {
@@ -575,11 +579,12 @@ public class ManagementSystem {
             prescriptions.remove(newPrescription);
             throw e; // Re-throw to notify the caller
         }
-        
+
         return newPrescription;
     }
 
     //@@author Basudeb2005
+
     /**
      * Retrieves all prescriptions for a specific patient.
      * Filters the complete prescription list to find those matching the provided patient ID.
@@ -598,6 +603,7 @@ public class ManagementSystem {
     }
 
     //@@author Basudeb2005
+
     /**
      * Finds a specific prescription by its unique identifier.
      *

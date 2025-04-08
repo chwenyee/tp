@@ -12,7 +12,7 @@ public class ListAppointmentCommand extends Command {
      * Executes the list appointments command by displaying all appointments.
      *
      * @param manager The management system containing the appointment list.
-     * @param ui The user interface for displaying the appointment list.
+     * @param ui      The user interface for displaying the appointment list.
      */
     @Override
     public void execute(ManagementSystem manager, Ui ui) {

@@ -11,6 +11,7 @@ ClinicEase is an application designed to assist doctors in managing patient reco
     - [Viewing help: `help`](#viewing-help-help)
     - Managing Patients
         - [Adding a new patient: `add-patient`](#adding-a-new-patient--add-patient)
+        - [Deleting a patient: `delete-patient`](#deleting-a-patient--delete-patient)
         - [Viewing patient details: `view-patient`](#viewing-patient-details-view-patient)
         - [Listing all patients: `list-patient`](#listing-all-patients-list-patient)
         - [Editing a specified patient: `edit-patient`](#editing-a-specified-patient-edit-patient)
@@ -77,7 +78,35 @@ Here are some feature that the product provides:
 ### Viewing help: `help`
 Shows all available commands of the application.
 
-Format: `help`
+Format & Example of Usage: 
+
+`help`
+
+Expected output:
+<pre>----------------------------------------------------------------------------------------------------
+These are the available commands:
+Patient: 
+- add-patient n/NAME ic/NRIC dob/BIRTHDATE g/GENDER p/PHONE a/ADDRESS
+- delete-patient NRIC
+- edit-patient ic/NRIC [n/NAME] [dob/BIRTHDATE] [g/GENDER] [a/ADDRESS] [p/PHONE]
+- list-patient
+- view-patient NRIC
+- store-history n/NAME ic/NRIC h/MEDICAL_HISTORY
+- view-history NRIC or view-history NAME
+- edit-history ic/NRIC old/OLD_TEXT new/NEW_TEXT
+Appointment: 
+- add-appointment ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION
+- delete-appointment APPOINTMENT_ID
+- list-appointment
+- mark-appointment APPOINTMENT_ID
+- unmark-appointment APPOINTMENT_ID
+- sort-appointment byDate or sort-appointment byId
+- find-appointment PATIENT_NRIC
+Prescription: 
+- add-prescription ic/PATIENT_ID s/SYMPTOMS m/MEDICINES [nt/NOTES]
+- view-all-prescriptions PATIENT_ID
+- view-prescription PRESCRIPTION_ID
+----------------------------------------------------------------------------------------------------</pre>
 
 <br>
 

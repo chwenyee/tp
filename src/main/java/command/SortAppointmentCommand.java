@@ -27,12 +27,12 @@ public class SortAppointmentCommand extends Command {
      * Executes the command to sort appointments in the management system.
      *
      * @param manager The management system containing the appointments.
-     * @param ui The user interface for displaying the sorted appointments.
+     * @param ui      The user interface for displaying the sorted appointments.
      * @throws DuplicatePatientIDException If duplicate patient IDs are encountered.
-     * @throws UnloadedStorageException If the storage component is not properly loaded.
+     * @throws UnloadedStorageException    If the storage component is not properly loaded.
      */
     @Override
-    public void execute (ManagementSystem manager, Ui ui) throws DuplicatePatientIDException,
+    public void execute(ManagementSystem manager, Ui ui) throws DuplicatePatientIDException,
             UnloadedStorageException {
         if (type.equals("date")) {
             List<Appointment> sortedApptByDateTime = manager.sortAppointmentsByDateTime(manager.getAppointments());

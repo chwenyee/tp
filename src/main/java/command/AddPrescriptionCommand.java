@@ -7,7 +7,7 @@ import miscellaneous.Ui;
 
 /**
  * Command to add a new prescription to the system.
- * Handles the creation of a new prescription and displays 
+ * Handles the creation of a new prescription and displays
  * feedback about the operation to the user.
  */
 //@@author Basudeb2005
@@ -29,7 +29,7 @@ public class AddPrescriptionCommand extends Command {
      * Shows error message if the patient ID doesn't exist.
      *
      * @param manager The management system that handles the data
-     * @param ui The user interface to display results
+     * @param ui      The user interface to display results
      * @throws UnloadedStorageException If there was an error saving to storage
      */
     @Override

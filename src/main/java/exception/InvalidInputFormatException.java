@@ -12,7 +12,7 @@ public class InvalidInputFormatException extends Exception {
      *
      * @param message The detail message explaining the correct input format
      */
-    public InvalidInputFormatException (String message) {
+    public InvalidInputFormatException(String message) {
         super(message);
     }
 }

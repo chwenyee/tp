@@ -31,7 +31,7 @@ public class ViewAllPrescriptionsCommand extends Command {
      * Shows an appropriate message if no prescriptions exist or if the patient is not found.
      *
      * @param manager The management system that handles the data
-     * @param ui The user interface to display results
+     * @param ui      The user interface to display results
      * @throws UnloadedStorageException If there was an error with storage operations
      */
     @Override
@@ -43,33 +43,33 @@ public class ViewAllPrescriptionsCommand extends Command {
         }
 
         List<Prescription> prescriptions = manager.getPrescriptionsForPatient(patientId);
-        
+
         ui.showLine();
         if (prescriptions.isEmpty()) {
             System.out.println("No prescriptions found for patient " + patient.getName() + " (" + patientId + ").");
         } else {
             System.out.println("Prescriptions for patient " + patient.getName() + " (" + patientId + "):");
             System.out.println("");
-            
+
             for (Prescription prescription : prescriptions) {
                 System.out.println("Prescription ID: " + prescription.getPrescriptionId());
                 System.out.println("Date: " + prescription.getTimestamp().format(
-                    java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                
+                        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+
                 System.out.println("Symptoms:");
                 for (String symptom : prescription.getSymptoms()) {
                     System.out.println("- " + symptom);
                 }
-                
+
                 System.out.println("Medicines:");
                 for (String medicine : prescription.getMedicines()) {
                     System.out.println("- " + medicine);
                 }
-                
+
                 System.out.println("Notes: " + prescription.getNotes());
                 System.out.println("");
             }
-            
+
             System.out.println("Total prescriptions: " + prescriptions.size());
             System.out.println("Use 'view-prescription PRESCRIPTION_ID' to view details and generate HTML.");
         }

@@ -51,14 +51,14 @@ public class Parser {
      * @param userInput The full command string entered by the user
      * @return A Command object for execution
      * @throws InvalidInputFormatException If user input format is invalid
-     * @throws UnknownCommandException If command is not recognized
+     * @throws UnknownCommandException     If command is not recognized
      */
     public static Command parse(String userInput) throws InvalidInputFormatException, UnknownCommandException {
         // Handle empty input
         if (userInput == null || userInput.trim().isEmpty()) {
             throw new InvalidInputFormatException("Please enter a command.");
         }
-        
+
         // Split into two parts to extract the command keyword and its detail
         String[] parts = userInput.split(" ", 2);
         String commandWord = parts[0].toLowerCase();
@@ -296,7 +296,7 @@ public class Parser {
     /**
      * Extracts parameter values from command strings.
      *
-     * @param input The string containing parameters
+     * @param input  The string containing parameters
      * @param prefix The parameter prefix to extract (e.g. "ic/")
      * @return The extracted value or null if not found
      */
@@ -325,7 +325,7 @@ public class Parser {
 
         start += prefix.length();
         String[] possible = {
-            "n/", "ic/", "dob/", "g/", "p/", "a/", "dt/", "t/", 
+            "n/", "ic/", "dob/", "g/", "p/", "a/", "dt/", "t/",
             "dsc/", "h/", "old/", "new/", "s/", "m/", "nt/"
         };
         int end = input.length();
@@ -340,7 +340,7 @@ public class Parser {
             for (int i = start; i <= lowerInput.length() - lowerP.length(); i++) {
                 boolean isNextParamPrefixMatch = lowerInput.startsWith(lowerP, i);
                 // Check if the character before the prefix is blank space in input to have a valid input format
-                boolean isNextParamAtValidPosition = (i == 0) 
+                boolean isNextParamAtValidPosition = (i == 0)
                         || Character.isWhitespace(input.charAt(i - 1));
                 if (isNextParamPrefixMatch && isNextParamAtValidPosition) {
                     if (i < end) {
@@ -411,8 +411,8 @@ public class Parser {
         String address = tokens[4];
         String contact = tokens[5];
         List<String> medHistory = isHistoryNonpresent ? new ArrayList<>() : Arrays.stream(tokens[6].split(","))
-                                        .map(String::trim)
-                                        .collect(Collectors.toList());
+                .map(String::trim)
+                .collect(Collectors.toList());
 
         return new Patient(id, name, dobStr, gender, address, contact, medHistory);
     }
@@ -461,7 +461,7 @@ public class Parser {
      */
     public static Prescription parseAddPrescription(String input) throws InvalidInputFormatException {
         String temp = input.replaceFirst("(?i)add-prescription\\s*", "");
-        
+
         String patientId = extractValue(temp, "ic/");
         String symptoms = extractValue(temp, "s/");
         String medicines = extractValue(temp, "m/");

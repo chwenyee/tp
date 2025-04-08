@@ -28,9 +28,15 @@
 
 ---
 
-## Acknowledgements
+### Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+We would like to acknowledge the following for their support and inspiration during the development of ClinicEase:
+
+- The teaching team of [CS2113] for providing guidance, sample code, and foundational project architecture.
+- Open-source libraries and tools from the Java SDK.
+- Online documentation and tutorials that supported implementation and testing efforts.
+
+All code was developed by the team unless otherwise specified.
 
 ---
 
@@ -62,7 +68,7 @@ The application consists of the following components:
 
 * **Object**: Patient, Appointment, and Prescription classes that represent domain objects.
 
-* **Storage**: Saves and loads data to/from files on disk.
+* **Storage**: Saves and loads data to/from specific data files.
 
 ### How the architecture components interact with each other
 
@@ -89,8 +95,9 @@ This architecture follows several design principles:
 <br>
 
 ---
-### Command Component
-**API** : [Command Classes](https://github.com/AY2425S2-CS2113-T11b-4/tp/tree/master/src/main/java/command)  
+
+## Command Component
+**API** : [Command classes](https://github.com/AY2425S2-CS2113-T11b-4/tp/tree/master/src/main/java/command)  
 
 ![Command Component](diagrams/Command.png)  
 
@@ -167,31 +174,120 @@ The `Command` component is responsible for **handling and executing user command
 > **Note:** The `Command` classes rely on the `Parser` to supply valid parameters. If parsing fails, `Parser` throws appropriate exceptions before the `Command` is even constructed.
 ---
 
-### UI Component
+## UI Component
 **API**: [`Ui.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Ui.java)
 
 ![UI Component](diagrams/uiComponent.png)
 
-The `UI` component is responsible for handling all user interactions. It presents messages to the user, reads user inputs, and displays command results or errors.
+---
 
-#### Responsibilities
+### Overview
 
-- Display a welcome message, help instructions, and goodbye message.
-- Accept and return user input from the command line.
-- Display confirmation messages and outputs for commands such as `add-patient`, `delete-patient`, `view-patient`, `add-appointment`, etc.
-- Print errors and validation issues clearly to the user.
+The `Ui` component manages **all user-facing interactions** in ClinicEase. It is responsible for reading raw user input, printing messages, displaying command results, and showing relevant errors or validations. By centralising all communication with the user, it ensures a consistent and clean user experience.
 
-#### Key Features
+---
 
-- Uses `Scanner` to read input from `System.in`.
-- Methods like `showPatientAdded()`, `showAppointmentMarked()`, and `showPatientList()` format data in a readable and consistent way.
-- Provides contextual error messages via `showError()` to aid debugging and usage.
+### Responsibilities
 
-#### Dependencies
+1. **User Communication**: Display outputs from commands, such as lists of patients, appointment confirmations, and system messages (welcome, exit, help, etc.).
+2. **Input Handling**: Use `Scanner` to accept input from the command line and return it to the main program loop.
+3. **Error Presentation**: Show descriptive error and validation messages to guide user actions.
 
-**Model**: Uses `Patient` and `Appointment` for displaying information.
+---
 
-<br>
+### Key Features
+
+- **Central Input Reader**
+    - Uses a single `Scanner` to read commands from standard input (`System.in`).
+    - Exposes a `readCommand()` method to fetch raw user input.
+
+- **Output Formatter**  
+  Provides structured, readable messages for:
+    - Patient operations (add, delete, view, list).
+    - Appointment operations (add, mark, unmark, list).
+    - System messages like welcome, goodbye, and help.
+
+- **Error Display**  
+  Handles invalid input gracefully via methods like:
+    - `showError(String message)`
+    - `showInvalidCommand(String command)`
+    - `showIndexOutOfBoundsError(...)`
+
+- **Consistent User Interface**  
+  All outputs use standard formatting (icons, line dividers, spacing) to maintain visual consistency and improve usability.
+
+---
+
+### Structure
+
+1. **Input**
+    - `readCommand()` — prompts and captures user input via CLI.
+
+2. **General System Messages**
+    - `showWelcome()`, `showGoodbye()`, `showHelp()`, `showDivider()`
+
+3. **Patient Display**
+    - `showPatientAdded(Patient)`
+    - `showPatientDeleted(Patient)`
+    - `showPatientList(List<Patient>)`
+    - `showPatientDetails(Patient)`
+
+4. **Appointment Display**
+    - `showAppointmentAdded(Appointment)`
+    - `showAppointmentMarked(Appointment)`
+    - `showAppointmentUnmarked(Appointment)`
+    - `showAppointmentList(List<Appointment>)`
+
+5. **Error and Validation**
+    - `showError(String)`
+    - `showInvalidCommand(String)`
+    - `showInvalidInputFormat(String)`
+    - `showIndexOutOfBoundsError(String, int, int)`
+
+---
+
+### Dependencies
+
+- **`Patient` and `Appointment` Classes**  
+  Used to format and display relevant model information in a human-readable format.
+
+- **`Command` Classes**  
+  Call various UI methods to output results of command execution.
+
+- **`Main` Loop / Driver Class**  
+  Calls `readCommand()` to get user input and dispatch commands.
+
+---
+
+### Design Considerations
+
+- **Separation of Concerns**  
+  UI strictly handles display and input, not business logic. This modularity improves maintainability and makes the system testable.
+
+- **Consistency and Usability**  
+  Formatting styles (e.g., emojis/icons, dividers) improve user experience by clearly delineating different types of output.
+
+- **Scalability**  
+  Designed to easily add new output functions (`showX`) when new features or commands are introduced.
+
+- **Extensibility**  
+  Could be abstracted into an interface (`IUi`) to allow swapping between CLI, GUI (e.g. JavaFX), or web UI in future iterations.
+
+---
+
+### Remarks
+
+- The UI component is **stateless**, meaning it does not store application data — it only serves as a medium to **interact** with users.
+- It ensures a **clear communication loop**:
+    1. `Parser` processes input →
+    2. `Command` executes logic →
+    3. `Ui` formats and displays the result.
+- Centralising all UI output ensures messages are consistent across commands and improves the professionalism and polish of the CLI application.
+- Future improvements could include:
+    - Theming/styling for different output types
+    - Logging system output to a file via a `Logger`
+    - Extending to support localisation/internationalisation
+---
 
 ---
 ### Main component
@@ -201,6 +297,7 @@ The `UI` component is responsible for handling all user interactions. It present
 
 The `Main` component is the **entry point** of the application.
 
+---
 #### Responsibilities
 
 - Initializes core components: `Ui`, `Storage`, and `ManagementSystem`.
@@ -216,12 +313,14 @@ The `Main` component is the **entry point** of the application.
 <br>
 
 ---
+
 ### Parser Component
 **API** : [`Parser.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/miscellaneous/Parser.java)
 
 #### Overview of the `Parser` Component
 ![parser-class-diagram](diagrams/parserClassDiagram.png)
 
+---
 - **Parser:**
   - **Public API:** `parse(input)` 
 
@@ -230,11 +329,13 @@ The `Main` component is the **entry point** of the application.
 
   - **Utility Method:** `extractValue()` (reusable parameter extractor).
 
+---
 - **Command:** 
   - **Abstract Superclass:** Defines `execute()` and `isExit()` for all commands.
   - **Subclasses:** `AddPatientCommand`, `DeleteAppointmentCommand`, etc.
   - Each accepts specific data (e.g., `AddAppointmentCommand` takes an `Appointment`).
 
+---
 The sequence diagram below illustrates the interactions within the `Parser` component, taking parse(`add-appointment ic/S1234567D dt/2025-04-05 t/1400 dsc/Consultation`)
 as example:
 ![parser-sequence-diagram](diagrams/parserSequence.png)
@@ -242,6 +343,7 @@ as example:
 > This sequence diagram only focus on the interactions within the `Parser` component, the other components 
 > such as `Ui`, `ManagementSystem` and `Storage` are omitted.
 
+---
 How the `Parser` component works:
 1. When `Parser` is called upon to parse a user command, `Parser` splits the input to identify the command type (e.g. `add-appointment`).
    A `switch-case` delegates to the appropriate helper method:
@@ -268,6 +370,7 @@ public static Command parse(String userInput) throws InvalidInputFormatException
 
 
 ---
+
 ### Manager Component
 
 **API**: [`ManagementSystem.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/manager/ManagementSystem.java)
@@ -276,6 +379,7 @@ public static Command parse(String userInput) throws InvalidInputFormatException
 
 The `ManagementSystem` class in manager component acts as the central coordinator, responsible for managing features for **Patient**, **Appointment**, and **Prescription** entities. It provides methods to add, remove, and retrieve these objects, ensuring business logic is applied and maintaining the integrity of the system’s data.
 
+---
 #### Responsibilities
 
 - Manages instances of **Patient**, **Appointment**, and **Prescription** objects.
@@ -284,6 +388,7 @@ The `ManagementSystem` class in manager component acts as the central coordinato
 - Ensures consistency of data, validating changes before committing them to the system.
 - Handles business logic related to managing patients, their appointments, and prescriptions.
 
+---
 #### Key Features
 
 - Provides **methods** for managing **Patients**, **Appointments**, and **Prescriptions**.
@@ -291,13 +396,13 @@ The `ManagementSystem` class in manager component acts as the central coordinato
 - Handles validation logic to ensure that the data is accurate and consistent (e.g., cannot add duplicate appointments or prescriptions).
 - Can interact with **Storage** to persist changes made to patients, appointments, and prescriptions.
 
+---
 #### Structure
 
 - The core functionality is provided through a **single class** (ManagementSystem), where all methods for interacting with the system’s data are defined.
 - Utilizes **arraylists** to store and manage **Patient**, **Appointment**, and **Prescription** objects.
 - The **ManagementSystem** class contains methods like `addPatient()`, `removePatient()`, `getPatient()`, etc., and primarily serve to manage the logic behind those operations.
-
-<br>
+---
 
 ---
 
@@ -375,46 +480,102 @@ The `Prescription` class represents a prescription, typically linked to a patien
 - **Model**: Dependent on the **Patient** class to represent which patient the prescription is associated with.
 - **ManagementSystem**: The **ManagementSystem** interacts with this class to manage prescriptions and ensure they are associated with the correct patient.
 
-<br>
-
 ---
-### Storage Component
-**API** : [`Storage.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/storage/Storage.java)
+
+## Storage Component
+**API**: [`Storage.java`](https://github.com/AY2425S2-CS2113-T11b-4/tp/blob/master/src/main/java/storage/Storage.java)
 
 ![Storage Component](diagrams/storageComponent.png)
-The `Storage` component is responsible for reading from and writing to the file system to ensure persistence of application data in `ClinicEase`.
 
-#### Responsibilities
 
-The `Storage` class handles:
-- Saving and loading **Patients** from `patient_data.txt`
-- Saving and loading **Appointments** from `appointment_data.txt`
-- Saving and loading **Prescriptions** from `prescription_data.txt`
-- Generating HTML files for prescriptions into a `/prescriptions/` directory
+### Overview
 
-#### Key Features
+The `Storage` component is responsible for reading from and writing to the file system to ensure **data persistence** in ClinicEase. It handles loading and saving of patients, appointments, and prescriptions, and also generates HTML representations of prescription data when required.
 
-- Each data type is stored in its own file.
-- Upon loading, `Storage` uses the `Parser` class to reconstruct objects like `Patient` and `Appointment`.
-- When appointments are loaded, they are automatically linked to the corresponding patients via the `ManagementSystem`.
 
-#### Structure
+### Responsibilities
 
-- All methods are defined within a **single `Storage` class** with static methods like `savePatients()`, `loadAppointments()`, etc.  
-- Initialization is done through the constructor `Storage(String directory)`, which sets the correct file paths.
+- Save and load **patients** from `patient_data.txt`.
+- Save and load **appointments** from `appointment_data.txt`.
+- Save and load **prescriptions** from `prescription_data.txt`.
+- Generate HTML files for prescriptions into a `/prescriptions/` directory.
+- Ensure data is correctly formatted and persists across application runs.
 
-#### Dependencies
 
-- **Model**: Uses `Patient`, `Appointment`, and `Prescription` objects for reading/writing.
-- **Commons**: Uses constants and utility methods if applicable.
-- **Parser**: Converts text from the file back into model objects.
-- **ManagementSystem**: Required to link appointments to patients during data loading.
+### Key Features
 
-> **Note:** `Storage` should be initialised before calling any static methods that rely on file paths. Otherwise, `UnloadedStorageException` will be thrown.
+- **Separate Files for Each Data Type**  
+  Each model object is saved in a different file for modularity and easier debugging.
 
-<br>
+- **Static Utility Methods**  
+  Methods like `savePatients()`, `loadAppointments()`, and `savePrescriptions()` are static and utility-based, allowing them to be called globally.
+
+- **Data Linking**  
+  When appointments are loaded, they are automatically linked to their respective patients using methods from `ManagementSystem`.
+
+- **HTML Generation**  
+  Prescription objects are exported into readable HTML files, supporting offline viewing or printing.
+
+- **Path Initialization**  
+  The `Storage` constructor accepts a directory path and configures the correct file paths. It must be called before any static operations.
+
+
+### Structure
+
+- The `Storage` class contains:
+    - A constructor `Storage(String directory)` to initialize the storage directory and file paths.
+    - Static methods:
+        - `savePatients(List<Patient>)`
+        - `loadPatients()`
+        - `saveAppointments(List<Appointment>)`
+        - `loadAppointments(ManagementSystem)`
+        - `savePrescriptions(List<Prescription>)`
+        - `loadPrescriptions()`
+        - `exportPrescriptionToHtml(Prescription)`
+
+
+### Dependencies
+
+- **Model Classes**:
+    - `Patient`: For reading/writing patient data.
+    - `Appointment`: For loading and linking to patients.
+    - `Prescription`: For saving and generating HTML files.
+
+- **ManagementSystem**:  
+  Required to correctly link appointments to existing patients upon loading.
+
+- **Parser**:  
+  Parses raw text from files and reconstructs `Patient`, `Appointment`, and `Prescription` objects.
+
+- **Commons / Utils**:  
+  May use constants or helper functions for formatting or file handling.
+
+
+### Design Considerations
+
+- **Separation of Concerns**  
+  The `Storage` class is solely responsible for persistence. It does not contain any business logic related to how data is used.
+
+- **Safety Checks**  
+  Throws `UnloadedStorageException` if static methods are called before proper initialisation via the constructor.
+
+- **Portability**  
+  Allows flexible directory configuration via constructor, making it easy to adapt file locations for testing or deployment.
+
+- **Extensibility**  
+  New file-based data (e.g., billing records) can be added without affecting the current architecture — simply add new load/save methods.
+
+
+### Remarks
+
+- `Storage` should be **initialized once** using its constructor before any read/write operations are performed.
+- Data is stored in a human-readable plain text format to support debugging and versioning.
+- HTML generation for prescriptions can be enhanced in future with CSS templates or PDF export support.
+- File structure and save formats are intentionally kept simple for ease of testing and transparency.
 
 ---
+
+
 ## Implementation
 
 ### View patient feature
@@ -912,6 +1073,8 @@ Use case resumes at step 1.
 1b1. ClinicEase displays an error message.
 Use case ends.
 
+---
+
 ### Use Case: Delete a Patient
 
 #### MSS
@@ -929,6 +1092,8 @@ Use case ends.
 3a. The given NRIC is invalid.
 3a1. ClinicEase displays an error message.
 Use case resumes at step 2.
+
+---
 
 ### Use Case: Add an Appointment
 
@@ -949,6 +1114,8 @@ Use case ends.
 1a1. ClinicEase displays an error message.
 Use case resumes at step 1.
 
+---
+
 ### Use Case: Delete an Appointment
 
 #### MSS
@@ -967,6 +1134,8 @@ Use case ends.
 3a1. ClinicEase displays an error message.
 Use case resumes at step 2.
 
+---
+
 ### Use Case: View a Patient's Medical History
 
 #### MSS
@@ -983,6 +1152,8 @@ Use case ends.
 2a. The patient has no recorded medical history.
 2a1. ClinicEase informs the user that no history is available.
 Use case ends.
+
+---
 
 ### Use Case: Edit a Patient's Details
 
@@ -1003,6 +1174,8 @@ Use case ends.
 1a1. ClinicEase displays an error message.
 Use case resumes at step 1.
 
+---
+
 ### Use Case: Sort Appointments
 
 #### MSS
@@ -1020,6 +1193,8 @@ Use case ends.
 1b. The sorting parameter is invalid.
 1b1. ClinicEase displays an error message.
 Use case resumes at step 1.
+
+---
 
 ### Use case: Add a new prescription
 
@@ -1045,6 +1220,8 @@ Use case resumes at step 1.
     * 3a1. System shows error message with correct format
     * 3a2. Use case resumes at step 2
 
+---
+
 ### Use case: View all prescriptions for a patient
 
 **MSS**
@@ -1065,6 +1242,8 @@ Use case resumes at step 1.
 * 4a. No prescriptions found
     * 4a1. System shows "No prescriptions found" message
     * 4a2. Use case ends
+
+---
 
 ### Use case: View and generate HTML prescription
 
@@ -1128,7 +1307,8 @@ Below is a suggested guide for **manual testing** of the ClinicEase application 
    - Run the compiled main class:
      ```
      java ClinicEase
-     ```   - You should see a welcome message that looks like this:
+     ```   
+     You should see a welcome message that looks like this:
      ```
      --------------------------------------------------------------------------------
      Welcome to ClinicEase!

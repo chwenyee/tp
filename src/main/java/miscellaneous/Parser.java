@@ -40,6 +40,8 @@ import static manager.Appointment.INPUT_FORMAT;
 /**
  * Parses user input strings into executable Command objects.
  * Handles all command types and parameter extraction for the clinic management system.
+ * Provides methods for parsing different types of commands including patient, appointment,
+ * medical history, and prescription management.
  */
 public class Parser {
 
@@ -397,7 +399,8 @@ public class Parser {
      */
     public static Patient parseLoadPatient(String line) throws InvalidInputFormatException {
         String[] tokens = line.split("\\|");
-        if (tokens.length < 7) {
+        boolean isHistoryNonpresent = tokens.length == 6;
+        if (tokens.length < 6) {
             return null;
         }
 
@@ -407,7 +410,7 @@ public class Parser {
         String gender = tokens[3];
         String address = tokens[4];
         String contact = tokens[5];
-        List<String> medHistory = Arrays.stream(tokens[6].split(","))
+        List<String> medHistory = isHistoryNonpresent ? new ArrayList<>() : Arrays.stream(tokens[6].split(","))
                                         .map(String::trim)
                                         .collect(Collectors.toList());
 
@@ -447,6 +450,15 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses input for the add-prescription command.
+     * Extracts patient ID, symptoms, medicines, and optional notes from the input string.
+     * Symptoms and medicines are converted from comma-separated strings to lists.
+     *
+     * @param input The raw user input string for add-prescription command
+     * @return A new Prescription object with the parsed data
+     * @throws InvalidInputFormatException If required parameters are missing or format is incorrect
+     */
     public static Prescription parseAddPrescription(String input) throws InvalidInputFormatException {
         String temp = input.replaceFirst("(?i)add-prescription\\s*", "");
         
@@ -485,6 +497,14 @@ public class Parser {
         return new Prescription(patientId.trim(), symptomsList, medicinesList, finalNotes);
     }
 
+    /**
+     * Parses input for the view-all-prescriptions command.
+     * Extracts patient ID from the command string.
+     *
+     * @param input The raw user input string for view-all-prescriptions command
+     * @return The patient ID whose prescriptions should be viewed
+     * @throws InvalidInputFormatException If the input format is incorrect or no patient ID is provided
+     */
     public static String parseViewAllPrescriptions(String input) throws InvalidInputFormatException {
         String trimmedInput = input.trim();
         if (trimmedInput.equals("view-all-prescriptions") || trimmedInput.length() <= 22) {
@@ -498,6 +518,14 @@ public class Parser {
         return patientId;
     }
 
+    /**
+     * Parses input for the view-prescription command.
+     * Extracts prescription ID from the command string.
+     *
+     * @param input The raw user input string for view-prescription command
+     * @return The prescription ID to be viewed
+     * @throws InvalidInputFormatException If the input format is incorrect or no prescription ID is provided
+     */
     public static String parseViewPrescription(String input) throws InvalidInputFormatException {
         String trimmedInput = input.trim();
         if (trimmedInput.equals("view-prescription") || trimmedInput.length() <= 17) {

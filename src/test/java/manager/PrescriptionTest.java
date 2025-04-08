@@ -64,14 +64,13 @@ public class PrescriptionTest {
     }
 
     @Test
-    public void fromFileFormat_invalidInput_throwsException() {
+    public void fromFileFormat_invalidInput_returnsNull() {
         // Create an improperly formatted file entry (missing fields)
         String invalidFileEntry = "S1234567A-1|S1234567A";
 
-        // This should throw an array index out of bounds exception
-        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            Prescription.fromFileFormat(invalidFileEntry);
-        });
+        // With our improved implementation, this should return null instead of throwing an exception
+        Prescription result = Prescription.fromFileFormat(invalidFileEntry);
+        Assertions.assertNull(result);
     }
 
     @Test

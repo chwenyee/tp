@@ -355,8 +355,6 @@ Expected output:
 ----------------------------------------------------------------------------------------------------</pre>
 <br>
 
-<div style="page-break-after: always;"></div>
-
 ### Adding a prescription: `add-prescription`
 
 Adds a new prescription for a patient.

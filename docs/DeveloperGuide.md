@@ -1038,24 +1038,26 @@ This CLI-based Clinic Management System offers a simple yet effective solution f
 
 ## User Stories
 
-| Version | As a ... | I want to ... | So that I can ... |
-|---------|----------|---------------|-------------------|
-| v1.0    | doctor   | add my patients' personal details | I can add them into the system |
-| v1.0    | doctor   | delete my patients' personal details | I can remove them from the system |
-| v1.0    | doctor   | view my certain patient's personal details | I can view them in the system |
-| v1.0    | doctor   | add appointments into my schedule | I can add appointments plan from a patient needed to be tracked |
-| v1.0    | doctor   | delete appointments from my schedule | I can get rid of appointments no longer needed to track |
-| v1.0    | doctor   | list my upcoming appointments | I can manage my time effectively without manual scheduling |
-| v1.0    | doctor   | store patients' medical history | I can understand the patient's situation better |
-| v1.0    | doctor   | check all medical histories for one certain patient | I can know what happened before the patient come |
-| v2.0    | doctor   | add a new prescription for a patient | record the prescribed medications and instructions |
-| v2.0    | doctor   | view all prescriptions for a patient | track the patient's medication history |
-| v2.0    | doctor   | add symptoms to a prescription | document the patient's condition |
-| v2.0    | doctor   | add special notes to prescriptions | provide additional instructions to patients |
-| v2.0    | doctor   | generate a printable prescription | provide a professional document to the patient |
-| v2.0    | doctor   | edit my patients' personal details                 | update them if there is any updates |
-| v2.0    | doctor   | sort appointments by date                          | check which appointements are coming first |
-| v2.0    | doctor   | mark/unmark appointments                   | track my appointments more easily |
+
+| Version | As a ... | I want to ...                                       | So that I can ...                                               |
+|---------|----------|-----------------------------------------------------|-----------------------------------------------------------------|
+| v1.0    | doctor   | add my patients' personal details                   | I can add them into the system                                  |
+| v1.0    | doctor   | delete my patients' personal details                | I can remove them from the system                               |
+| v1.0    | doctor   | view my certain patient's personal details          | I can view them in the system                                   |
+| v1.0    | doctor   | add appointments into my schedule                   | I can add appointments plan from a patient needed to be tracked |
+| v1.0    | doctor   | delete appointments from my schedule                | I can get rid of appointments no longer needed to track         |
+| v1.0    | doctor   | list my upcoming appointments                       | I can manage my time effectively without manual scheduling      |
+| v1.0    | doctor   | store patients' medical history                     | I can understand the patient's situation better                 |
+| v1.0    | doctor   | check all medical histories for one certain patient | I can know what happened before the patient come                |
+| v2.0    | doctor   | add a new prescription for a patient                | record the prescribed medications and instructions              |
+| v2.0    | doctor   | view all prescriptions for a patient                | track the patient's medication history                          |
+| v2.0    | doctor   | add symptoms to a prescription                      | document the patient's condition                                |
+| v2.0    | doctor   | add special notes to prescriptions                  | provide additional instructions to patients                     |
+| v2.0    | doctor   | generate a printable prescription                   | provide a professional document to the patient                  |
+| v2.0    | doctor   | edit my patients' personal details                  | update them if there is any updates                             |
+| v2.0    | doctor   | sort appointments by date                           | check which appointements are coming first                      |
+| v2.0    | doctor   | mark/unmark appointments                            | track my appointments more easily                               |
+
 ---
 
 ## Use Cases

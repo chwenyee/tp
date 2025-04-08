@@ -236,7 +236,7 @@ public class Parser {
             LocalDateTime now = LocalDateTime.now();
             if (dateTime.isBefore(now)) {
                 throw new InvalidInputFormatException
-                    ("The appointment date/time cannot be before the current date/time");
+                ("The appointment date/time cannot be before the current date/time");
             }
 
             return new Appointment(nric.trim(), dateTime, desc.trim());

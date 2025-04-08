@@ -211,6 +211,7 @@ Format: `add-appointment ic/NRIC dt/DATE t/TIME dsc/DESCRIPTION`
   `dd` is day (e.g., `2025-03-31`).  
 * `TIME` format: `HHmm` in 24-hour format (e.g., `1430` for 2:30 PM).
 * `DATE` and `TIME` **must not** be **before current date/time**.
+* The new appointment will only be added if it does not clash with the others.
 
 Example of usage: 
 

@@ -16,26 +16,24 @@ My main contribution in features was to design and implement patient related fea
 
 ## Features Implemented
 
-
-
-### `add-patient`
+### [`add-patient`](../UserGuide.md/#adding-a-new-patient--add-patient)
 - Allows users to register a new patient by specifying fields such as name, NRIC, date of birth, gender, phone number, and address.
 - Includes validation to prevent duplicate NRIC entries, ensuring each patient is uniquely identified.
 - Example:  
   `add-patient n/John Doe ic/S1234567A dob/1990-01-01 g/M p/98765432 a/123 Main St #diabetic #followup`
 
-### `delete-patient`
+### [`delete-patient`](../UserGuide.md/#deleting-a-patient--delete-patient)
 - Enables the removal of a patient using their NRIC.
 - Validates whether the NRIC exists in the system before attempting deletion, and provides informative error messages if not found.
 - Upon successful deletion, confirms the action and removes any associated appointments and prescription references.
 
-### `list-patient`
+### [`list-patient`](../UserGuide.md/#listing-all-patients-list-patient)
 - Displays all patients currently stored in the system in a numbered and neatly formatted list.
 - Includes name, NRIC, and other key attributes in a concise format.
 - Improves usability with consistent dividers and spacing for readability.
 - Helpful in providing an overview of all registered patients before performing operations like `delete-patient` or `view-patient`.
 
-### `view-patient`
+### [`view-patient`](../UserGuide.md/#viewing-patient-details-view-patient)
 - Shows full details of a selected patient, including:
   - Name, NRIC, date of birth, gender, phone number, and address.
   - Optionally, linked appointments and prescriptions (if supported by system design).
@@ -107,7 +105,7 @@ My main contribution in features was to design and implement patient related fea
 
 ## Community Involvement
 
-- Reviewed teammate pull requests, particularly those related to parser, patient, and appointment logic.
+- Reviewed teammate pull requests, particularly those related to parser, patient, appointment and storage system.
 - Proposed improvements for error messaging and user experience.
 - Ensured coding style consistency (naming, spacing, error format).
 - Participated in team sync-ups to align features, naming conventions, and architecture decisions.

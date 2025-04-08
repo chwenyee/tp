@@ -84,11 +84,9 @@ store, view, and edit patients’ medical histories with robust validation and p
 3. **UML Diagrams**
     - Created the **Sequence Diagrams** for the `store-history` feature, demonstrating how the command interacts with
       `Parser`, `ManagementSystem`, and `Storage`.
-      ![add-appointment](tp/docs/diagrams/storeMedicalHistorySequence.png)
     - Ensured diagrams accurately reflect the final implementation (parameter extraction, validation steps, and
       file-saving routines).
     - Created the **Class Diagrams** for Command Component.
-      ![Command Component](tp/docs/diagrams/Command.png)  
     - Ensured diagrams accurately reflect the final implementation.
 
 ### 5. Contributions to Team-Based Tasks

@@ -25,6 +25,8 @@ with the appointment list in `ManagementSystem`.
 7. Added comprehensive validation for: NRIC format compliance, appointment scheduling conflicts (throws `AppointmentClashException`) 
 and future-dated appointments (prevents past-date/time entries)
 8. Implemented cleanup of associated appointment records when the patient is deleted.
+9. Added JavaDoc for files such as AddAppointmentCommand, DeleteAppointmentCommand, ListAppointmentCommand, SortAppointmentCommand,
+Appointment, ExitCommand, HelpCommand, and Parser. 
 
 #### Features Implemented
 1. **add-appointment**: Adds a new appointment to the list of appointment.
@@ -55,15 +57,16 @@ and future-dated appointments (prevents past-date/time entries)
    I wrote the description, command input formats, and examples of usage for these features, providing the important things to note for 
 parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 
-- **FAQ**
+- **FAQ**: I wrote the FAQ section, covering how data is saved, how to transfer data, and the risks of editing data files directly.
 
-- **Known Issues**
+- **Known Issues**: I authored the command-parameter parsing issue, explaining the cause, impact, and current resolution of the problem when users omit spaces between command words and parameters.
 
-- **Command Summary**
+- **Command Summary**: I wrote the Command Summary table, ensuring each command's format and example of usage are clearly presented for users' quick reference.
 
 #### Contributions to the DG:
 
 **Sections:**
+- **Table of content**
 
 - **Design: Parser component**
   - Documented the `Parser` class and its interaction with `Command` subclasses
@@ -85,7 +88,6 @@ parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 
 - Non-functional requirements
 
-
 - Glossary 
 
 #### Contributions to team-based tasks:
@@ -100,3 +102,24 @@ parameters such as `NRIC`, `DATE`, `TIME`, and `APPOINTMENT_ID`.
 - Reminding teammates of important deadlines.
 - Helped to test out the newly-implemented features to ensure the feature works as desired.
 - Discussed with teammates on what to include for Design and Implementation section in Developer Guide.
+- Helped review the coding style consistency 
+
+<div style="page-break-after: always;"></div>
+
+#### Contributions to the Developer Guide 
+
+**Diagrams I contributed:**
+
+Parser Class Diagram:
+![parser-class-diagram](../diagrams/parserClassDiagram.png)
+
+Parser Sequence Diagram:
+![parser-sequence-diagram](../diagrams/parserSequence.png)
+
+Add Appointment Sequence Diagram:
+![add-appointment](../diagrams/addAppointmentSequence.png)
+
+Delete Appointment Sequence Diagram:
+![delete-appointment](../diagrams/deleteAppointmentSequence.png)
+
+

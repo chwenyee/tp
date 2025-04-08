@@ -203,7 +203,8 @@ public class Prescription {
                 .append("  <title>Prescription ").append(prescriptionId).append("</title>\n")
                 .append("  <style>\n")
                 .append("    body { font-family: Arial, sans-serif; margin: 40px; }\n")
-                .append("    .prescription { border: 1px solid #333; padding: 20px; max-width: 800px; margin: 0 auto; }\n")
+                .append("    .prescription { border: 1px solid #333; padding: " +
+                        "20px; max-width: 800px; margin: 0 auto; }\n")
                 .append("    .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px;\n")
                 .append("             margin-bottom: 20px; }\n")
                 .append("    .section { margin-bottom: 15px; }\n")

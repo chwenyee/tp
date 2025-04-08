@@ -236,7 +236,7 @@ public class Parser {
             LocalDateTime now = LocalDateTime.now();
             if (dateTime.isBefore(now)) {
                 throw new InvalidInputFormatException
-                        ("The appointment date/time cannot be before the current date/time");
+                    ("The appointment date/time cannot be before the current date/time");
             }
 
             return new Appointment(nric.trim(), dateTime, desc.trim());
@@ -325,8 +325,8 @@ public class Parser {
 
         start += prefix.length();
         String[] possible = {
-                "n/", "ic/", "dob/", "g/", "p/", "a/", "dt/", "t/",
-                "dsc/", "h/", "old/", "new/", "s/", "m/", "nt/"
+            "n/", "ic/", "dob/", "g/", "p/", "a/", "dt/", "t/",
+            "dsc/", "h/", "old/", "new/", "s/", "m/", "nt/"
         };
         int end = input.length();
 
